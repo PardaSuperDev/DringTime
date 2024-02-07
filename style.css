@@ -34,3 +34,10 @@ body {
 .time_label {
     font-size: 30px;
 }
+
+.time_container {
+    position: relative;
+    transition: opacity 500ms;
+    transition: top 500ms ease 0s;
+    transition: bottom 500ms ease 0s;
+}

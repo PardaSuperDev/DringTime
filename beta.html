@@ -9,10 +9,18 @@
 <body>
     <div class="centered_container">
         <div class="centered_content">
-            <h2 class="time_label">Prochaine Sonnerie</h2>
-            <h1 class="time_counter">00:00</h1>
-            <h2 class="time_label">Temps restant</h2>
-            <h1 class="time_counter">00:00</h1>
+            <div id="next_alarm" class="time_container">
+                <a onclick="toggle_view('next_alarm');">
+                    <h2 class="time_label">Prochaine Sonnerie</h2>
+                    <h1 class="time_counter">00:00</h1>
+                </a>
+            </div>
+            <div id="remaining_time" class="time_container">
+                <a onclick="toggle_view('remaining_time');">
+                    <h2 class="time_label">Temps restant</h2>
+                    <h1 class="time_counter">00:00</h1>
+                </a>
+            </div>
         </div>
     </div>
 </body>
