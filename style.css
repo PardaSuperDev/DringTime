@@ -22,4 +22,15 @@ body {
 .centered_content {
     display: block;
     margin: auto;
+    justify-content: center;
+    text-align: center;
+}
+
+.time_counter {
+    font-size: 100px;
+    margin-top: 0px;
+}
+
+.time_label {
+    font-size: 30px;
 }
