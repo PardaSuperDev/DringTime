@@ -13,7 +13,7 @@ function toggle_view(type) {
         settings_icon.style = "opacity: 100%";
     } else {
         other_elem.style = "max-height: 0px; opacity: 0%";
-        settings_icon.style = "opacity: 0%;";
+        settings_icon.style = "opacity: 0;";
     }
     window.toggled = !window.toggled;
 }

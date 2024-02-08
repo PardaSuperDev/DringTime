@@ -42,20 +42,22 @@ body {
 .time_container {
     position: relative;
     max-height: 500px;
-    opacity: 100%;
+    opacity: 1;
     overflow-y: hidden;
     transition: max-height 600ms ease 0s, opacity 500ms;
     cursor: pointer;
 }
 
 #parameter_icon_container {
-    opacity: 100%;
+    opacity: 1;
     transition: opacity 200ms;
     width: max-content;
     height: max-content;
     cursor: pointer;
+    position: absolute;
+    z-index: 10;
 }
 
 #parameter_icon_container:hover {
-    opacity: 100% !important;
+    opacity: 1 !important;
 }
