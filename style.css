@@ -37,7 +37,9 @@ body {
 
 .time_container {
     position: relative;
-    transition: opacity 500ms;
-    transition: top 500ms ease 0s;
-    transition: bottom 500ms ease 0s;
+    max-height: 500px;
+    opacity: 100%;
+    overflow-y: hidden;
+    transition: max-height 600ms ease 0s, opacity 500ms;
+    cursor: pointer;
 }
