@@ -7,10 +7,15 @@
 </head>
 
 <body>
-    <div id="parameter_icon_container">
-        <a onclick="alert('open settings');">
-            <img src="settings.svg">
-        </a>
+    <div id="settings_container">
+        <div id="settings_icon_container">
+            <a onclick="toggle_settings_bar();">
+                <img src="settings.svg">
+            </a>
+        </div>
+        <div id="settings_bar">
+            <div id="settings_bar_content">salut</div>
+        </div>
     </div>
     <div class="centered_container">
         <div class="centered_content" id="timers_elements_container" style="display: none">

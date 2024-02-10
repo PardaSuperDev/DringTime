@@ -29,7 +29,9 @@ const sonneries = [
 ];
 
 
-window.toggled = false; // Variable utilisée pour connaitre l'état de la vue des timers
+window.toggled_view = false; // Utilisée pour connaitre l'état de la vue des timers
+window.settings_opened = false; // Utlisée pour connaitre l'état d'ouverture des paramètres
+
 
 function toggle_view(type) {
     /** Inverse le type de vue. `type` est l'id de la vue sur laquelle se concentrer.
@@ -43,16 +45,26 @@ function toggle_view(type) {
     } else return;
 
     // Récupère le logo des paramètres et change l'opacité en fonction du type de vue
-    let settings_icon = document.getElementById("parameter_icon_container");
+    let settings_icon = document.getElementById("settings_icon_container");
 
-    if (window.toggled) {
+    if (window.toggled_view) {
         other_elem.style = "";
         settings_icon.style = "opacity: 100%";
     } else {
         other_elem.style = "max-height: 0px; opacity: 0%";
         settings_icon.style = "opacity: 0;";
     }
-    window.toggled = !window.toggled;
+    window.toggled_view = !window.toggled_view;
+}
+
+function toggle_settings_bar() {
+    let settingsBar = document.getElementById("settings_bar");
+    if (window.settings_opened) {
+        settingsBar.style = "width: 300px";
+    } else {
+        settingsBar.style = "width: 0px";
+    }
+    window.settings_opened = !window.settings_opened;
 }
 
 function update() {
