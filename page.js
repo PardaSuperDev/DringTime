@@ -60,9 +60,9 @@ function toggle_view(type) {
 function toggle_settings_bar() {
     let settingsBar = document.getElementById("settings_bar");
     if (window.settings_opened) {
-        settingsBar.style = "width: 300px";
-    } else {
         settingsBar.style = "width: 0px";
+    } else {
+        settingsBar.style = "width: 300px";
     }
     window.settings_opened = !window.settings_opened;
 }
