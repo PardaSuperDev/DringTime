@@ -37,6 +37,9 @@ function toggle_view(type) {
     /** Inverse le type de vue. `type` est l'id de la vue sur laquelle se concentrer.
      */
 
+    // Si les paramètre sont ouverts, on les ferme
+    if (window.settings_opened) toggle_settings_bar();
+
     // Réupère l'ID de l'élément à cacher
     if (type === "next_alarm") {
         var other_elem = document.getElementById("remaining_time");
@@ -49,20 +52,27 @@ function toggle_view(type) {
 
     if (window.toggled_view) {
         other_elem.style = "";
-        settings_icon.style = "opacity: 100%";
+        settings_icon.style = "opacity: 1";
     } else {
-        other_elem.style = "max-height: 0px; opacity: 0%";
-        settings_icon.style = "opacity: 0;";
+        other_elem.style = "max-height: 0px; opacity: 0";
+        settings_icon.style = "opacity: 0";
     }
     window.toggled_view = !window.toggled_view;
 }
 
 function toggle_settings_bar() {
     let settingsBar = document.getElementById("settings_bar");
+    let settingsIcon = document.getElementById("settings_icon_container");
     if (window.settings_opened) {
         settingsBar.style = "width: 0px";
+        if (window.toggled_view) {
+            settingsIcon.style = "opacity: 0"
+        } else {
+            settingsIcon.style = "opacity: 1"
+        }
     } else {
         settingsBar.style = "width: 300px";
+        settingsIcon.style = "opacity: 1"
     }
     window.settings_opened = !window.settings_opened;
 }
