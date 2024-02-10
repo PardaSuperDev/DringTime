@@ -71,7 +71,7 @@ function toggle_settings_bar() {
             settingsIcon.style = "opacity: 1"
         }
     } else {
-        settingsBar.style = "width: 300px";
+        settingsBar.style = "width: 370px";
         settingsIcon.style = "opacity: 1"
     }
     window.settings_opened = !window.settings_opened;
@@ -142,6 +142,61 @@ function setColor(elems) {
         document.getElementById("choose_labels_color").click();
     } else if (elems === "background") {
         document.getElementById("choose_background_color").click();
+    }
+}
+
+function saveSettings() {
+
+    // Récupère les éléments couleur
+    let labelColorElement = document.getElementById("choose_labels_color");
+    let backgroundColorElement = document.getElementById("choose_background_color");
+
+    // Crée l'objet de paramètres
+    let settingsObject = {
+        "label_color": labelColorElement.value,
+        "background_color": backgroundColorElement.value,
+    }
+
+    // Encode les paramètres
+    let settingsObjectStringified = JSON.stringify(settingsObject);
+    let settingB64Encoded = btoa(settingsObjectStringified);
+
+    // Met à jour le cookie de paramètres
+    document.cookie = "settings=" + settingB64Encoded + "; path=/; max-age=126144000; SameSite=None; secure=false";
+}
+
+function loadSettings() {
+
+    // Récupère les cookies
+    let cookies = document.cookie.split("; ");
+
+    // Scanne tous les cookies
+    for (let i = 0; i < cookies.length; i++) {
+        // Vérifie que le cookie est bien un cookie des paramètres 
+        if (cookies[i].substring(0, 9) === "settings=") {
+            // Désencode le cookie
+            let b64EncodedSettings = cookies[i].substring(9);
+            let settingsObjectStringified = atob(b64EncodedSettings);
+            let settingsObject = JSON.parse(settingsObjectStringified);
+
+            //Récupère les éléments à mondifier
+            let labelColorElement = document.getElementById("choose_labels_color");
+            let backgroundColorElement = document.getElementById("choose_background_color");
+
+            // Modifie les valers des éléments
+            labelColorElement.value = settingsObject["label_color"];
+            backgroundColorElement.value = settingsObject["background_color"];
+
+            // Met à jour le CSS
+            document.documentElement.style.setProperty('--text-color', settingsObject["label_color"]);
+            document.documentElement.style.setProperty('--background-color', settingsObject["background_color"]);
+            
+            // Met à jour les couleurs des sélécteurs
+            document.querySelector('#choose_labels_color').dispatchEvent(new Event('input', { bubbles: true }));
+            document.querySelector('#choose_background_color').dispatchEvent(new Event('input', { bubbles: true }));
+            
+            break;
+        }
     }
 }
 
