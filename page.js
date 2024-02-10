@@ -140,6 +140,8 @@ function update() {
 function setColor(elems) {
     if (elems === "labels") {
         document.getElementById("choose_labels_color").click();
+    } else if (elems === "background") {
+        document.getElementById("choose_background_color").click();
     }
 }
 
@@ -149,9 +151,9 @@ Coloris({
     alpha: false,
     margin: 30,
     defaultColor: "#FFFFFF", // Changer par les paramètres sauvegardés
-    onChange: (color, _) => {
-        document.documentElement.style.setProperty('--text-color', color);
-        //document.documentElement.style.setProperty('--background-color', color);
+    onChange: (color, input) => {
+        if (input.id === "choose_labels_color") document.documentElement.style.setProperty('--text-color', color);
+        else if (input.id === "choose_background_color") document.documentElement.style.setProperty('--background-color', color);
     }
 });
 

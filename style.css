@@ -123,3 +123,7 @@ body {
     opacity: 0;
     padding-left: 20px;
 }
+
+.color_label {
+    padding-left: 7px;
+}
