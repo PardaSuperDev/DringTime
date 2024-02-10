@@ -137,6 +137,24 @@ function update() {
 
 }
 
+function setColor(elems) {
+    if (elems === "labels") {
+        document.getElementById("choose_labels_color").click();
+    }
+}
+
+// Paramètre les éléments Coloris
+Coloris({
+    themeMode: 'dark',
+    alpha: false,
+    margin: 30,
+    defaultColor: "#FFFFFF", // Changer par les paramètres sauvegardés
+    onChange: (color, _) => {
+        document.documentElement.style.setProperty('--text-color', color);
+        //document.documentElement.style.setProperty('--background-color', color);
+    }
+});
+
 // Lance l'execution régulière de `update()`. 
 // Le timeout est de 200 ms pour éviter la désincronisation et avoir une grande précision des secondes.
 setInterval(update, 200);

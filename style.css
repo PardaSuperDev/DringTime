@@ -1,11 +1,13 @@
 :root {
-    color: white;
+    --text-color: #FFFFFF;
+    --background-color: #000000;
+    color: var(--text-color);
     font-family: "Consolas";
     height: 100%;
 }
 
 body {
-    background-color: black;
+    background-color: var(--background-color);
     height: 100%;
     width: 100%;
     margin: 0px;
@@ -82,7 +84,7 @@ body {
     height: 100%;
     width: 0px;
     overflow-x: hidden;
-    transition: width 2s ease 0s;
+    transition: width 1s ease 0s;
     z-index: 8;
 }
 
@@ -91,9 +93,33 @@ body {
     padding-right: 30px;
     display: flex;
     height: 100%;
-    align-items: left;
     overflow: hidden;
     width: max-content;
     height: max-content;
     min-width: max-content;
+}
+
+.stylized_button {
+    background-color: #141414;
+    display: flex;
+    outline: solid 1px black;
+    border: 0px;
+    color: white;
+    font: inherit;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    margin: 2px;
+    border-radius: 5px;
+}
+
+.stylized_button:hover {
+    background-color: #424242;
+}
+
+.hidden_input {
+    width: 0px;
+    height: 0px;
+    opacity: 0;
+    padding-left: 20px;
 }
