@@ -34,12 +34,15 @@ window.toggled = false; // Variable utilisée pour connaitre l'état de la vue d
 function toggle_view(type) {
     /** Inverse le type de vue. `type` est l'id de la vue sur laquelle se concentrer.
      */
+
+    // Réupère l'ID de l'élément à cacher
     if (type === "next_alarm") {
         var other_elem = document.getElementById("remaining_time");
     } else if (type === "remaining_time") {
         var other_elem = document.getElementById("next_alarm");
     } else return;
 
+    // Récupère le logo des paramètres et change l'opacité en fonction du type de vue
     let settings_icon = document.getElementById("parameter_icon_container");
 
     if (window.toggled) {
