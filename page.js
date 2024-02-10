@@ -24,7 +24,7 @@ const sonneries = [
     ['07:56:00', '08:01:00', '08:56:00', '09:00:00', '09:55:00', '10:05:00', '11:00:00', '11:04:00', '11:59:00', '12:03:00', '12:58:00', '13:02:00', '13:57:00', '14:01:00', '14:56:00', '15:00:00', '15:55:00', '16:05:00', '17:00:00', '17:04:00', '17:59:00'],
     ['07:56:00', '08:01:00', '08:56:00', '09:00:00', '09:55:00', '10:05:00', '11:00:00', '11:04:00', '11:59:00', '12:03:00', '12:58:00', '13:02:00', '13:57:00', '14:01:00', '14:56:00', '15:00:00', '15:55:00', '16:05:00', '17:00:00', '17:04:00', '17:59:00'],
     ['07:56:00', '08:01:00', '08:56:00', '09:00:00', '09:55:00', '10:05:00', '11:00:00', '11:04:00', '11:59:00', '12:03:00', '12:58:00', '13:02:00', '13:57:00', '14:01:00', '14:56:00', '15:06:00', '16:01:00', '16:05:00', '17:00:00', '17:04:00'],
-    ["10:56:00", "18:25:32"],
+    ["10:56:00", "19:25:32"],
     []
 ];
 
@@ -151,6 +151,12 @@ function saveSettings() {
     let labelColorElement = document.getElementById("choose_labels_color");
     let backgroundColorElement = document.getElementById("choose_background_color");
 
+    // Met à jour l'icon d'enregistrement
+    let saveIconElement = document.getElementById("save_icon");
+    let savedIconElement = document.getElementById("saved_icon");
+    saveIconElement.hidden = true;
+    savedIconElement.hidden = false;
+
     // Crée l'objet de paramètres
     let settingsObject = {
         "label_color": labelColorElement.value,
@@ -190,11 +196,11 @@ function loadSettings() {
             // Met à jour le CSS
             document.documentElement.style.setProperty('--text-color', settingsObject["label_color"]);
             document.documentElement.style.setProperty('--background-color', settingsObject["background_color"]);
-            
+
             // Met à jour les couleurs des sélécteurs
             document.querySelector('#choose_labels_color').dispatchEvent(new Event('input', { bubbles: true }));
             document.querySelector('#choose_background_color').dispatchEvent(new Event('input', { bubbles: true }));
-            
+
             break;
         }
     }
@@ -205,10 +211,16 @@ Coloris({
     themeMode: 'dark',
     alpha: false,
     margin: 30,
-    defaultColor: "#FFFFFF", // Changer par les paramètres sauvegardés
+    defaultColor: "#FFFFFF",
     onChange: (color, input) => {
         if (input.id === "choose_labels_color") document.documentElement.style.setProperty('--text-color', color);
         else if (input.id === "choose_background_color") document.documentElement.style.setProperty('--background-color', color);
+
+        // Met à jour l'icon d'enregistrement
+        let saveIconElement = document.getElementById("save_icon");
+        let savedIconElement = document.getElementById("saved_icon");
+        saveIconElement.hidden = false;
+        savedIconElement.hidden = true;
     }
 });
 
