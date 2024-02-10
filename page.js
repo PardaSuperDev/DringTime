@@ -1,3 +1,20 @@
+/**
+ * Code source de la page des timers avant la sonnerie.
+ * Ce code est volontairement non obfusqué et bien commenté pour qu'il
+ * soit facilement comprehenssible pour des personnes (comme moi [Yannis])
+ * qui aime faire ctrl + maj + I ou F12.
+ * Merci de ne pas m'insulter en me disant "Oh mais t'es nul ! Tu pouvais utiliser
+ * cette fonction pour rendre la page plus rapide...". Je sais que certaines parties
+ * du code ne sont pas les plus optimisées. Si vous aves des idées d'optimisation
+ * et / ou d'amélioration ou même des bugs, vous pouvez faire une issue sur:
+ * https://github.com/autiinpu2/timer-sonneries.
+ * 
+ * Ce code est actuelement sous license MIT donc vous pouvez librement le réutiliser.
+ * Bonne journée !
+ * 
+ * (Ce commentaire est quand même très long et un peu inutile mais bon... Il ne fait pas de mal)
+ */
+
 const sonneries = [
     // Liste de toutes les sonneries à mettre à jour en cas de changement
     // Format : hh:mm:ss
@@ -55,7 +72,7 @@ function update() {
     const currentTimeStr = date.toLocaleTimeString('en-US', { hour12: false });
     const nextAlarm = todayAlarms.filter(time => time > currentTimeStr)[0];
 
-    // Si aucune alarme n'est prevue, on quitte la fonction
+    // Si aucune alarme n'est prevue, on quitte la fonction et on met un message d'erreur
     if (nextAlarm === undefined) {
         timerContainerElement.style = "display: none";
         noAlarmElement.style = "";
@@ -65,15 +82,20 @@ function update() {
         noAlarmElement.style = "display: none";
     }
 
+    // Récupère l'heure de la procaine sonnerie en int
     let nextAlarmHourInt = parseInt(nextAlarm.substring(0, 2));
     let nextAlarmMinuteInt = parseInt(nextAlarm.substring(3, 5));
     let nextAlarmSecondsInt = parseInt(nextAlarm.substring(6, 8));
 
+    // Calcule le temps écoulé entre minuit et maintenant
+    // Et entre minuit et la prochaine sonnerie
     let totalCurrentDaySeconds = date.getSeconds() + date.getMinutes() * 60 + date.getHours() * 3600
     let totalNextAlarmDaySeconds = nextAlarmHourInt * 3600 + nextAlarmMinuteInt * 60 + nextAlarmSecondsInt
 
 
     // Calcule les valeurs des timers
+    // Récupère le temps en seconde avant 
+    // la prochaie sonnerie et le convertit en heure, minutes et secondes
     let totalRemainingSeconds = totalNextAlarmDaySeconds - totalCurrentDaySeconds;
     let remainingHour = Math.floor(totalRemainingSeconds / 3600);
     let remainingMinutes = Math.floor(totalRemainingSeconds / 60) - remainingHour * 60;
@@ -86,7 +108,6 @@ function update() {
     } else {
         remainingTimeElement.innerText = ("00" + remainingHour).slice(-2) + ":" + ("00" + remainingMinutes).slice(-2)
     }
-
     nextAlarmElement.innerText = nextAlarm.substring(0, 5);
 
 }
