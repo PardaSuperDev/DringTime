@@ -1,16 +1,22 @@
 const sonneries = [
-    ['07:56', '08:01', '08:56', '09:00', '09:55', '10:05', '11:00', '11:04', '11:59', '12:03', '12:58', '13:02', '13:57', '14:01', '14:56', '15:00', '15:55', '16:05', '17:00', '17:04', '17:59'],
-    ['07:56', '08:01', '08:56', '09:00', '09:55', '10:05', '11:00', '11:04', '11:59', '12:03', '12:58', '13:02', '13:57', '14:01', '14:56', '15:00', '15:55', '16:05', '17:00', '17:04', '17:59'],
-    ['07:56', '08:01', '08:56', '09:00', '09:55', '10:05', '11:00', '11:04', '11:59', '12:03', '12:58', '13:02', '13:57', '14:01', '14:56', '15:00', '15:55', '16:05', '17:00', '17:04', '17:59'],
-    ['07:56', '08:01', '08:56', '09:00', '09:55', '10:05', '11:00', '11:04', '11:59', '12:03', '12:58', '13:02', '13:57', '14:01', '14:56', '15:00', '15:55', '16:05', '17:00', '17:04', '17:59'],
-    ['07:56', '08:01', '08:56', '09:00', '09:55', '10:05', '11:00', '11:04', '11:59', '12:03', '12:58', '13:02', '13:57', '14:01', '14:56', '15:06', '16:01', '16:05', '17:00', '17:04'],
+    // Liste de toutes les sonneries à mettre à jour en cas de changement
+    // Format : hh:mm:ss
+    // Chaque ligne représente un jour de la semaine
+    ['07:56:00', '08:01:00', '08:56:00', '09:00:00', '09:55:00', '10:05:00', '11:00:00', '11:04:00', '11:59:00', '12:03:00', '12:58:00', '13:02:00', '13:57:00', '14:01:00', '14:56:00', '15:00:00', '15:55:00', '16:05:00', '17:00:00', '17:04:00', '17:59:00'],
+    ['07:56:00', '08:01:00', '08:56:00', '09:00:00', '09:55:00', '10:05:00', '11:00:00', '11:04:00', '11:59:00', '12:03:00', '12:58:00', '13:02:00', '13:57:00', '14:01:00', '14:56:00', '15:00:00', '15:55:00', '16:05:00', '17:00:00', '17:04:00', '17:59:00'],
+    ['07:56:00', '08:01:00', '08:56:00', '09:00:00', '09:55:00', '10:05:00', '11:00:00', '11:04:00', '11:59:00', '12:03:00', '12:58:00', '13:02:00', '13:57:00', '14:01:00', '14:56:00', '15:00:00', '15:55:00', '16:05:00', '17:00:00', '17:04:00', '17:59:00'],
+    ['07:56:00', '08:01:00', '08:56:00', '09:00:00', '09:55:00', '10:05:00', '11:00:00', '11:04:00', '11:59:00', '12:03:00', '12:58:00', '13:02:00', '13:57:00', '14:01:00', '14:56:00', '15:00:00', '15:55:00', '16:05:00', '17:00:00', '17:04:00', '17:59:00'],
+    ['07:56:00', '08:01:00', '08:56:00', '09:00:00', '09:55:00', '10:05:00', '11:00:00', '11:04:00', '11:59:00', '12:03:00', '12:58:00', '13:02:00', '13:57:00', '14:01:00', '14:56:00', '15:06:00', '16:01:00', '16:05:00', '17:00:00', '17:04:00'],
     [],
     []
 ];
 
-window.toggled = false;
+
+window.toggled = false; // Variable utilisée pour connaitre l'état de la vue des timers
 
 function toggle_view(type) {
+    /** Inverse le type de vue. `type` est l'id de la vue sur laquelle se concentrer.
+     */
     if (type === "next_alarm") {
         var other_elem = document.getElementById("remaining_time");
     } else if (type === "remaining_time") {
@@ -18,8 +24,8 @@ function toggle_view(type) {
     } else return;
 
     let settings_icon = document.getElementById("parameter_icon_container");
-    
-    if (window.toggled){
+
+    if (window.toggled) {
         other_elem.style = "";
         settings_icon.style = "opacity: 100%";
     } else {
@@ -30,30 +36,61 @@ function toggle_view(type) {
 }
 
 function update() {
-    let date = new Date();
-    let nearest_date = new Date();
+    /** Fonction appelée de manière régulière pour mettre à jour les timers.*/
 
-    let day = date.getDay();
-    let today_alarms = sonneries[day];
+    // On récupère les éléments timer
+    let remainingTimeElement = document.getElementById("remaining_time_alarm");
+    let nextAlarmElement = document.getElementById("next_alarm_timer");
+    let timerContainerElement = document.getElementById("timers_elements_container");
+    let noAlarmElement = document.getElementById("no_alarm");
 
-    let nearest_date_distance = 99999999.0;
+    // Récupère le jour et l'heure actuelle
+    let date = new Date()
+    let day = date.getDay() - 1;
 
+    // Récupère les sonneries de la journée actuelle
+    let todayAlarms = sonneries[day];
 
-    for (let i=0; i<today_alarms.length; i++) {
-        let parts = today_alarms[i].split(":");
-        let hours = parseInt(parts[0]);
-        let minutes = parseInt(parts[1]);
-        nearest_date.setHours(hours);
-        nearest_date.setMinutes(minutes);
-        let current_dist = nearest_date.getTime()-date.getTime();
-        if (current_dist<nearest_date_distance)
-        {
-            nearest_date_distance = current_dist;
-        }
+    // Récupère la prochaine sonnerie
+    const currentTimeStr = date.toLocaleTimeString('en-US', { hour12: false });
+    const nextAlarm = todayAlarms.filter(time => time > currentTimeStr)[0];
+
+    // Si aucune alarme n'est prevue, on quitte la fonction
+    if (nextAlarm === undefined) {
+        timerContainerElement.style = "display: none";
+        noAlarmElement.style = "";
+        return;
+    } else {
+        timerContainerElement.style = "";
+        noAlarmElement.style = "display: none";
     }
 
+    let nextAlarmHourInt = parseInt(nextAlarm.substring(0, 2));
+    let nextAlarmMinuteInt = parseInt(nextAlarm.substring(3, 5));
+    let nextAlarmSecondsInt = parseInt(nextAlarm.substring(6, 8));
 
-    console.log(nearest_date_distance/1000);
+    let totalCurrentDaySeconds = date.getSeconds() + date.getMinutes() * 60 + date.getHours() * 3600
+    let totalNextAlarmDaySeconds = nextAlarmHourInt * 3600 + nextAlarmMinuteInt * 60 + nextAlarmSecondsInt
+
+
+    // Calcule les valeurs des timers
+    let totalRemainingSeconds = totalNextAlarmDaySeconds - totalCurrentDaySeconds;
+    let remainingHour = Math.floor(totalRemainingSeconds / 3600);
+    let remainingMinutes = Math.floor(totalRemainingSeconds / 60) - remainingHour * 60;
+    let remainingSeconds = Math.floor(totalRemainingSeconds) - remainingMinutes * 60 - remainingHour * 3600;
+
+
+    // Met à jour les timers
+    if (remainingHour === 0) {
+        remainingTimeElement.innerText = ("00" + remainingMinutes).slice(-2) + ":" + ("00" + remainingSeconds).slice(-2)
+    } else {
+        remainingTimeElement.innerText = ("00" + remainingHour).slice(-2) + ":" + ("00" + remainingMinutes).slice(-2)
+    }
+
+    nextAlarmElement.innerText = nextAlarm.substring(0, 5);
+
 }
 
-setInterval(update, 100);
+// Lance l'execution régulière de `update()`. 
+// Le timeout est de 200 ms pour éviter la désincronisation et avoir une grande précision des secondes.
+setInterval(update, 200);
