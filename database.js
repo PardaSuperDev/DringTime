@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, getDoc, FieldPath, where, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
 const firebaseConfig = {
@@ -17,12 +17,20 @@ const db = getFirestore(app);
 
 db.settings = { timestampsInSnapshots: true };
 
-const citySnapshot = await getDocs(collection(db, "horaires-sonneries"));
+const alarmsRef = collection(db, "horaires-sonneries");
 
-export function getAlarmsProviders() {
+export async function getAlarmsProviders() {
+    const alarmsSnapshot = await getDocs(alarmsRef);
     var providers = [];
-    citySnapshot.forEach(doc => {
+    alarmsSnapshot.forEach(doc => {
         console.log(doc.id);
     });
     return providers;
 }
+
+export async function getAlarmsList(name) {
+    const alarmsSnapshot = await getDoc(doc(db, "horaires-sonneries", name));
+    console.log(alarmsSnapshot.data());
+}
+
+getAlarmsList();
