@@ -140,7 +140,7 @@ async function update() {
     const nextAlarm = todayAlarms.filter(time => time > currentTimeStr)[0];
 
     // Si aucune alarme n'est prevue, on quitte la fonction et on met un message d'erreur
-    if (window.alarmsProvider === "") {
+    if (window.alarmsProvider === "" || window.alarmsProvider === undefined) {
         timerContainerElement.style = "display: none";
         noAlarmProviderElement.style = "";
         noAlarmElement.style = "display: none";
