@@ -2,10 +2,10 @@
  * Code source de la page des timers avant la sonnerie.
  * Ce code est volontairement non obfusqué et bien commenté pour qu'il
  * soit facilement comprehenssible pour des personnes (comme moi [Yannis])
- * qui aime faire ctrl + maj + I ou F12.
+ * qui aiment faire ctrl + maj + I ou F12.
  * Merci de ne pas m'insulter en me disant "Oh mais t'es nul ! Tu pouvais utiliser
  * cette fonction pour rendre la page plus rapide...". Je sais que certaines parties
- * du code ne sont pas les plus optimisées. Si vous aves des idées d'optimisation
+ * du code ne sont pas les plus optimisées. Si vous avez des idées d'optimisation
  * et / ou d'amélioration ou même des bugs, vous pouvez faire une issue sur:
  * https://github.com/autiinpu2/timer-sonneries.
  * 
