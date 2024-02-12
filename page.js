@@ -150,7 +150,7 @@ async function update() {
         noAlarmProviderElement.style = "display: none";
         noAlarmElement.style = "";
         return;
-    } else{
+    } else {
         timerContainerElement.style = "";
         noAlarmProviderElement.style = "display: none";
         noAlarmElement.style = "display: none";
@@ -210,8 +210,9 @@ function saveSettings() {
     let settingsObject = {
         "label_color": labelColorElement.value,
         "background_color": backgroundColorElement.value,
-        "alarm_provider": window.alarm_provider
+        "alarms_provider": window.alarmsProvider
     }
+
 
     // Encode les paramètres
     let settingsObjectStringified = JSON.stringify(settingsObject);
@@ -242,12 +243,12 @@ function loadSettings() {
 
 
             // Met à jour les autres paramètres
-            window.alarm_provider = settingsObject["alarm_provider"];
+            window.alarmsProvider = settingsObject["alarms_provider"];
 
             // Modifie les valers des éléments
             labelColorElement.value = settingsObject["label_color"];
             backgroundColorElement.value = settingsObject["background_color"];
-            alarmProvidersCombo.value = window.alarm_provider;
+            alarmProvidersCombo.value = window.alarmsProvider;
 
             // Met à jour le CSS
             document.documentElement.style.setProperty('--text-color', settingsObject["label_color"]);
