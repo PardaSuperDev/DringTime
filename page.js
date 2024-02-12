@@ -30,7 +30,7 @@ window.alarmsProvider = "";
 window.providerList = [];
 
 async function updateAlarms() {
-    if (window.alarmsProvider !== "") sonneries = await window.getAlarmsList("Pardailhan");
+    if (window.alarmsProvider !== "") sonneries = await window.getAlarmsList(window.alarmsProvider);
 }
 
 function setup() {
@@ -101,8 +101,20 @@ function toggle_settings_bar() {
     window.settings_opened = !window.settings_opened;
 }
 
+function askSave() {
+    // Met à jour l'icon d'enregistrement
+    let saveIconElement = document.getElementById("save_icon");
+    let savedIconElement = document.getElementById("saved_icon");
+    saveIconElement.hidden = false;
+    savedIconElement.hidden = true;
+}
+
 function changeProvider(element) {
-    console.log(element.selectedIndex);
+    let itemindex = element.selectedIndex
+    let providerValue = element.options[itemindex].value;
+    window.alarmsProvider = providerValue;
+    updateAlarms();
+    askSave();
 }
 
 async function update() {
@@ -113,6 +125,8 @@ async function update() {
     let nextAlarmElement = document.getElementById("next_alarm_timer");
     let timerContainerElement = document.getElementById("timers_elements_container");
     let noAlarmElement = document.getElementById("no_alarm");
+    let noAlarmProviderElement = document.getElementById("no_alarm_provider");
+
 
     // Récupère le jour et l'heure actuelle
     let date = new Date()
@@ -126,12 +140,19 @@ async function update() {
     const nextAlarm = todayAlarms.filter(time => time > currentTimeStr)[0];
 
     // Si aucune alarme n'est prevue, on quitte la fonction et on met un message d'erreur
-    if (nextAlarm === undefined) {
+    if (window.alarmsProvider === "") {
         timerContainerElement.style = "display: none";
+        noAlarmProviderElement.style = "";
+        noAlarmElement.style = "display: none";
+        return;
+    } else if (nextAlarm === undefined) {
+        timerContainerElement.style = "display: none";
+        noAlarmProviderElement.style = "display: none";
         noAlarmElement.style = "";
         return;
-    } else {
+    } else{
         timerContainerElement.style = "";
+        noAlarmProviderElement.style = "display: none";
         noAlarmElement.style = "display: none";
     }
 
@@ -189,6 +210,7 @@ function saveSettings() {
     let settingsObject = {
         "label_color": labelColorElement.value,
         "background_color": backgroundColorElement.value,
+        "alarm_provider": window.alarm_provider
     }
 
     // Encode les paramètres
@@ -213,13 +235,19 @@ function loadSettings() {
             let settingsObjectStringified = atob(b64EncodedSettings);
             let settingsObject = JSON.parse(settingsObjectStringified);
 
-            //Récupère les éléments à mondifier
+            //Récupère les éléments à modifier
             let labelColorElement = document.getElementById("choose_labels_color");
             let backgroundColorElement = document.getElementById("choose_background_color");
+            let alarmProvidersCombo = document.getElementById("alarm_providers_combo");
+
+
+            // Met à jour les autres paramètres
+            window.alarm_provider = settingsObject["alarm_provider"];
 
             // Modifie les valers des éléments
             labelColorElement.value = settingsObject["label_color"];
             backgroundColorElement.value = settingsObject["background_color"];
+            alarmProvidersCombo.value = window.alarm_provider;
 
             // Met à jour le CSS
             document.documentElement.style.setProperty('--text-color', settingsObject["label_color"]);
@@ -244,11 +272,7 @@ Coloris({
         if (input.id === "choose_labels_color") document.documentElement.style.setProperty('--text-color', color);
         else if (input.id === "choose_background_color") document.documentElement.style.setProperty('--background-color', color);
 
-        // Met à jour l'icon d'enregistrement
-        let saveIconElement = document.getElementById("save_icon");
-        let savedIconElement = document.getElementById("saved_icon");
-        saveIconElement.hidden = false;
-        savedIconElement.hidden = true;
+        askSave();
     }
 });
 

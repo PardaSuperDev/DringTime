@@ -10,7 +10,7 @@
     <title>Sonneries</title>
 </head>
 
-<body onload="//setup();">
+<body onload="setup();">
     <div id="settings_container">
         <div id="settings_icon_container">
             <a onclick="toggle_settings_bar();">
@@ -29,7 +29,9 @@
                 </button>
                 <p style="margin-left: 5px;">Lieu: </p>
                 <select name="AlarmsProvider" onChange="changeProvider(this);" class="stylized_button"
-                    id="alarm_providers_combo" style="max-width: 8em; min-width: 8em"></select>
+                    id="alarm_providers_combo" style="max-width: 8em; min-width: 8em">
+                    <option value="">Non select.</option>
+                </select>
                 <button class="stylized_button" style="margin-left: 30px;" onclick="saveSettings();">
                     <img src="save.svg" alt="save" id="save_icon" hidden>
                     <img src="saved.svg" alt="saved" id="saved_icon">
@@ -54,6 +56,10 @@
         </div>
         <div id="no_alarm" style="display: none">
             <h2>Aucune sonnerie n'est prévue pour la journée</h2>
+        </div>
+        <div id="no_alarm_provider" style="display: none">
+            <h2>Aucun fournisseur de sonneries séléctionné.</h2>
+            <h3>Merci d'en séléctionner un dans les paramètres.</h3>
         </div>
     </div>
 </body>
