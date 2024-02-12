@@ -26,9 +26,11 @@ var sonneries = [
 
 window.toggled_view = false; // Utilisée pour connaitre l'état de la vue des timers
 window.settings_opened = false; // Utlisée pour connaitre l'état d'ouverture des paramètres
+window.alarmsProvider = "";
+window.providerList = [];
 
 async function updateAlarms() {
-    sonneries = await window.getAlarmsList("Pardailhan");
+    if (window.alarmsProvider !== "") sonneries = await window.getAlarmsList("Pardailhan");
 }
 
 function setup() {
@@ -63,6 +65,23 @@ function toggle_view(type) {
     window.toggled_view = !window.toggled_view;
 }
 
+async function updateProviders() {
+    let newProviders = await window.getAlarmsProviders();
+    window.providerList = newProviders;
+
+    let providersCombo = document.getElementById("alarm_providers_combo");
+
+    console.log(newProviders);
+
+    newProviders.forEach(provider => {
+        var option = document.createElement('option');
+        option.value = provider;
+        option.innerText = provider;
+
+        providersCombo.appendChild(option);
+    });
+}
+
 function toggle_settings_bar() {
     let settingsBar = document.getElementById("settings_bar");
     let settingsIcon = document.getElementById("settings_icon_container");
@@ -74,10 +93,16 @@ function toggle_settings_bar() {
             settingsIcon.style = "opacity: 1"
         }
     } else {
-        settingsBar.style = "width: 370px";
+        settingsBar.style = "width: 550px";
         settingsIcon.style = "opacity: 1"
+        if (window.providerList.length === 0) updateProviders();
     }
+
     window.settings_opened = !window.settings_opened;
+}
+
+function changeProvider(element) {
+    console.log(element.selectedIndex);
 }
 
 async function update() {

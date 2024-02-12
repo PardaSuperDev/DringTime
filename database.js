@@ -23,7 +23,7 @@ export async function getAlarmsProviders() {
     const alarmsSnapshot = await getDocs(alarmsRef);
     var providers = [];
     alarmsSnapshot.forEach(doc => {
-        console.log(doc.id);
+        providers.push(doc.id);
     });
     return providers;
 }

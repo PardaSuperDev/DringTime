@@ -9,7 +9,7 @@
     <script src="page.js"></script>
 </head>
 
-<body onload="setup();">
+<body onload="//setup();">
     <div id="settings_container">
         <div id="settings_icon_container">
             <a onclick="toggle_settings_bar();">
@@ -26,6 +26,9 @@
                     <input type="button" class="hidden_input" id="choose_background_color" data-coloris value="#000000">
                     <span class="color_label">fond</span>
                 </button>
+                <p style="margin-left: 5px;">Lieu: </p>
+                <select name="AlarmsProvider" onChange="changeProvider(this);" class="stylized_button"
+                    id="alarm_providers_combo" style="max-width: 8em"></select>
                 <button class="stylized_button" style="margin-left: 30px;" onclick="saveSettings();">
                     <img src="save.svg" alt="save" id="save_icon" hidden>
                     <img src="saved.svg" alt="saved" id="saved_icon">
