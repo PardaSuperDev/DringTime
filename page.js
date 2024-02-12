@@ -15,24 +15,26 @@
  * (Ce commentaire est quand même très long et un peu inutile mais bon... Il ne fait pas de mal)
  */
 
-const sonneries = [
+var sonneries = [
     // Liste de toutes les sonneries à mettre à jour en cas de changement
     // Format : hh:mm:ss
     // Chaque ligne représente un jour de la semaine
     // De dimanche à samedi
-    [],
-    ['06:45:00', '07:56:00', '08:01:00', '08:56:00', '09:00:00', '09:55:00', '10:05:00', '11:00:00', '11:04:00', '11:59:00', '12:03:00', '12:58:00', '13:02:00', '13:57:00', '14:01:00', '14:56:00', '15:00:00', '15:55:00', '16:05:00', '17:00:00', '17:04:00', '17:59:00', '22:00:00'],
-    ['06:45:00', '07:56:00', '08:01:00', '08:56:00', '09:00:00', '09:55:00', '10:05:00', '11:00:00', '11:04:00', '11:59:00', '12:03:00', '12:58:00', '13:02:00', '13:57:00', '14:01:00', '14:56:00', '15:00:00', '15:55:00', '16:05:00', '17:00:00', '17:04:00', '17:59:00', '22:00:00'],
-    ['06:45:00', '07:56:00', '08:01:00', '08:56:00', '09:00:00', '09:55:00', '10:05:00', '11:00:00', '11:04:00', '11:59:00', '12:03:00', '12:58:00', '13:02:00', '13:57:00', '14:01:00', '14:56:00', '15:00:00', '15:55:00', '16:05:00', '17:00:00', '17:04:00', '17:59:00', '22:00:00'],
-    ['06:45:00', '07:56:00', '08:01:00', '08:56:00', '09:00:00', '09:55:00', '10:05:00', '11:00:00', '11:04:00', '11:59:00', '12:03:00', '12:58:00', '13:02:00', '13:57:00', '14:01:00', '14:56:00', '15:00:00', '15:55:00', '16:05:00', '17:00:00', '17:04:00', '17:59:00', '22:00:00'],
-    ['06:45:00', '07:56:00', '08:01:00', '08:56:00', '09:00:00', '09:55:00', '10:05:00', '11:00:00', '11:04:00', '11:59:00', '12:03:00', '12:58:00', '13:02:00', '13:57:00', '14:01:00', '14:56:00', '15:06:00', '16:01:00', '16:05:00', '17:00:00', '17:04:00'],
-    []
+    [], [], [], [], [], [], []
 ];
 
 
 window.toggled_view = false; // Utilisée pour connaitre l'état de la vue des timers
 window.settings_opened = false; // Utlisée pour connaitre l'état d'ouverture des paramètres
 
+async function updateAlarms() {
+    sonneries = await window.getAlarmsList("Pardailhan");
+}
+
+function setup() {
+    updateAlarms();
+    loadSettings();
+}
 
 function toggle_view(type) {
     /** Inverse le type de vue. `type` est l'id de la vue sur laquelle se concentrer.
@@ -78,7 +80,7 @@ function toggle_settings_bar() {
     window.settings_opened = !window.settings_opened;
 }
 
-function update() {
+async function update() {
     /** Fonction appelée de manière régulière pour mettre à jour les timers.*/
 
     // On récupère les éléments timer

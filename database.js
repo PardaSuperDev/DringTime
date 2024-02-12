@@ -28,9 +28,20 @@ export async function getAlarmsProviders() {
     return providers;
 }
 
-export async function getAlarmsList(name) {
+async function getAlarmsList(name) {
     const alarmsSnapshot = await getDoc(doc(db, "horaires-sonneries", name));
-    console.log(alarmsSnapshot.data());
+    var alarmsData = alarmsSnapshot.data()["data"];
+    console.log(alarmsData);
+    var days = alarmsData.split("-");
+    var alarms = [];
+    days.forEach((item) => {
+        let dayAlarms = item.split(";");
+        if (dayAlarms.lenght === 0 || dayAlarms[0] == "") {
+            alarms.push([]);
+        } else alarms.push(dayAlarms);
+    })
+    return alarms;
 }
 
-getAlarmsList();
+window.getAlarmsList = getAlarmsList
+window.getAlarmsProviders = getAlarmsProviders
