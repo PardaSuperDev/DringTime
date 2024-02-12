@@ -71,8 +71,6 @@ async function updateProviders() {
 
     let providersCombo = document.getElementById("alarm_providers_combo");
 
-    console.log(newProviders);
-
     newProviders.forEach(provider => {
         var option = document.createElement('option');
         option.value = provider;
@@ -85,7 +83,6 @@ async function updateProviders() {
 async function updateProvidersCombo() {
     let alarmProvidersCombo = document.getElementById("alarm_providers_combo");
     await updateProviders();
-    console.log(window.alarmsProvider);
     alarmProvidersCombo.value = window.alarmsProvider;
 }
 
