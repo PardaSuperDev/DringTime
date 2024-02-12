@@ -34,8 +34,8 @@ async function updateAlarms() {
 }
 
 function setup() {
-    updateAlarms();
     loadSettings();
+    updateAlarms();
 }
 
 function toggle_view(type) {
