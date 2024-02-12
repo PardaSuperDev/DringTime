@@ -7,6 +7,7 @@
     <script type="text/javascript" src="libs/coloris/coloris.min.js"></script>
     <script src="database.js" type="module"></script>
     <script src="page.js"></script>
+    <title>Sonneries</title>
 </head>
 
 <body onload="//setup();">
@@ -28,7 +29,7 @@
                 </button>
                 <p style="margin-left: 5px;">Lieu: </p>
                 <select name="AlarmsProvider" onChange="changeProvider(this);" class="stylized_button"
-                    id="alarm_providers_combo" style="max-width: 8em"></select>
+                    id="alarm_providers_combo" style="max-width: 8em; min-width: 8em"></select>
                 <button class="stylized_button" style="margin-left: 30px;" onclick="saveSettings();">
                     <img src="save.svg" alt="save" id="save_icon" hidden>
                     <img src="saved.svg" alt="saved" id="saved_icon">
