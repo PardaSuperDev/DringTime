@@ -82,6 +82,13 @@ async function updateProviders() {
     });
 }
 
+async function updateProvidersCombo() {
+    let alarmProvidersCombo = document.getElementById("alarm_providers_combo");
+    await updateProviders();
+    console.log(window.alarmsProvider);
+    alarmProvidersCombo.value = window.alarmsProvider;
+}
+
 function toggle_settings_bar() {
     let settingsBar = document.getElementById("settings_bar");
     let settingsIcon = document.getElementById("settings_icon_container");
@@ -95,7 +102,7 @@ function toggle_settings_bar() {
     } else {
         settingsBar.style = "width: 550px";
         settingsIcon.style = "opacity: 1"
-        if (window.providerList.length === 0) updateProviders();
+        if (window.providerList.length === 0) updateProvidersCombo();
     }
 
     window.settings_opened = !window.settings_opened;
@@ -222,7 +229,7 @@ function saveSettings() {
     document.cookie = "settings=" + settingB64Encoded + "; path=/timer-sonneries/; max-age=126144000; SameSite=None; secure=false";
 }
 
-function loadSettings() {
+async function loadSettings() {
 
     // Récupère les cookies
     let cookies = document.cookie.split("; ");
@@ -239,8 +246,6 @@ function loadSettings() {
             //Récupère les éléments à modifier
             let labelColorElement = document.getElementById("choose_labels_color");
             let backgroundColorElement = document.getElementById("choose_background_color");
-            let alarmProvidersCombo = document.getElementById("alarm_providers_combo");
-
 
             // Met à jour les autres paramètres
             window.alarmsProvider = settingsObject["alarms_provider"];
@@ -248,7 +253,6 @@ function loadSettings() {
             // Modifie les valers des éléments
             labelColorElement.value = settingsObject["label_color"];
             backgroundColorElement.value = settingsObject["background_color"];
-            alarmProvidersCombo.value = window.alarmsProvider;
 
             // Met à jour le CSS
             document.documentElement.style.setProperty('--text-color', settingsObject["label_color"]);
