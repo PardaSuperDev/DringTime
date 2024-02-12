@@ -116,7 +116,7 @@ function askSave() {
 function changeProvider(element) {
     let itemindex = element.selectedIndex
     let providerValue = element.options[itemindex].value;
-    if (providerValue.toLowerCase() === "rick") window.location = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; return;
+    if (providerValue.toLowerCase() === "rick") { window.location = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; return; }
     window.alarmsProvider = providerValue;
     updateAlarms();
     askSave();
