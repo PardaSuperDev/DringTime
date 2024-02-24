@@ -164,6 +164,7 @@ body {
     display: inline-flex;
     margin-top: auto;
     margin-bottom: 18px;
+    cursor: pointer;
 }
 
 .timers_table_container {
@@ -171,7 +172,12 @@ body {
     align-content: center;
 }
 
-.input_column{
+.input_column {
     display: flex;
     justify-content: center;
+}
+
+#add_timer_button img {
+    padding-left: 10px;
+    cursor: pointer;
 }
