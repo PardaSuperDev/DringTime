@@ -157,13 +157,13 @@ body {
 .timer_input {
     width: 70px;
     outline: solid 1px var(--text-color);
-    margin-bottom: 20px;
+    margin-bottom: 6px;
 }
 
 .remove_line_button {
     display: inline-flex;
     margin-top: auto;
-    margin-bottom: 18px;
+    margin-bottom: 4px;
     cursor: pointer;
 }
 
@@ -172,12 +172,15 @@ body {
     align-content: center;
 }
 
-.input_column {
+.input_column_container {
     display: flex;
     justify-content: center;
 }
 
+.input_column {
+    display: block;
+}
+
 #add_timer_button img {
-    padding-left: 10px;
     cursor: pointer;
 }

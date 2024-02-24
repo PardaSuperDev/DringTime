@@ -45,6 +45,23 @@ function toggle_page() {
     }
 }
 
+function add_timers_row(day) {
+    var inputColumns = document.getElementsByClassName("input_column");
+
+    let newInput = document.createElement("input");
+    newInput.type = "text";
+    newInput.className = "timer_input stylized_button";
+    newInput.name = "timer_input_0_" + 0
+    newInput.id = "timer_input_0_" + 0
+    inputColumns[day].appendChild(newInput);
+}
+
+function remove_timers_row(day) {
+    var inputColumns = document.getElementsByClassName("input_column");
+
+    inputColumns[day].removeChild(inputColumns[day].lastChild);
+}
+
 function toggle_view(type) {
     /** Inverse le type de vue. `type` est l'id de la vue sur laquelle se concentrer.
      */
