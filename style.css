@@ -134,3 +134,48 @@ body {
 .color_label {
     padding-left: 7px;
 }
+
+.timers_table {
+    display: inline-flex;
+    justify-content: center;
+    text-align: center;
+    align-content: center;
+}
+
+.title_line {
+    text-align: center;
+}
+
+.day_column {
+    width: 75pt;
+    justify-content: center;
+    text-align: center;
+    align-content: center;
+    display: block;
+}
+
+.timer_input {
+    width: 70px;
+    outline: solid 1px var(--text-color);
+    margin-bottom: 20px;
+}
+
+.remove_line_button {
+    display: inline-flex;
+    margin-top: auto;
+    margin-bottom: 18px;
+}
+
+.timers_table_container {
+    display: flex;
+    align-content: center;
+}
+
+.input_column{
+    display: flex;
+    justify-content: center;
+}
+
+#add_timer_button img{
+    padding-top: 10px;
+}

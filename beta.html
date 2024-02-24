@@ -40,28 +40,92 @@
             </div>
         </div>
     </div>
-    <div class="centered_container">
-        <div class="centered_content" id="timers_elements_container" style="display: none">
-            <div id="next_alarm" class="time_container">
-                <a onclick="toggle_view('next_alarm');">
-                    <h2 class="time_label">Prochaine Sonnerie</h2>
-                    <h1 class="time_counter" id="next_alarm_timer">00:00</h1>
-                </a>
+    <div class="centered_container" id="timers_page">
+        <div style="display: none;">
+            <div class="centered_content" id="timers_elements_container" style="display: none">
+                <div id="next_alarm" class="time_container">
+                    <a onclick="toggle_view('next_alarm');">
+                        <h2 class="time_label">Prochaine Sonnerie</h2>
+                        <h1 class="time_counter" id="next_alarm_timer">00:00</h1>
+                    </a>
+                </div>
+                <div id="remaining_time" class="time_container">
+                    <a onclick="toggle_view('remaining_time');">
+                        <h2 class="time_label">Temps restant</h2>
+                        <h1 class="time_counter" id="remaining_time_alarm">00:00</h1>
+                    </a>
+                </div>
             </div>
-            <div id="remaining_time" class="time_container">
-                <a onclick="toggle_view('remaining_time');">
-                    <h2 class="time_label">Temps restant</h2>
-                    <h1 class="time_counter" id="remaining_time_alarm">00:00</h1>
-                </a>
+            <div id="no_alarm" style="display: none">
+                <h2>Aucune sonnerie n'est prévue pour la journée</h2>
+            </div>
+            <div id="no_alarm_provider" style="display: none">
+                <h2>Aucun fournisseur de sonneries séléctionné.</h2>
+                <h3>Merci d'en séléctionner un dans les paramètres.</h3>
             </div>
         </div>
-        <div id="no_alarm" style="display: none">
-            <h2>Aucune sonnerie n'est prévue pour la journée</h2>
+
+        <div>
+            <h1 class="title_line">Soumettre de nouvelles sonneries</h1>
+            <div class="timers_table_container">
+                <div class="timers_table">
+                    <div class="day_column">
+                        <p>Lundi</p>
+                        <div class="input_column">
+                            <input class="timer_input stylized_button" type="text" name="timer_input_0_0"
+                                id="timer_input_0_0" value="hh:mm:ss">
+                        </div>
+                    </div>
+                    <div class="day_column">
+                        <p>Mardi</p>
+                        <div class="input_column">
+                            <input class="timer_input stylized_button" type="text" name="timer_input_0_0"
+                                id="timer_input_0_0" value="hh:mm:ss">
+                        </div>
+                    </div>
+                    <div class="day_column">
+                        <p>Mercredi</p>
+                        <div class="input_column">
+                            <input class="timer_input stylized_button" type="text" name="timer_input_0_0"
+                                id="timer_input_0_0" value="hh:mm:ss">
+                        </div>
+                    </div>
+                    <div class="day_column">
+                        <p>Jeudi</p>
+                        <div class="input_column">
+                            <input class="timer_input stylized_button" type="text" name="timer_input_0_0"
+                                id="timer_input_0_0" value="hh:mm:ss">
+                        </div>
+                    </div>
+                    <div class="day_column">
+                        <p>Vendredi</p>
+                        <div class="input_column">
+                            <input class="timer_input stylized_button" type="text" name="timer_input_0_0"
+                                id="timer_input_0_0" value="hh:mm:ss" value="hh:mm:ss">
+                        </div>
+                    </div>
+                    <div class="day_column">
+                        <p>Samedi</p>
+                        <div class="input_column">
+                            <input class="timer_input stylized_button" type="text" name="timer_input_0_0"
+                                id="timer_input_0_0" value="hh:mm:ss">
+                        </div>
+                    </div>
+                    <div class="day_column">
+                        <p>Dimanche</p>
+                        <div class="input_column">
+                            <input class="timer_input stylized_button" type="text" name="timer_input_0_0"
+                                id="timer_input_0_0" value="hh:mm:ss">
+                                
+                        </div>
+                    </div>
+                </div>
+                <a class="remove_line_button" onclick="alert('remove !')"><img src="remove.svg" alt="add line"></a>
+            </div>
+            <a id="add_timer_button" onclick="alert('add !')"><img src="add.svg" alt="add line"></a>
         </div>
-        <div id="no_alarm_provider" style="display: none">
-            <h2>Aucun fournisseur de sonneries séléctionné.</h2>
-            <h3>Merci d'en séléctionner un dans les paramètres.</h3>
-        </div>
+
+
     </div>
 </body>
 

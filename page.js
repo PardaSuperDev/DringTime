@@ -28,6 +28,7 @@ window.toggled_view = false; // Utilisée pour connaitre l'état de la vue des t
 window.settings_opened = false; // Utlisée pour connaitre l'état d'ouverture des paramètres
 window.alarmsProvider = "";
 window.providerList = [];
+window.page = "timers"
 
 async function updateAlarms() {
     if (window.alarmsProvider !== "") sonneries = await window.getAlarmsList(window.alarmsProvider);
@@ -36,6 +37,12 @@ async function updateAlarms() {
 function setup() {
     loadSettings();
     updateAlarms();
+}
+
+function toggle_page() {
+    if (window.page === "timers") {
+        window.page = "submit_new";
+    }
 }
 
 function toggle_view(type) {
