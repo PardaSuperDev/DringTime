@@ -45,6 +45,12 @@ function toggle_page() {
     }
 }
 
+function timers_modified() {
+    if (window.onbeforeunload === null) {
+        window.onbeforeunload = function () { return 'Sure?'; };
+    }
+}
+
 function add_timers_row(day) {
     var inputColumns = document.getElementsByClassName("input_column");
 
@@ -54,12 +60,14 @@ function add_timers_row(day) {
     newInput.name = "timer_input_0_" + 0;
     newInput.id = "timer_input_0_" + 0;
     newInput.setAttribute("onclick", "this.style=''");
+    newInput.setAttribute("oninput", "timers_modified();")
 
     inputColumns[day].appendChild(newInput);
 
     // Fait réapparaitre le boutton "supprimer"
     var removeButtons = document.getElementsByClassName("remove_line_button");
     removeButtons[day].style = "";
+    timers_modified();
 }
 
 function is_valid_num(value) {
@@ -113,6 +121,7 @@ function save_new_timers() {
 
         resultLabel.innerText = "Sonneries sauvegardées !"
         resultLabel.style = "color: green;"
+        window.onbeforeunload = null;
     } else {
         resultLabel.innerText = "Des horaires sont invalides !"
         resultLabel.style = "color: red;"
@@ -129,6 +138,7 @@ function remove_timers_row(day, removeButton) {
     }
 
     if (inputColumns[day].children.length === 0) removeButton.style = "display: none;";
+    timers_modified();
 }
 
 function toggle_view(type) {
