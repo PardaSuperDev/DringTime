@@ -97,7 +97,7 @@ function toggle_settings_bar() {
             settingsIcon.style = "opacity: 1"
         }
     } else {
-        settingsBar.style = "width: 550px";
+        settingsBar.style = "width: var(--max-settings-bar-lenght)";
         settingsIcon.style = "opacity: 1"
         if (window.providerList.length === 0) updateProvidersCombo();
     }
