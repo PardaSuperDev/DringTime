@@ -51,15 +51,72 @@ function add_timers_row(day) {
     let newInput = document.createElement("input");
     newInput.type = "text";
     newInput.className = "timer_input stylized_button";
-    newInput.name = "timer_input_0_" + 0
-    newInput.id = "timer_input_0_" + 0
+    newInput.name = "timer_input_0_" + 0;
+    newInput.id = "timer_input_0_" + 0;
+    newInput.setAttribute("onclick", "this.style=''");
+
     inputColumns[day].appendChild(newInput);
+
+    // Fait réapparaitre le boutton "supprimer"
+    var removeButtons = document.getElementsByClassName("remove_line_button");
+    removeButtons[day].style = "";
 }
 
-function remove_timers_row(day) {
+function is_valid_num(value) {
+    return /^\d+$/.test(value);
+}
+
+function save_new_timers() {
+    var resultLabel = document.getElementById("new_timers_save_result_label");
     var inputColumns = document.getElementsByClassName("input_column");
 
-    inputColumns[day].removeChild(inputColumns[day].lastChild);
+    var timersTableIsValid = true;
+
+    for (var i = 0; i < inputColumns.length; i++) {
+        let dayAlarms = [];
+        let dayColumnChildren = inputColumns[i].children;
+        for (var j = 0; j < dayColumnChildren.length; j++) {
+            dayColumnChildren[j].style = "";
+            let value = dayColumnChildren[j].value;
+
+            // Teste la validité de l'entrée
+            // Ne tentez pas de modifier la vérification pour la contourner car les données sont vérifiées dans le serveur
+            if (value.length === 8 && value[2] === ":" && value[5] === ":" &&
+                is_valid_num(value.substring(0, 2)) &&
+                is_valid_num(value.substring(3, 5)) &&
+                is_valid_num(value.substring(6, 8)) &&
+                parseInt(value.substring(0, 2)) < 24 &&
+                parseInt(value.substring(3, 5)) < 60 &&
+                parseInt(value.substring(6, 8)) < 60
+            ) {
+                dayAlarms.push(value);
+            } else {
+                timersTableIsValid = false;
+                dayColumnChildren[j].style = "background-color: #900;"
+            }
+        }
+        console.log(dayAlarms);
+    }
+
+    if (timersTableIsValid) {
+        resultLabel.innerText = "Sonneries sauvegardées !"
+        resultLabel.style = "color: green;"
+    } else {
+        resultLabel.innerText = "Des horaires sont invalides !"
+        resultLabel.style = "color: red;"
+    }
+
+}
+
+function remove_timers_row(day, removeButton) {
+    var inputColumns = document.getElementsByClassName("input_column");
+
+    if (inputColumns[day].children.length > 0) {
+        var timersInputs = inputColumns[day].querySelectorAll(".timer_input");
+        inputColumns[day].removeChild(timersInputs[timersInputs.length - 1]);
+    }
+
+    if (inputColumns[day].children.length === 0) removeButton.style = "display: none;";
 }
 
 function toggle_view(type) {
