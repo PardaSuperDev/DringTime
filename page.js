@@ -115,8 +115,21 @@ function save_new_timers() {
 
         const cookies = document.cookie.split("; ");
 
-        for (var i = 0; i < cookies.length; i++) {
+        var data = "";
 
+        for (var i = 0; i < cookies.length; i++) {
+            if (cookies[i].substring(0, 7) === "alarms=") {
+                data = cookies[i].substring(7);
+            }
+        }
+
+        if (data) {
+            var decodedAlarmsData = atob(data);
+            var alarms = decodedAlarmsData.split(",");
+            for (var i = 0; i < alarms.length; i++) {
+                var alarmData = alarms[i].split(">");
+                
+            }
         }
 
         resultLabel.innerText = "Sonneries sauvegardées !"
