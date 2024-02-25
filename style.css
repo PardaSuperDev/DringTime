@@ -181,6 +181,15 @@ body {
     display: block;
 }
 
-#add_timer_button img {
+.add_timer_button img {
     cursor: pointer;
+}
+
+.new_timers_settings_container {
+    margin-left: 20px;
+    display: flex;
+}
+
+.outlined_button {
+    outline: solid 1px var(--text-color);
 }
