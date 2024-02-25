@@ -72,6 +72,8 @@ function save_new_timers() {
 
     var timersTableIsValid = true;
 
+    var daysConcatenatedAlarms = [];
+
     for (var i = 0; i < inputColumns.length; i++) {
         let dayAlarms = [];
         let dayColumnChildren = inputColumns[i].children;
@@ -95,10 +97,20 @@ function save_new_timers() {
                 dayColumnChildren[j].style = "background-color: #900;"
             }
         }
-        console.log(dayAlarms);
+        daysConcatenatedAlarms.push(dayAlarms.join(";"));
     }
 
     if (timersTableIsValid) {
+        const finalAlarmsData = daysConcatenatedAlarms.join("-");
+
+        console.log("New Data : " + finalAlarmsData);
+
+        const cookies = document.cookie.split("; ");
+
+        for (var i = 0; i < cookies.length; i++) {
+
+        }
+
         resultLabel.innerText = "Sonneries sauvegardées !"
         resultLabel.style = "color: green;"
     } else {
