@@ -77,6 +77,7 @@ function is_valid_num(value) {
 function save_new_timers() {
     var resultLabel = document.getElementById("new_timers_save_result_label");
     var inputColumns = document.getElementsByClassName("input_column");
+    var timerNameInput = document.getElementById("new_timers_name_input");
 
     var timersTableIsValid = true;
 
@@ -123,21 +124,31 @@ function save_new_timers() {
             }
         }
 
+        var found_existing = false;
         if (data) {
             var decodedAlarmsData = atob(data);
             var alarms = decodedAlarmsData.split(",");
             for (var i = 0; i < alarms.length; i++) {
                 var alarmData = alarms[i].split(">");
-                
+                if (alarmData[0] === timerNameInput.value) {
+                    alarmData[1] = finalAlarmsData;
+                    alarms[i] = alarmData[0] + ">" + alarmData[1]
+                    found_existing = true;
+                    break;
+                }
             }
         }
 
-        resultLabel.innerText = "Sonneries sauvegardées !"
-        resultLabel.style = "color: green;"
+        if (!found_existing) {
+
+        }
+
+        resultLabel.innerText = "Sonneries sauvegardées !";
+        resultLabel.style = "color: green;";
         window.onbeforeunload = null;
     } else {
-        resultLabel.innerText = "Des horaires sont invalides !"
-        resultLabel.style = "color: red;"
+        resultLabel.innerText = "Des horaires sont invalides !";
+        resultLabel.style = "color: red;";
     }
 
 }
