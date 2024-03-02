@@ -123,9 +123,9 @@ function save_new_timers() {
                 data = cookies[i].substring(7);
             }
         }
-
-        var found_existing = false;
+        
         if (data) {
+            var found_existing = false;
             var decodedAlarmsData = atob(data);
             var alarms = decodedAlarmsData.split(",");
             for (var i = 0; i < alarms.length; i++) {
@@ -137,10 +137,17 @@ function save_new_timers() {
                     break;
                 }
             }
-        }
 
-        if (!found_existing) {
+            console.log(found_existing);
 
+            if (found_existing) {
+                decodedAlarmsData = alarms.join(",");
+            } else {
+                decodedAlarmsData += "," + timerNameInput.value + ">" + finalAlarmsData;
+            }
+            document.cookie = "alarms=" + btoa(decodedAlarmsData);
+        } else {
+            document.cookie = "alarms=" + btoa(timerNameInput.value + ">" + finalAlarmsData) + "; path=/timer-sonneries/; max-age=126144000; SameSite=None; secure=false";
         }
 
         resultLabel.innerText = "Sonneries sauvegardées !";
