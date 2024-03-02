@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, getDocs, getDoc, FieldPath, where, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, getDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
 const firebaseConfig = {
@@ -43,7 +43,7 @@ async function getAlarmsList(name) {
         let dayAlarms = item.split(";");
         if (dayAlarms.lenght === 0 || dayAlarms[0] == "") {
             alarms.push([]);
-        } else alarms.push(dayAlarms[dayAlarms.lenght-1] === "" ? dayAlarms.slice(0, dayAlarms.lenght-1) : dayAlarms);
+        } else alarms.push(dayAlarms[dayAlarms.lenght - 1] === "" ? dayAlarms.slice(0, dayAlarms.lenght - 1) : dayAlarms);
     })
     return alarms;
 }
