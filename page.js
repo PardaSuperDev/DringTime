@@ -123,7 +123,7 @@ function save_new_timers() {
                 data = cookies[i].substring(7);
             }
         }
-        
+
         if (data) {
             var found_existing = false;
             var decodedAlarmsData = atob(data);
@@ -145,7 +145,7 @@ function save_new_timers() {
             } else {
                 decodedAlarmsData += "," + timerNameInput.value + ">" + finalAlarmsData;
             }
-            document.cookie = "alarms=" + btoa(decodedAlarmsData);
+            document.cookie = "alarms=" + btoa(decodedAlarmsData) + "; path=/timer-sonneries/; max-age=126144000; SameSite=None; secure=false";
         } else {
             document.cookie = "alarms=" + btoa(timerNameInput.value + ">" + finalAlarmsData) + "; path=/timer-sonneries/; max-age=126144000; SameSite=None; secure=false";
         }
@@ -157,6 +157,11 @@ function save_new_timers() {
         resultLabel.innerText = "Des horaires sont invalides !";
         resultLabel.style = "color: red;";
     }
+
+    setTimeout(() => {
+        resultLabel.innerText = "";
+        resultLabel.style = "color: white;";
+    }, 4000);
 
 }
 
