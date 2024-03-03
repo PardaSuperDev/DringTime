@@ -74,10 +74,9 @@ function is_valid_num(value) {
     return /^\d+$/.test(value);
 }
 
-function save_new_timers() {
-    var resultLabel = document.getElementById("new_timers_save_result_label");
+function concatenateNewAlarms() {
     var inputColumns = document.getElementsByClassName("input_column");
-    var timerNameInput = document.getElementById("new_timers_name_input");
+
 
     var timersTableIsValid = true;
 
@@ -109,8 +108,19 @@ function save_new_timers() {
         daysConcatenatedAlarms.push(dayAlarms.join(";"));
     }
 
-    if (timersTableIsValid) {
-        const finalAlarmsData = daysConcatenatedAlarms.join("-");
+    return [timersTableIsValid, timersTableIsValid ? daysConcatenatedAlarms.join("-") : ""];
+}
+
+function save_new_timers() {
+    var resultLabel = document.getElementById("new_timers_save_result_label");
+    var timerNameInput = document.getElementById("new_timers_name_input");
+
+    const concatenatedData = concatenateNewAlarms();
+
+    console.log(concatenatedData);
+
+    if (concatenatedData[0]) {
+        const finalAlarmsData = concatenatedData[1];
 
         console.log("New Data : " + finalAlarmsData);
 
@@ -163,6 +173,34 @@ function save_new_timers() {
         resultLabel.style = "color: white;";
     }, 4000);
 
+}
+
+async function publishAlarms() {
+    var timerNameInput = document.getElementById("new_timers_name_input");
+    var resultLabel = document.getElementById("new_timers_save_result_label");
+
+    const concatenatedData = concatenateNewAlarms();
+
+    if (concatenatedData[0]) {
+        try {
+        await window.sendNewAlarms(timerNameInput.value, concatenatedData[1]);
+        } catch {
+            resultLabel.innerText = "Ce nom de sonnerie semble déja utilisé.";
+            resultLabel.style = "color: red;";
+        }
+
+        resultLabel.innerText = "Les sonneries ont bien été envoyé !";
+        resultLabel.style = "color: green;";
+        window.onbeforeunload = null;
+    } else {
+        resultLabel.innerText = "Des horaires sont invalides !";
+        resultLabel.style = "color: red;";
+    }
+
+    setTimeout(() => {
+        resultLabel.innerText = "";
+        resultLabel.style = "color: white;";
+    }, 4000);
 }
 
 function remove_timers_row(day, removeButton) {
