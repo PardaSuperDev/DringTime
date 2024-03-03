@@ -145,9 +145,9 @@ function save_new_timers() {
             } else {
                 decodedAlarmsData += "," + timerNameInput.value + ">" + finalAlarmsData;
             }
-            document.cookie = "alarms=" + btoa(decodedAlarmsData) + "; path=/timer-sonneries/; max-age=126144000; SameSite=None; secure=false";
+            document.cookie = "alarms=" + btoa(decodedAlarmsData) + "; path=/; max-age=126144000; SameSite=None; secure=false";
         } else {
-            document.cookie = "alarms=" + btoa(timerNameInput.value + ">" + finalAlarmsData) + "; path=/timer-sonneries/; max-age=126144000; SameSite=None; secure=false";
+            document.cookie = "alarms=" + btoa(timerNameInput.value + ">" + finalAlarmsData) + "; path=/; max-age=126144000; SameSite=None; secure=false";
         }
 
         resultLabel.innerText = "Sonneries sauvegardées !";
