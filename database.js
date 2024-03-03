@@ -27,7 +27,7 @@ export async function getAlarmsProviders() {
     });
     return providers;
 }
-async function sendNewAlarm(name, data) {
+async function sendNewAlarms(name, data) {
     await setDoc(doc(db, "horaires-sonneries", name), {
         data: data,
     });
