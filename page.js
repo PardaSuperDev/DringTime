@@ -183,15 +183,15 @@ async function publishAlarms() {
 
     if (concatenatedData[0]) {
         try {
-        await window.sendNewAlarms(timerNameInput.value, concatenatedData[1]);
-        } catch {
+            await window.sendNewAlarms(timerNameInput.value, concatenatedData[1]);
+            resultLabel.innerText = "Les sonneries ont bien été envoyé !";
+            resultLabel.style = "color: green;";
+            window.onbeforeunload = null;
+        } catch (e) {
+            console.warn("Impossible de publier les sonneries : " + e.message);
             resultLabel.innerText = "Ce nom de sonnerie semble déja utilisé.";
             resultLabel.style = "color: red;";
-        }
-
-        resultLabel.innerText = "Les sonneries ont bien été envoyé !";
-        resultLabel.style = "color: green;";
-        window.onbeforeunload = null;
+        } 
     } else {
         resultLabel.innerText = "Des horaires sont invalides !";
         resultLabel.style = "color: red;";
