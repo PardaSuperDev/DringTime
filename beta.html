@@ -69,7 +69,7 @@
             <h1 class="title_line">Soumettre de nouvelles sonneries</h1>
             <div class="new_timers_settings_container">
                 <input type="text" list="browsers" class="stylized_button outlined_button" id="new_timers_name_input"
-                    value="Mes-Sonneries">
+                    value="Mes-Sonneries" maxlength=24 minlength=5>
                 <button class="stylized_button outlined_button" onclick="save_new_timers();">Enr. local</button>
                 <button class="stylized_button outlined_button" onclick="publishAlarms();">Publier</button>
                 <span id="new_timers_save_result_label"></span>

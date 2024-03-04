@@ -119,6 +119,12 @@ function save_new_timers() {
 
     console.log(concatenatedData);
 
+    if (timerNameInput.value.length < 5 || timerNameInput.value > 24) {
+        resultLabel.innerText = "La taille du nom doit être entre 5 et 24 !";
+        resultLabel.style = "color: red;";
+        return;
+    }
+
     if (concatenatedData[0]) {
         const finalAlarmsData = concatenatedData[1];
 
@@ -180,6 +186,12 @@ async function publishAlarms() {
     var resultLabel = document.getElementById("new_timers_save_result_label");
 
     const concatenatedData = concatenateNewAlarms();
+
+    if (timerNameInput.value.length < 5 || timerNameInput.value > 24) {
+        resultLabel.innerText = "La taille du nom doit être entre 5 et 24 !";
+        resultLabel.style = "color: red;";
+        return;
+    }
 
     if (concatenatedData[0]) {
         try {
