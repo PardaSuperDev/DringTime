@@ -1,42 +1,46 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <style>
-            .slider-container {
-                background-color: grey;
-                width: 60px;
-                height: 15px;
-                display: flex;
-                align-items: center;
-                overflow: visible;
-                border-radius: 7px;
-            }
-            .slider {
-                background-color: rgb(170, 170, 170);
-                border-radius: 50%;
-                width: 30px;
-                height: 30px;
-                display: block;
-                transform: translateX(3px);
-                transition: transform 0.4s ease, background-color 0.4s ease;
-            }
+
+<head>
+    <style>
+        .slider-container {
+            background-color: grey;
+            width: 60px;
+            height: 15px;
+            display: flex;
+            align-items: center;
+            overflow: visible;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .slider {
+            background-color: rgb(170, 170, 170);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: block;
+            transform: translateX(3px);
+            transition: transform 0.4s ease, background-color 0.4s ease;
+        }
 
 
-            .slider-input:checked + .slider {
-                background-color: rgb(108, 160, 255);
-                transform: translateX(27px);
-            }
+        .slider-input:checked+.slider {
+            background-color: rgb(108, 160, 255);
+            transform: translateX(27px);
+        }
 
-            .slider-input {
-                display: none;
-            }
+        .slider-input {
+            display: none;
+        }
+    </style>
+</head>
 
-        </style>
-    </head>
-    <body>
-        <label class="slider-container" for="slider-1">
-            <input type="checkbox" class="slider-input" name="slider-input" id="slider-1">
-            <div class="slider"></div>
-        </label>
-    </body>
+<body>
+    <label class="slider-container" for="slider-1">
+        <input type="checkbox" class="slider-input" name="slider-input" id="slider-1">
+        <div class="slider"></div>
+    </label>
+</body>
+
 </html>

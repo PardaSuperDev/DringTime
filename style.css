@@ -208,6 +208,7 @@ body {
     align-items: center;
     overflow: visible;
     border-radius: 7px;
+    cursor: pointer;
 }
 .slider {
     background-color: rgb(170, 170, 170);
