@@ -202,28 +202,31 @@ body {
 
 .slider-container {
     background-color: grey;
-    width: 60px;
-    height: 15px;
+    width: 40px;
+    height: 20px;
     display: flex;
     align-items: center;
     overflow: visible;
-    border-radius: 7px;
+    border-radius: 10px;
     cursor: pointer;
 }
+
 .slider {
     background-color: rgb(170, 170, 170);
     border-radius: 50%;
     width: 30px;
     height: 30px;
     display: block;
-    transform: translateX(3px);
+    transform: translateX(-5px);
     transition: transform 0.4s ease, background-color 0.4s ease;
+    box-shadow: 0px 0px 2px 0px rgb(92, 92, 92);
 }
 
 
-.slider-input:checked + .slider {
+.slider-input:checked+.slider {
     background-color: rgb(108, 160, 255);
-    transform: translateX(27px);
+    box-shadow: 0px 0px 2px 0px rgb(78, 116, 185);
+    transform: translateX(20px);
 }
 
 .slider-input {
