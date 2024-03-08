@@ -7,7 +7,7 @@
     --text-color: #FFFFFF;
     --background-color: #000000;
 
-    --max-settings-bar-lenght: 550px;
+    --max-settings-bar-lenght: 600px;
 
     color: var(--text-color);
     font-family: Consolas, consolas2;
