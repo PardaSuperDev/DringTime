@@ -39,10 +39,25 @@ function setup() {
     updateAlarms();
 }
 
-function toggle_page() {
-    if (window.page === "timers") {
-        window.page = "submit_new";
+function change_page(page) {
+    var submitNewElem = document.getElementById("submit_new_page");
+    var timersPageElem = document.getElementById("timers_page");
+    if (page === "submit_new" && page !== window.page){
+        timersPageElem.style = "opacity: 0;";
+        submitNewElem.style = "opacity: 0; position: absolute;"
+        setTimeout(()=>{
+            timersPageElem.style = "display: none;";
+            submitNewElem.style = "opacity: 1; position: relative;"
+        }, 500);
+    } if (page === "timers_page" && page !== window.page){
+        submitNewElem.style = "opacity: 0;";
+        timersPageElem.style = "opacity: 0; position: absolute;"
+        setTimeout(()=>{
+            submitNewElem.style = "display: none;";
+            timersPageElem.style = "opacity: 1; position: relative;"
+        }, 500);
     }
+    window.page = page;
 }
 
 function timers_modified() {
@@ -286,7 +301,7 @@ function toggle_settings_bar() {
             settingsIcon.style = "opacity: 1"
         }
     } else {
-        settingsBar.style = "width: 550px";
+        settingsBar.style = "width: 600px";
         settingsIcon.style = "opacity: 1"
         if (window.providerList.length === 0) updateProvidersCombo();
     }

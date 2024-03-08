@@ -232,3 +232,7 @@ body {
 .slider-input {
     display: none;
 }
+
+.page {
+    transition: opacity 500ms ease;
+}
