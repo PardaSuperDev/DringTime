@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, getDocs, getDoc, FieldPath, where, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
+import { getFirestore, collection, getDocs, getDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { createUserWithEmailAndPassword, getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
 
 const firebaseConfig = {
     apiKey: "AIzaSyADkVmRSqXomcAa7UkazwPRR054seizJLo",
@@ -27,6 +27,11 @@ export async function getAlarmsProviders() {
     });
     return providers;
 }
+async function sendNewAlarms(name, data) {
+    await setDoc(doc(db, "horaires-sonneries", name), {
+        data: data,
+    });
+}
 
 async function getAlarmsList(name) {
     const alarmsSnapshot = await getDoc(doc(db, "horaires-sonneries", name));
@@ -38,10 +43,27 @@ async function getAlarmsList(name) {
         let dayAlarms = item.split(";");
         if (dayAlarms.lenght === 0 || dayAlarms[0] == "") {
             alarms.push([]);
-        } else alarms.push(dayAlarms);
+        } else alarms.push(dayAlarms[dayAlarms.lenght - 1] === "" ? dayAlarms.slice(0, dayAlarms.lenght - 1) : dayAlarms);
     })
     return alarms;
 }
 
+function createAccount(email, password) {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Signed up 
+            const user = userCredential.user;
+            console.log(user);
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+        });
+}
+
 window.getAlarmsList = getAlarmsList
 window.getAlarmsProviders = getAlarmsProviders
+window.sendNewAlarms = sendNewAlarms
+window.createAccount = createAccount

@@ -7,7 +7,7 @@
     --text-color: #FFFFFF;
     --background-color: #000000;
 
-    --max-settings-bar-lenght: 550px;
+    --max-settings-bar-lenght: 600px;
 
     color: var(--text-color);
     font-family: Consolas, consolas2;
@@ -136,4 +136,108 @@ body {
 
 .color_label {
     padding-left: 7px;
+}
+
+.timers_table {
+    display: inline-flex;
+    justify-content: center;
+    text-align: center;
+    align-content: center;
+}
+
+.title_line {
+    text-align: center;
+}
+
+.day_column {
+    width: 75pt;
+    justify-content: center;
+    text-align: center;
+    align-content: center;
+    display: block;
+}
+
+.timer_input {
+    width: 70px;
+    outline: solid 1px var(--text-color);
+    margin-bottom: 6px;
+}
+
+.remove_line_button {
+    display: inline-flex;
+    margin-top: auto;
+    margin-bottom: 4px;
+    cursor: pointer;
+}
+
+.timers_table_container {
+    display: flex;
+    align-content: center;
+}
+
+.input_column_container {
+    display: flex;
+    justify-content: center;
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.input_column {
+    display: block;
+}
+
+.add_timer_button img {
+    cursor: pointer;
+}
+
+.new_timers_settings_container {
+    margin-left: 20px;
+    display: flex;
+}
+
+.outlined_button {
+    outline: solid 1px var(--text-color);
+}
+
+#new_timers_save_result_label {
+    align-items: center;
+    display: flex;
+    padding-left: 10px;
+}
+
+.slider-container {
+    background-color: grey;
+    width: 40px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    overflow: visible;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.slider {
+    background-color: rgb(170, 170, 170);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: block;
+    transform: translateX(-5px);
+    transition: transform 0.4s ease, background-color 0.4s ease;
+    box-shadow: 0px 0px 2px 0px rgb(92, 92, 92);
+}
+
+
+.slider-input:checked+.slider {
+    background-color: rgb(108, 160, 255);
+    box-shadow: 0px 0px 2px 0px rgb(78, 116, 185);
+    transform: translateX(20px);
+}
+
+.slider-input {
+    display: none;
+}
+
+.page {
+    transition: opacity 500ms ease;
 }

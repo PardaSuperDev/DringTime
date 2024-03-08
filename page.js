@@ -28,6 +28,7 @@ window.toggled_view = false; // Utilisée pour connaitre l'état de la vue des t
 window.settings_opened = false; // Utlisée pour connaitre l'état d'ouverture des paramètres
 window.alarmsProvider = "";
 window.providerList = [];
+window.page = "timers"
 
 async function updateAlarms() {
     if (window.alarmsProvider !== "") sonneries = await window.getAlarmsList(window.alarmsProvider);
@@ -36,6 +37,209 @@ async function updateAlarms() {
 function setup() {
     loadSettings();
     updateAlarms();
+}
+
+function change_page(page) {
+    var submitNewElem = document.getElementById("submit_new_page");
+    var timersPageElem = document.getElementById("timers_page");
+    if (page === "submit_new" && page !== window.page){
+        timersPageElem.style = "opacity: 0;";
+        submitNewElem.style = "opacity: 0; position: absolute;"
+        setTimeout(()=>{
+            timersPageElem.style = "display: none;";
+            submitNewElem.style = "opacity: 1; position: relative;"
+        }, 500);
+    } if (page === "timers_page" && page !== window.page){
+        submitNewElem.style = "opacity: 0;";
+        timersPageElem.style = "opacity: 0; position: absolute;"
+        setTimeout(()=>{
+            submitNewElem.style = "display: none;";
+            timersPageElem.style = "opacity: 1; position: relative;"
+        }, 500);
+    }
+    window.page = page;
+}
+
+function timers_modified() {
+    if (window.onbeforeunload === null) {
+        window.onbeforeunload = function () { return 'Sure?'; };
+    }
+}
+
+function add_timers_row(day) {
+    var inputColumns = document.getElementsByClassName("input_column");
+
+    let newInput = document.createElement("input");
+    newInput.type = "text";
+    newInput.className = "timer_input stylized_button";
+    newInput.name = "timer_input_0_" + 0;
+    newInput.id = "timer_input_0_" + 0;
+    newInput.setAttribute("onclick", "this.style=''");
+    newInput.setAttribute("oninput", "timers_modified();")
+
+    inputColumns[day].appendChild(newInput);
+
+    // Fait réapparaitre le boutton "supprimer"
+    var removeButtons = document.getElementsByClassName("remove_line_button");
+    removeButtons[day].style = "";
+    timers_modified();
+}
+
+function is_valid_num(value) {
+    return /^\d+$/.test(value);
+}
+
+function concatenateNewAlarms() {
+    var inputColumns = document.getElementsByClassName("input_column");
+
+
+    var timersTableIsValid = true;
+
+    var daysConcatenatedAlarms = [];
+
+    for (var i = 0; i < inputColumns.length; i++) {
+        let dayAlarms = [];
+        let dayColumnChildren = inputColumns[i].children;
+        for (var j = 0; j < dayColumnChildren.length; j++) {
+            dayColumnChildren[j].style = "";
+            let value = dayColumnChildren[j].value;
+
+            // Teste la validité de l'entrée
+            // Ne tentez pas de modifier la vérification pour la contourner car les données sont vérifiées dans le serveur
+            if (value.length === 8 && value[2] === ":" && value[5] === ":" &&
+                is_valid_num(value.substring(0, 2)) &&
+                is_valid_num(value.substring(3, 5)) &&
+                is_valid_num(value.substring(6, 8)) &&
+                parseInt(value.substring(0, 2)) < 24 &&
+                parseInt(value.substring(3, 5)) < 60 &&
+                parseInt(value.substring(6, 8)) < 60
+            ) {
+                dayAlarms.push(value);
+            } else {
+                timersTableIsValid = false;
+                dayColumnChildren[j].style = "background-color: #900;"
+            }
+        }
+        daysConcatenatedAlarms.push(dayAlarms.join(";"));
+    }
+
+    return [timersTableIsValid, timersTableIsValid ? daysConcatenatedAlarms.join("-") : ""];
+}
+
+function save_new_timers() {
+    var resultLabel = document.getElementById("new_timers_save_result_label");
+    var timerNameInput = document.getElementById("new_timers_name_input");
+
+    const concatenatedData = concatenateNewAlarms();
+
+    console.log(concatenatedData);
+
+    if (timerNameInput.value.length < 5 || timerNameInput.value > 24) {
+        resultLabel.innerText = "La taille du nom doit être entre 5 et 24 !";
+        resultLabel.style = "color: red;";
+        return;
+    }
+
+    if (concatenatedData[0]) {
+        const finalAlarmsData = concatenatedData[1];
+
+        console.log("New Data : " + finalAlarmsData);
+
+        const cookies = document.cookie.split("; ");
+
+        var data = "";
+
+        for (var i = 0; i < cookies.length; i++) {
+            if (cookies[i].substring(0, 7) === "alarms=") {
+                data = cookies[i].substring(7);
+            }
+        }
+
+        if (data) {
+            var found_existing = false;
+            var decodedAlarmsData = atob(data);
+            var alarms = decodedAlarmsData.split(",");
+            for (var i = 0; i < alarms.length; i++) {
+                var alarmData = alarms[i].split(">");
+                if (alarmData[0] === timerNameInput.value) {
+                    alarmData[1] = finalAlarmsData;
+                    alarms[i] = alarmData[0] + ">" + alarmData[1]
+                    found_existing = true;
+                    break;
+                }
+            }
+
+            console.log(found_existing);
+
+            if (found_existing) {
+                decodedAlarmsData = alarms.join(",");
+            } else {
+                decodedAlarmsData += "," + timerNameInput.value + ">" + finalAlarmsData;
+            }
+            document.cookie = "alarms=" + btoa(decodedAlarmsData) + "; path=/; max-age=126144000; SameSite=None; secure=false";
+        } else {
+            document.cookie = "alarms=" + btoa(timerNameInput.value + ">" + finalAlarmsData) + "; path=/; max-age=126144000; SameSite=None; secure=false";
+        }
+
+        resultLabel.innerText = "Sonneries sauvegardées !";
+        resultLabel.style = "color: green;";
+        window.onbeforeunload = null;
+    } else {
+        resultLabel.innerText = "Des horaires sont invalides !";
+        resultLabel.style = "color: red;";
+    }
+
+    setTimeout(() => {
+        resultLabel.innerText = "";
+        resultLabel.style = "color: white;";
+    }, 4000);
+
+}
+
+async function publishAlarms() {
+    var timerNameInput = document.getElementById("new_timers_name_input");
+    var resultLabel = document.getElementById("new_timers_save_result_label");
+
+    const concatenatedData = concatenateNewAlarms();
+
+    if (timerNameInput.value.length < 5 || timerNameInput.value > 24) {
+        resultLabel.innerText = "La taille du nom doit être entre 5 et 24 !";
+        resultLabel.style = "color: red;";
+        return;
+    }
+
+    if (concatenatedData[0]) {
+        try {
+            await window.sendNewAlarms(timerNameInput.value, concatenatedData[1]);
+            resultLabel.innerText = "Les sonneries ont bien été envoyé !";
+            resultLabel.style = "color: green;";
+            window.onbeforeunload = null;
+        } catch (e) {
+            console.warn("Impossible de publier les sonneries : " + e.message);
+            resultLabel.innerText = "Ce nom de sonnerie semble déja utilisé.";
+            resultLabel.style = "color: red;";
+        } 
+    } else {
+        resultLabel.innerText = "Des horaires sont invalides !";
+        resultLabel.style = "color: red;";
+    }
+
+    setTimeout(() => {
+        resultLabel.innerText = "";
+        resultLabel.style = "color: white;";
+    }, 4000);
+}
+
+function remove_timers_row(day, removeButton) {
+    var inputColumns = document.getElementsByClassName("input_column");
+
+    if (inputColumns[day].children.length > 0) {
+        var timersInputs = inputColumns[day].querySelectorAll(".timer_input");
+        inputColumns[day].removeChild(timersInputs[timersInputs.length - 1]);
+    }
+
+    if (inputColumns[day].children.length === 0) removeButton.style = "display: none;";
+    timers_modified();
 }
 
 function toggle_view(type) {

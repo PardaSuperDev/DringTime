@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .slider-container {
+            background-color: grey;
+            width: 40px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            overflow: visible;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .slider {
+            background-color: rgb(170, 170, 170);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: block;
+            transform: translateX(-5px);
+            transition: transform 0.4s ease, background-color 0.4s ease;
+            box-shadow: 0px 0px 2px 0px rgb(92, 92, 92);
+        }
+
+
+        .slider-input:checked+.slider {
+            background-color: rgb(108, 160, 255);
+            box-shadow: 0px 0px 2px 0px rgb(78, 116, 185);
+            transform: translateX(20px);
+        }
+
+        .slider-input {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <label class="slider-container" for="slider-1">
+        <input type="checkbox" class="slider-input" name="slider-input" id="slider-1">
+        <div class="slider"></div>
+    </label>
+</body>
+
+</html>
