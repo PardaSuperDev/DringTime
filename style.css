@@ -6,6 +6,9 @@
 :root {
     --text-color: #FFFFFF;
     --background-color: #000000;
+
+    --max-settings-bar-lenght: 550px;
+
     color: var(--text-color);
     font-family: Consolas, consolas2;
     height: 100%;
