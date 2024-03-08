@@ -178,6 +178,8 @@ body {
 .input_column_container {
     display: flex;
     justify-content: center;
+    max-height: 300px;
+    overflow-y: scroll;
 }
 
 .input_column {
