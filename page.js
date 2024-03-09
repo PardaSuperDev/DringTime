@@ -407,7 +407,7 @@ async function update() {
     } else {
         remainingTimeElement.innerText = ("00" + remainingHour).slice(-2) + ":" + ("00" + remainingMinutes).slice(-2) + (showSeconds ? (":" + ("00" + remainingSeconds).slice(-2)) : "");
     }
-    nextAlarmElement.innerText = showSeconds ? nextAlarm : nextAlarm.substring(0, 5);
+    nextAlarmElement.innerText = nextAlarm.substring(0, 5);
 
 }
 
