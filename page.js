@@ -273,6 +273,7 @@ function toggle_view(type) {
 }
 
 function fullScreenEnableInputToggled(element) {
+    askSave();
     if (!element.checked && document.fullscreenElement) {
         document.exitFullscreen();
     } else if (element.checked && window.toggled_view) {
