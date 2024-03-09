@@ -31,13 +31,30 @@ window.remoteProviderList = [];
 window.localProviderList = [];
 window.page = "timers"
 
+function convertTimeToSeconds(time) {
+    let hours = parseInt(time.substring(0, 2));
+    let minutes = parseInt(time.substring(3, 5));
+    let seconds = parseInt(time.substring(6, 8));
+
+    return hours * 3600 + minutes * 60 + seconds;
+}
+
 async function updateAlarms() {
     if (window.alarmsProvider !== "") {
+        let notSortedsonneries = undefined;
         if (window.alarmsProvider.substring(0, 2) === "r-") {
-            sonneries = await window.getAlarmsList(window.alarmsProvider.substring(2));
+            notSortedsonneries = await window.getAlarmsList(window.alarmsProvider.substring(2));
         } else if (window.alarmsProvider.substring(0, 2) === "l-") {
-            sonneries = getLocalAlarmsList(window.alarmsProvider.substring(2));
+            notSortedsonneries = getLocalAlarmsList(window.alarmsProvider.substring(2));
         }
+
+        if (notSortedsonneries === undefined) return;
+
+        for (let i = 0; i < notSortedsonneries.length; i++) {
+            notSortedsonneries[i] = notSortedsonneries[i].sort(function (a, b) { return convertTimeToSeconds(a) - convertTimeToSeconds(b); });
+        }
+
+        sonneries = notSortedsonneries;
     };
 }
 
