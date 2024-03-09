@@ -361,18 +361,18 @@ async function updateProviders() {
 
     let providersCombo = document.getElementById("alarm_providers_combo");
 
-    remoteProviders.forEach(provider => {
-        var option = document.createElement('option');
-        option.value = "r-" + provider;
-        option.innerText = "R: " + provider;
-
-        providersCombo.appendChild(option);
-    });
-
     localProviders.forEach(provider => {
         var option = document.createElement('option');
         option.value = "l-" + provider;
         option.innerText = "L: " + provider;
+
+        providersCombo.appendChild(option);
+    });
+
+    remoteProviders.forEach(provider => {
+        var option = document.createElement('option');
+        option.value = "r-" + provider;
+        option.innerText = "R: " + provider;
 
         providersCombo.appendChild(option);
     });
