@@ -27,11 +27,18 @@ var sonneries = [
 window.toggled_view = false; // Utilisée pour connaitre l'état de la vue des timers
 window.settings_opened = false; // Utlisée pour connaitre l'état d'ouverture des paramètres
 window.alarmsProvider = "";
-window.providerList = [];
+window.remoteProviderList = [];
+window.localProviderList = [];
 window.page = "timers"
 
 async function updateAlarms() {
-    if (window.alarmsProvider !== "") sonneries = await window.getAlarmsList(window.alarmsProvider);
+    if (window.alarmsProvider !== "") {
+        if (window.alarmsProvider.substring(0, 2) === "r-") {
+            sonneries = await window.getAlarmsList(window.alarmsProvider.substring(2));
+        } else if (window.alarmsProvider.substring(0, 2) === "l-") {
+            sonneries = getLocalAlarmsList(window.alarmsProvider.substring(2));
+        }
+    };
 }
 
 function setup() {
@@ -282,16 +289,90 @@ function fullScreenEnableInputToggled(element) {
     }
 }
 
+function getLocalAlarmsList(providerName) {
+    const cookies = document.cookie.split("; ");
+
+    var data = "";
+    for (var i = 0; i < cookies.length; i++) {
+        if (cookies[i].substring(0, 7) === "alarms=") {
+            data = cookies[i].substring(7);
+        }
+    }
+    var alarmsData = ""
+
+    if (data) {
+        var decodedAlarmsData = atob(data);
+        var alarms = decodedAlarmsData.split(",");
+        for (var i = 0; i < alarms.length; i++) {
+            var alarmData = alarms[i].split(">");
+            if (alarmData[0] === providerName) {
+                alarmsData = alarmData[1];
+                break;
+            }
+        }
+    }
+
+    if (alarmsData) {
+        console.log(alarmsData);
+        var days = alarmsData.split("-");
+        var alarms = [];
+        days.forEach((item) => {
+            let dayAlarms = item.split(";");
+            if (dayAlarms.lenght === 0 || dayAlarms[0] == "") {
+                alarms.push([]);
+            } else alarms.push(dayAlarms[dayAlarms.lenght - 1] === "" ? dayAlarms.slice(0, dayAlarms.lenght - 1) : dayAlarms);
+        })
+        return alarms;
+    }
+    return [[], [], [], [], [], [], []];
+}
+
+function getLocalProviders() {
+    let providers = [];
+    const cookies = document.cookie.split("; ");
+
+    var data = "";
+
+    for (var i = 0; i < cookies.length; i++) {
+        if (cookies[i].substring(0, 7) === "alarms=") {
+            data = cookies[i].substring(7);
+        }
+    }
+
+    if (data) {
+        var decodedAlarmsData = atob(data);
+        var alarms = decodedAlarmsData.split(",");
+        for (var i = 0; i < alarms.length; i++) {
+            var alarmData = alarms[i].split(">");
+            providers.push(alarmData[0]);
+
+        }
+    }
+
+    return providers;
+}
+
 async function updateProviders() {
-    let newProviders = await window.getAlarmsProviders();
-    window.providerList = newProviders;
+    let remoteProviders = await window.getAlarmsProviders();
+    let localProviders = getLocalProviders();
+
+    window.remoteProviderList = remoteProviders;
+    window.localProviderList = localProviders;
 
     let providersCombo = document.getElementById("alarm_providers_combo");
 
-    newProviders.forEach(provider => {
+    remoteProviders.forEach(provider => {
         var option = document.createElement('option');
-        option.value = provider;
-        option.innerText = provider;
+        option.value = "r-" + provider;
+        option.innerText = "R: " + provider;
+
+        providersCombo.appendChild(option);
+    });
+
+    localProviders.forEach(provider => {
+        var option = document.createElement('option');
+        option.value = "l-" + provider;
+        option.innerText = "L: " + provider;
 
         providersCombo.appendChild(option);
     });
@@ -316,7 +397,7 @@ function toggle_settings_bar() {
     } else {
         settingsBar.style = "width: var(--max-settings-bar-lenght)";
         settingsIcon.style = "opacity: 1"
-        if (window.providerList.length === 0) updateProvidersCombo();
+        if (window.remoteProviderList.length === 0 && window.localProviderList.length === 0) updateProvidersCombo();
     }
 
     window.settings_opened = !window.settings_opened;
