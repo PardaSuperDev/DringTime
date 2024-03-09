@@ -262,14 +262,22 @@ function toggle_view(type) {
     if (window.toggled_view) {
         other_elem.style = "";
         settings_icon.style = "opacity: 1";
-        document.exitFullscreen();
+        if (document.fullscreenElement) document.exitFullscreen();
 
     } else {
         other_elem.style = "max-height: 0px; opacity: 0";
         settings_icon.style = "opacity: 0";
-        if (document.getElementById("slider-fullscreen").value) document.documentElement.requestFullscreen();
+        if (document.getElementById("slider-fullscreen").checked) document.documentElement.requestFullscreen();
     }
     window.toggled_view = !window.toggled_view;
+}
+
+function fullScreenEnableInputToggled(element) {
+    if (!element.checked && document.fullscreenElement) {
+        document.exitFullscreen();
+    } else if (element.checked && window.toggled_view) {
+        document.documentElement.requestFullscreen();
+    }
 }
 
 async function updateProviders() {
