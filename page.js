@@ -348,6 +348,8 @@ async function update() {
     let noAlarmElement = document.getElementById("no_alarm");
     let noAlarmProviderElement = document.getElementById("no_alarm_provider");
 
+    // Récupère les autres éléments
+    let showSecondsSlider = document.getElementById("slider-seconds");
 
     // Récupère le jour et l'heure actuelle
     let date = new Date()
@@ -396,14 +398,16 @@ async function update() {
     let remainingMinutes = Math.floor(totalRemainingSeconds / 60) - remainingHour * 60;
     let remainingSeconds = Math.floor(totalRemainingSeconds) - remainingMinutes * 60 - remainingHour * 3600;
 
+    // Récupère les paramètres
+    let showSeconds = showSecondsSlider.checked;
 
     // Met à jour les timers
     if (remainingHour === 0) {
-        remainingTimeElement.innerText = ("00" + remainingMinutes).slice(-2) + ":" + ("00" + remainingSeconds).slice(-2)
+        remainingTimeElement.innerText = ("00" + remainingMinutes).slice(-2) + ":" + ("00" + remainingSeconds).slice(-2);
     } else {
-        remainingTimeElement.innerText = ("00" + remainingHour).slice(-2) + ":" + ("00" + remainingMinutes).slice(-2)
+        remainingTimeElement.innerText = ("00" + remainingHour).slice(-2) + ":" + ("00" + remainingMinutes).slice(-2) + (showSeconds ? (":" + ("00" + remainingSeconds).slice(-2)) : "");
     }
-    nextAlarmElement.innerText = nextAlarm.substring(0, 5);
+    nextAlarmElement.innerText = showSeconds ? nextAlarm : nextAlarm.substring(0, 5);
 
 }
 
@@ -429,13 +433,15 @@ function saveSettings() {
 
     // Récupère les autres éléments
     let sliderFullscreen = document.getElementById("slider-fullscreen");
+    let sliderShowSeconds = document.getElementById("slider-seconds");
 
     // Crée l'objet de paramètres
     let settingsObject = {
         "label_color": labelColorElement.value,
         "background_color": backgroundColorElement.value,
         "alarms_provider": window.alarmsProvider,
-        "enable_fullscreen": sliderFullscreen.checked
+        "enable_fullscreen": sliderFullscreen.checked,
+        "enable_seconds": sliderShowSeconds.checked
     }
 
 
@@ -465,6 +471,7 @@ async function loadSettings() {
             let labelColorElement = document.getElementById("choose_labels_color");
             let backgroundColorElement = document.getElementById("choose_background_color");
             let sliderFullscreen = document.getElementById("slider-fullscreen");
+            let sliderShowSeconds = document.getElementById("slider-seconds");
 
             // Met à jour les autres paramètres
             window.alarmsProvider = settingsObject["alarms_provider"];
@@ -472,7 +479,8 @@ async function loadSettings() {
             // Modifie les valers des éléments
             labelColorElement.value = settingsObject["label_color"];
             backgroundColorElement.value = settingsObject["background_color"];
-            sliderFullscreen.checked = settingsObject["enable_fullscreen"]
+            sliderFullscreen.checked = settingsObject["enable_fullscreen"];
+            sliderShowSeconds.checked = settingsObject["enable_seconds"];
 
             // Met à jour le CSS
             document.documentElement.style.setProperty('--text-color', settingsObject["label_color"]);
