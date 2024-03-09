@@ -68,17 +68,19 @@ body {
     z-index: 10;
 }
 
-#settings_conatiner {
-    z-index: 9;
-}
-
 #settings_container:hover #settings_icon_container {
     opacity: 1 !important;
+}
+
+#settings_bar_container_lines {
+    height: max-content;
 }
 
 #settings_container {
     position: absolute;
     display: flex;
+    z-index: 9;
+    height: 150px;
 }
 
 #settings_bar {
@@ -96,7 +98,7 @@ body {
     z-index: 8;
 }
 
-#settings_bar_content {
+.settings_bar_content {
     padding-left: 80px;
     padding-right: 30px;
     display: flex;
@@ -105,6 +107,13 @@ body {
     width: max-content;
     height: max-content;
     min-width: max-content;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.centered_text {
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .stylized_button {
@@ -180,6 +189,7 @@ body {
     justify-content: center;
     max-height: 300px;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .input_column {
@@ -214,6 +224,11 @@ body {
     overflow: visible;
     border-radius: 10px;
     cursor: pointer;
+    min-height: max-content;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 .slider {

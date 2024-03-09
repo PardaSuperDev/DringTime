@@ -42,17 +42,17 @@ function setup() {
 function change_page(page) {
     var submitNewElem = document.getElementById("submit_new_page");
     var timersPageElem = document.getElementById("timers_page");
-    if (page === "submit_new" && page !== window.page){
+    if (page === "submit_new" && page !== window.page) {
         timersPageElem.style = "opacity: 0;";
         submitNewElem.style = "opacity: 0; position: absolute;"
-        setTimeout(()=>{
+        setTimeout(() => {
             timersPageElem.style = "display: none;";
             submitNewElem.style = "opacity: 1; position: relative;"
         }, 500);
-    } if (page === "timers_page" && page !== window.page){
+    } if (page === "timers_page" && page !== window.page) {
         submitNewElem.style = "opacity: 0;";
         timersPageElem.style = "opacity: 0; position: absolute;"
-        setTimeout(()=>{
+        setTimeout(() => {
             submitNewElem.style = "display: none;";
             timersPageElem.style = "opacity: 1; position: relative;"
         }, 500);
@@ -218,7 +218,7 @@ async function publishAlarms() {
             console.warn("Impossible de publier les sonneries : " + e.message);
             resultLabel.innerText = "Ce nom de sonnerie semble déja utilisé.";
             resultLabel.style = "color: red;";
-        } 
+        }
     } else {
         resultLabel.innerText = "Des horaires sont invalides !";
         resultLabel.style = "color: red;";
@@ -262,9 +262,12 @@ function toggle_view(type) {
     if (window.toggled_view) {
         other_elem.style = "";
         settings_icon.style = "opacity: 1";
+        document.exitFullscreen();
+
     } else {
         other_elem.style = "max-height: 0px; opacity: 0";
         settings_icon.style = "opacity: 0";
+        if (document.getElementById("slider-fullscreen").value) document.documentElement.requestFullscreen();
     }
     window.toggled_view = !window.toggled_view;
 }
