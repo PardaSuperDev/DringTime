@@ -426,11 +426,15 @@ function saveSettings() {
     saveIconElement.hidden = true;
     savedIconElement.hidden = false;
 
+    // Récupère les autres éléments
+    let sliderFullscreen = document.getElementById("slider-fullscreen");
+
     // Crée l'objet de paramètres
     let settingsObject = {
         "label_color": labelColorElement.value,
         "background_color": backgroundColorElement.value,
-        "alarms_provider": window.alarmsProvider
+        "alarms_provider": window.alarmsProvider,
+        "enable_fullscreen": sliderFullscreen.checked
     }
 
 
@@ -459,6 +463,7 @@ async function loadSettings() {
             //Récupère les éléments à modifier
             let labelColorElement = document.getElementById("choose_labels_color");
             let backgroundColorElement = document.getElementById("choose_background_color");
+            let sliderFullscreen = document.getElementById("slider-fullscreen");
 
             // Met à jour les autres paramètres
             window.alarmsProvider = settingsObject["alarms_provider"];
@@ -466,6 +471,7 @@ async function loadSettings() {
             // Modifie les valers des éléments
             labelColorElement.value = settingsObject["label_color"];
             backgroundColorElement.value = settingsObject["background_color"];
+            sliderFullscreen.checked = settingsObject["enable_fullscreen"]
 
             // Met à jour le CSS
             document.documentElement.style.setProperty('--text-color', settingsObject["label_color"]);
