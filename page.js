@@ -57,6 +57,7 @@ function change_page(page) {
             timersPageElem.style = "opacity: 1; position: relative;"
         }, 500);
     }
+    if (window.settings_opened) toggle_settings_bar();
     window.page = page;
 }
 
