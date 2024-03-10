@@ -511,8 +511,7 @@ async function update() {
 
 
     // Met à jour les timers
-    let spans = remainingTimeElement.getElementById("default_timer_digits").getElementsByTagName("span");
-
+    let spans = remainingTimeElement.querySelector("#default_timer_digits").getElementsByTagName("span");
     for (let i = 0; i < spans.length; i++) {
         if (spans[i].innerText != newTimerValue[i]) spans[i].innerText = newTimerValue[i];
     }
