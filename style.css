@@ -261,3 +261,8 @@ body {
 .not_custom_text_color {
     color: white;
 }
+
+.timer_line {
+    margin: 0px;
+    padding: 0px;
+}

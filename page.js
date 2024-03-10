@@ -500,11 +500,21 @@ async function update() {
     // Récupère les paramètres
     let showSeconds = showSecondsSlider.checked;
 
-    // Met à jour les timers
+    // Crée les valeurs des timers
+    var newTimerValue = "";
+
     if (remainingHour === 0) {
-        remainingTimeElement.innerText = ("00" + remainingMinutes).slice(-2) + ":" + ("00" + remainingSeconds).slice(-2);
+        newTimerValue = ("00" + remainingMinutes).slice(-2) + ":" + ("00" + remainingSeconds).slice(-2);
     } else {
-        remainingTimeElement.innerText = ("00" + remainingHour).slice(-2) + ":" + ("00" + remainingMinutes).slice(-2) + (showSeconds ? (":" + ("00" + remainingSeconds).slice(-2)) : "");
+        newTimerValue = ("00" + remainingHour).slice(-2) + ":" + ("00" + remainingMinutes).slice(-2) + (showSeconds ? (":" + ("00" + remainingSeconds).slice(-2)) : "");
+    }
+
+
+    // Met à jour les timers
+    let spans = remainingTimeElement.getElementById("default_timer_digits").getElementsByTagName("span");
+
+    for (let i = 0; i < spans.length; i++) {
+        if (spans[i].innerText != newTimerValue[i]) spans[i].innerText = newTimerValue[i];
     }
     nextAlarmElement.innerText = nextAlarm.substring(0, 5);
 
