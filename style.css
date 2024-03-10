@@ -266,3 +266,19 @@ body {
     margin: 0px;
     padding: 0px;
 }
+
+#remaining_time_alarm {
+    line-height: 0.7;
+    max-height: 70px;
+    flex-direction: column;
+    display: flex;
+    overflow-y: hidden;
+    margin-top: 40px;
+}
+
+#remaining_time_alarm span {
+    transition: transform 500ms ease 0s;
+    position: relative;
+    transform: translateY(0px);
+    display: inline-block;
+}

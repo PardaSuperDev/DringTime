@@ -509,11 +509,28 @@ async function update() {
         newTimerValue = ("00" + remainingHour).slice(-2) + ":" + ("00" + remainingMinutes).slice(-2) + (showSeconds ? (":" + ("00" + remainingSeconds).slice(-2)) : "");
     }
 
-
     // Met à jour les timers
     let spans = remainingTimeElement.querySelector("#default_timer_digits").getElementsByTagName("span");
+    let scrollingSpans = remainingTimeElement.querySelector("#visual_scroller_digits").getElementsByTagName("span");
+
     for (let i = 0; i < spans.length; i++) {
-        if (spans[i].innerText != newTimerValue[i]) spans[i].innerText = newTimerValue[i];
+        let spanElem = spans[i];
+        let scrollingSpanElem = scrollingSpans[i];
+        if (spanElem.innerText != newTimerValue[i]) {
+            spanElem.style = "transition: none !important";
+            scrollingSpanElem.style = "transition: none !important";
+            
+            spanElem.style.transform = "translateY(-70px)";
+            scrollingSpanElem.style.transform = "translateY(-70px)";
+            setTimeout(function () { spanElem.style = ""; scrollingSpanElem.style = "" }, 500);
+            spanElem.innerText = newTimerValue[i] === undefined ? "" : newTimerValue[i];
+
+            let digitValue = ":";
+            if (newTimerValue[i] !== ":") {
+                digitValue = (parseInt(newTimerValue[i]) - 1) % 10;
+            }
+            scrollingSpanElem.innerText = newTimerValue[i] === undefined ? "" : digitValue;
+        };
     }
     nextAlarmElement.innerText = nextAlarm.substring(0, 5);
 
