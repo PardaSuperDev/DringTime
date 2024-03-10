@@ -527,7 +527,7 @@ async function update() {
 
             let digitValue = ":";
             if (newTimerValue[i] !== ":") {
-                digitValue = (parseInt(newTimerValue[i]) - 1) % 10;
+                digitValue = (parseInt(newTimerValue[i]) + 1) % 10;
             }
             scrollingSpanElem.innerText = newTimerValue[i] === undefined ? "" : digitValue;
         };
