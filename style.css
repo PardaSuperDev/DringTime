@@ -277,8 +277,21 @@ body {
 }
 
 #remaining_time_alarm span {
-    transition: transform 500ms ease 0s;
+    transition: transform 400ms ease 0s;
     position: relative;
     transform: translateY(0px);
     display: inline-block;
+}
+
+.seconds_timer_part {
+    transition: opacity 1s ease;
+    position: relative;
+    color: red;
+}
+
+.hours_minutes_timer_part {
+    color: green;
+    position: relative;
+    transform: translateX(0px);
+    transition: transform 1s ease;
 }

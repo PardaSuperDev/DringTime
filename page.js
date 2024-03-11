@@ -510,8 +510,11 @@ async function update() {
     }
 
     // Met à jour les timers
-    let spans = remainingTimeElement.querySelector("#default_timer_digits").getElementsByTagName("span");
-    let scrollingSpans = remainingTimeElement.querySelector("#visual_scroller_digits").getElementsByTagName("span");
+    let spansDigits = remainingTimeElement.querySelector("#default_timer_digits").getElementsByClassName("timer_digits");
+    let scrollingSpansDigits = remainingTimeElement.querySelector("#visual_scroller_digits").getElementsByClassName("timer_digits");
+
+    let spans = Array.from(spansDigits[0].getElementsByTagName("span")).concat(Array.from(spansDigits[1].getElementsByTagName("span"))); 
+    let scrollingSpans = Array.from(scrollingSpansDigits[0].getElementsByTagName("span")).concat(Array.from(scrollingSpansDigits[1].getElementsByTagName("span")));
 
     for (let i = 0; i < spans.length; i++) {
         let spanElem = spans[i];
@@ -527,7 +530,11 @@ async function update() {
 
             let digitValue = ":";
             if (newTimerValue[i] !== ":") {
-                digitValue = (parseInt(newTimerValue[i]) + 1) % 10;
+                if (newTimerValue[i-1] === ":") {
+                    digitValue = (parseInt(newTimerValue[i]) + 1) % 6;
+                } else {
+                    digitValue = (parseInt(newTimerValue[i]) + 1) % 10;
+                }
             }
             scrollingSpanElem.innerText = newTimerValue[i] === undefined ? "" : digitValue;
         };
