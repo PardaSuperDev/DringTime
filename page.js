@@ -437,6 +437,18 @@ function changeProvider(element) {
     askSave();
 }
 
+function secondsEnableInputToggled(elem) {
+    askSave();
+    if (elem.checked) {
+        let secondsPart = document.getElementsByClassName("seconds_timer_part");
+        let MinutesHourPaart = document.getElementsByClassName("hours_minutes_timer_part");
+
+        for (let i = 0; i<secondsPart.length; i++) {
+            secondsPart[i].style = "opacity: 1;";
+        }
+    }
+}
+
 async function update() {
     /** Fonction appelée de manière régulière pour mettre à jour les timers.*/
 

@@ -284,9 +284,10 @@ body {
 }
 
 .seconds_timer_part {
-    transition: opacity 1s ease;
+    transition: opacity 1s ease !important;
     position: relative;
     color: red;
+    opacity: 0;
 }
 
 .hours_minutes_timer_part {
