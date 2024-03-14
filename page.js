@@ -61,6 +61,8 @@ async function updateAlarms() {
 function setup() {
     loadSettings();
     updateAlarms();
+    secondsEnableInputToggled(document.getElementById("slider-seconds"));
+    fullScreenEnableInputToggled(document.getElementById("slider-fullscreen"));
 }
 
 function change_page(page) {
@@ -437,6 +439,20 @@ function changeProvider(element) {
     askSave();
 }
 
+function secondsEnableInputToggled(elem) {
+    askSave();
+    let secondsPart = document.getElementsByClassName("seconds_timer_part");
+    if (elem.checked) {
+        for (let i = 0; i<secondsPart.length; i++) {
+            secondsPart[i].style = "opacity: 1; max-width: 180px;";
+        }
+    } else {
+        for (let i = 0; i<secondsPart.length; i++) {
+            secondsPart[i].style = "opacity: 0; max-width: 0px;";
+        }
+    }
+}
+
 async function update() {
     /** Fonction appelée de manière régulière pour mettre à jour les timers.*/
 
@@ -500,11 +516,44 @@ async function update() {
     // Récupère les paramètres
     let showSeconds = showSecondsSlider.checked;
 
-    // Met à jour les timers
+    // Crée les valeurs des timers
+    var newTimerValue = "";
+
     if (remainingHour === 0) {
-        remainingTimeElement.innerText = ("00" + remainingMinutes).slice(-2) + ":" + ("00" + remainingSeconds).slice(-2);
+        newTimerValue = ("00" + remainingMinutes).slice(-2) + ":" + ("00" + remainingSeconds).slice(-2);
     } else {
-        remainingTimeElement.innerText = ("00" + remainingHour).slice(-2) + ":" + ("00" + remainingMinutes).slice(-2) + (showSeconds ? (":" + ("00" + remainingSeconds).slice(-2)) : "");
+        newTimerValue = ("00" + remainingHour).slice(-2) + ":" + ("00" + remainingMinutes).slice(-2) + (true ? (":" + ("00" + remainingSeconds).slice(-2)) : "");
+    }
+
+    // Met à jour les timers
+    let spansDigits = remainingTimeElement.querySelector("#default_timer_digits").getElementsByClassName("timer_digits");
+    let scrollingSpansDigits = remainingTimeElement.querySelector("#visual_scroller_digits").getElementsByClassName("timer_digits");
+
+    let spans = Array.from(spansDigits[0].getElementsByTagName("span")).concat(Array.from(spansDigits[1].getElementsByTagName("span"))); 
+    let scrollingSpans = Array.from(scrollingSpansDigits[0].getElementsByTagName("span")).concat(Array.from(scrollingSpansDigits[1].getElementsByTagName("span")));
+
+    for (let i = 0; i < spans.length; i++) {
+        let spanElem = spans[i];
+        let scrollingSpanElem = scrollingSpans[i];
+        if (spanElem.innerText != newTimerValue[i]) {
+            spanElem.style = "transition: none !important";
+            scrollingSpanElem.style = "transition: none !important";
+            
+            spanElem.style.transform = "translateY(-70px)";
+            scrollingSpanElem.style.transform = "translateY(-70px)";
+            setTimeout(function () { spanElem.style = ""; scrollingSpanElem.style = "" }, 500);
+            spanElem.innerText = newTimerValue[i] === undefined ? "" : newTimerValue[i];
+
+            let digitValue = ":";
+            if (newTimerValue[i] !== ":") {
+                if (newTimerValue[i-1] === ":") {
+                    digitValue = (parseInt(newTimerValue[i]) + 1) % 6;
+                } else {
+                    digitValue = (parseInt(newTimerValue[i]) + 1) % 10;
+                }
+            }
+            scrollingSpanElem.innerText = newTimerValue[i] === undefined ? "" : digitValue;
+        };
     }
     nextAlarmElement.innerText = nextAlarm.substring(0, 5);
 
@@ -580,6 +629,8 @@ async function loadSettings() {
             backgroundColorElement.value = settingsObject["background_color"];
             sliderFullscreen.checked = settingsObject["enable_fullscreen"];
             sliderShowSeconds.checked = settingsObject["enable_seconds"];
+            secondsEnableInputToggled(sliderShowSeconds);
+            fullScreenEnableInputToggled(sliderFullscreen);
 
             // Met à jour le CSS
             document.documentElement.style.setProperty('--text-color', settingsObject["label_color"]);

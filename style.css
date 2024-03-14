@@ -261,3 +261,36 @@ body {
 .not_custom_text_color {
     color: white;
 }
+
+.timer_line {
+    margin: 0px;
+    padding: 0px;
+}
+
+#remaining_time_alarm {
+    line-height: 0.7;
+    max-height: 70px;
+    flex-direction: column;
+    display: flex;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    margin-top: 40px;
+}
+
+#remaining_time_alarm span {
+    transition: transform 400ms ease 0s;
+    position: relative;
+    transform: translateY(0px);
+    display: inline-flex;
+    overflow-x: visible;
+}
+
+.seconds_timer_part {
+    transition: opacity 1s ease, max-width 1s ease !important;
+    opacity: 0;
+    max-width: 0px;
+}
+
+.default_timer_digits {
+    width: max-content;
+}

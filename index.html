@@ -45,12 +45,14 @@
                 <div class="settings_bar_content">
                     <span class="centered_text not_custom_text_color">Plein ecran</span>
                     <label class="slider-container" for="slider-fullscreen">
-                        <input type="checkbox" class="slider-input" name="slider-fullscreen" id="slider-fullscreen" onchange="fullScreenEnableInputToggled(this);">
+                        <input type="checkbox" class="slider-input" name="slider-fullscreen" id="slider-fullscreen"
+                            onchange="fullScreenEnableInputToggled(this);">
                         <div class="slider"></div>
                     </label>
                     <span class="centered_text not_custom_text_color">Secondes</span>
                     <label class="slider-container" for="slider-seconds">
-                        <input type="checkbox" class="slider-input" name="slider-seconds" id="slider-seconds" onchange="askSave();">
+                        <input type="checkbox" class="slider-input" name="slider-seconds" id="slider-seconds"
+                            onchange="secondsEnableInputToggled(this);">
                         <div class="slider"></div>
                     </label>
                 </div>
@@ -71,7 +73,17 @@
                 <div id="remaining_time" class="time_container">
                     <a onclick="toggle_view('remaining_time');">
                         <h2 class="time_label">Temps restant</h2>
-                        <h1 class="time_counter" id="remaining_time_alarm">00:00</h1>
+                        <h1 class="time_counter" id="remaining_time_alarm">
+                            <p class="timer_line" id="default_timer_digits">
+                                <span class="hours_minutes_timer_part timer_digits"><span>0</span><span>0</span><span>:</span><span>0</span><span>0</span></span><span class="seconds_timer_part timer_digits"><span>:</span><span>0</span><span>0</span></span>
+                            </p>
+                            <p class="timer_line" id="visual_scroller_digits">
+                                <span class="hours_minutes_timer_part timer_digits"><span>0</span><span>0</span><span>:</span><span>0</span><span>0</span></span><span class="seconds_timer_part timer_digits"><span>:</span><span>0</span><span>0</span></span>
+                            </p>
+                        </h1>
+                        </h1>
+
+
                     </a>
                 </div>
             </div>
