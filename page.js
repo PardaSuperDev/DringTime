@@ -443,9 +443,6 @@ function secondsEnableInputToggled(elem) {
     askSave();
     let secondsPart = document.getElementsByClassName("seconds_timer_part");
     if (elem.checked) {
-
-        console.log(secondsPart);
-
         for (let i = 0; i<secondsPart.length; i++) {
             secondsPart[i].style = "opacity: 1; max-width: 180px;";
         }
