@@ -61,6 +61,8 @@ async function updateAlarms() {
 function setup() {
     loadSettings();
     updateAlarms();
+    secondsEnableInputToggled(document.getElementById("slider-seconds"));
+    fullScreenEnableInputToggled(document.getElementById("slider-fullscreen"));
 }
 
 function change_page(page) {
@@ -630,6 +632,8 @@ async function loadSettings() {
             backgroundColorElement.value = settingsObject["background_color"];
             sliderFullscreen.checked = settingsObject["enable_fullscreen"];
             sliderShowSeconds.checked = settingsObject["enable_seconds"];
+            secondsEnableInputToggled(sliderShowSeconds);
+            fullScreenEnableInputToggled(sliderFullscreen);
 
             // Met à jour le CSS
             document.documentElement.style.setProperty('--text-color', settingsObject["label_color"]);
