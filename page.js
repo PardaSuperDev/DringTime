@@ -439,12 +439,17 @@ function changeProvider(element) {
 
 function secondsEnableInputToggled(elem) {
     askSave();
+    let secondsPart = document.getElementsByClassName("seconds_timer_part");
     if (elem.checked) {
-        let secondsPart = document.getElementsByClassName("seconds_timer_part");
-        let MinutesHourPaart = document.getElementsByClassName("hours_minutes_timer_part");
+
+        console.log(secondsPart);
 
         for (let i = 0; i<secondsPart.length; i++) {
-            secondsPart[i].style = "opacity: 1;";
+            secondsPart[i].style = "opacity: 1; max-width: 180px;";
+        }
+    } else {
+        for (let i = 0; i<secondsPart.length; i++) {
+            secondsPart[i].style = "opacity: 0; max-width: 0px;";
         }
     }
 }
@@ -518,7 +523,7 @@ async function update() {
     if (remainingHour === 0) {
         newTimerValue = ("00" + remainingMinutes).slice(-2) + ":" + ("00" + remainingSeconds).slice(-2);
     } else {
-        newTimerValue = ("00" + remainingHour).slice(-2) + ":" + ("00" + remainingMinutes).slice(-2) + (showSeconds ? (":" + ("00" + remainingSeconds).slice(-2)) : "");
+        newTimerValue = ("00" + remainingHour).slice(-2) + ":" + ("00" + remainingMinutes).slice(-2) + (true ? (":" + ("00" + remainingSeconds).slice(-2)) : "");
     }
 
     // Met à jour les timers

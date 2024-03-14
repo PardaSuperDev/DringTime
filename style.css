@@ -273,6 +273,7 @@ body {
     flex-direction: column;
     display: flex;
     overflow-y: hidden;
+    overflow-x: hidden;
     margin-top: 40px;
 }
 
@@ -280,19 +281,16 @@ body {
     transition: transform 400ms ease 0s;
     position: relative;
     transform: translateY(0px);
-    display: inline-block;
+    display: inline-flex;
+    overflow-x: visible;
 }
 
 .seconds_timer_part {
-    transition: opacity 1s ease !important;
-    position: relative;
-    color: red;
+    transition: opacity 1s ease, max-width 1s ease !important;
     opacity: 0;
+    max-width: 0px;
 }
 
-.hours_minutes_timer_part {
-    color: green;
-    position: relative;
-    transform: translateX(0px);
-    transition: transform 1s ease;
+.default_timer_digits {
+    width: max-content;
 }
