@@ -598,7 +598,7 @@ function saveSettings() {
     let settingB64Encoded = btoa(settingsObjectStringified);
 
     // Met à jour le cookie de paramètres
-    document.cookie = "settings=" + settingB64Encoded + "; path=/timer-sonneries/; max-age=126144000; SameSite=None; secure=false";
+    document.cookie = "settings=" + settingB64Encoded + "; path=/DringTime/; max-age=126144000; SameSite=None; secure=false";
 }
 
 async function loadSettings() {
