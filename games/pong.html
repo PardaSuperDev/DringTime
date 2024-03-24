@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pong</title>
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            display: flex;
+        }
+
+        #game {
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+            display: flex;
+        }
+    </style>
+    <script>
+        function draw() {
+            var canvas = document.getElementById("game");
+
+            // Draw a rectangle
+            ctx.fillStyle = '#F0DB4F';
+            ctx.strokeStyle = 'red';
+            ctx = canvas.getContext("2d");
+            ctx.fillRect(50, 50, 150, 100);
+            ctx.strokeRect(50, 50, 150, 100);
+        }
+
+        draw();
+    </script>
+</head>
+
+<body>
+    <canvas id="game"></canvas>
+</body>
+
+</html>
