@@ -41,6 +41,8 @@
 
         const players_speed = 0.5;
 
+        var score = 0;
+
         document.addEventListener('keydown', function (event) {
             if (event.keyCode == 38) {
                 down_pressed = true;
@@ -105,6 +107,7 @@
                 ball_dir = 0;
                 player_pad_passed = false;
                 bot_pad_passed = false;
+                score += 1;
             }
             if (ball_x < -1) {
                 ball_x = 0.;
@@ -112,6 +115,7 @@
                 ball_dir = 0;
                 player_pad_passed = false;
                 bot_pad_passed = false;
+                score = 0;
             }
             if (ball_y > 1 / 2) {
                 ball_dir = -ball_dir;
@@ -180,6 +184,10 @@
             ctx.arc(ball_x * width + window.innerWidth / 2, ball_y * height + window.innerHeight / 2, height / 20, 0, 2 * Math.PI, false);
             ctx.fillStyle = 'white';
             ctx.fill();
+
+            // Render the score
+            ctx.font = "48px Arial";
+            ctx.fillText("Score : " + score, 10, 50);
         }
 
         function update(timeStamp) {
