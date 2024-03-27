@@ -19,19 +19,107 @@
             display: flex;
         }
     </style>
-    <script>
+    <script defer>
+        var canvas = document.getElementById("game");
+
+        var player_pad_y = 0.;
+
+        var bot_pad_y = 0.;
+
+        var down_pressed = false;
+        var up_pressed = false
+
+        var lastTimeStamp = 0;
+
+        var ball_x = 0.;
+        var ball_y = 0.;
+        var ball_dir = 0.;
+        const ball_speed = 1;
+
+        document.addEventListener('keydown', function(event) {
+            if(event.keyCode == 38) {
+                down_pressed = true;
+            }
+            else if(event.keyCode == 40) {
+                up_pressed = true;
+            }
+        });
+
+        document.addEventListener('keyup', function(event) {
+            if(event.keyCode == 38) {
+                down_pressed = false;
+            }
+            else if(event.keyCode == 40) {
+                up_pressed = false;
+            }
+        });
+
+        function update_physics(timeStamp) {
+            const deltaTime = (timeStamp-lastTimeStamp)/1000;
+            lastTimeStamp = timeStamp;
+            if (down_pressed) {
+                player_pad_y -= 1*deltaTime;
+            }
+            if (up_pressed) {
+                player_pad_y += 1*deltaTime;
+            }
+            x_step = ball_speed*deltaTime*Math.cos(ball_dir);
+            y_step = ball_speed*deltaTime*Math.sin(ball_dir);
+
+            ball_x += x_step;
+            ball_y += y_step;
+            //ball_dir+=Math.PI*deltaTime*1;
+
+            if (ball_x > 0.6) {
+                ball_x -= x_step;
+                ball_dir = Math.PI-ball_dir;
+            }
+            if (ball_x < -0.6 && ball_y + 0.5> player_pad_y && ball_y+0.5 < player_pad_y + 0.2) {
+                ball_x -= x_step;
+                ball_dir = Math.PI-ball_dir;
+            }
+            if (ball_y > 1/2) {
+                ball_y -= y_step;
+                ball_dir =-ball_dir;
+            }
+            if (ball_y < -1/2) {
+                ball_y -= y_step;
+                ball_dir = -ball_dir;
+            }
+        }
+
         function draw() {
             var canvas = document.getElementById("game");
 
-            // Draw a rectangle
-            ctx.fillStyle = '#F0DB4F';
-            ctx.strokeStyle = 'red';
             ctx = canvas.getContext("2d");
-            ctx.fillRect(50, 50, 150, 100);
-            ctx.strokeRect(50, 50, 150, 100);
+            ctx.canvas.width  = window.innerWidth;
+            ctx.canvas.height = window.innerHeight;
+            
+            const height = window.innerHeight
+            const width = height*1.1;
+
+
+            // Draw a rectangle
+            ctx.fillStyle = 'white';
+            ctx.fillRect(window.innerWidth/2 - width/1.5 - width/20, player_pad_y*height, width/20, height/5);
+            
+            ctx.fillRect(window.innerWidth/2 + width/1.5, bot_pad_y*height, width/20, height/5);
+            
+            ctx.beginPath();
+            ctx.arc(ball_x*width+window.innerWidth/2, ball_y*height+window.innerHeight/2, height/20, 0, 2 * Math.PI, false);
+            ctx.fillStyle = 'white';
+            ctx.fill();
         }
 
-        draw();
+        function update(timeStamp) {
+            update_physics(timeStamp);
+            draw();
+
+            requestAnimationFrame(update);
+        }
+
+        requestAnimationFrame(update);
+
     </script>
 </head>
 
