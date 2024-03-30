@@ -7,7 +7,7 @@
  * cette fonction pour rendre la page plus rapide...". Je sais que certaines parties
  * du code ne sont pas les plus optimisées. Si vous avez des idées d'optimisation
  * et / ou d'amélioration ou même des bugs, vous pouvez faire une issue sur:
- * https://github.com/autiinpu2/timer-sonneries.
+ * https://github.com/PardaSuperDev/DringTime.
  * 
  * Ce code est actuelement sous license MIT donc vous pouvez librement le réutiliser.
  * Bonne journée !
@@ -598,7 +598,7 @@ function saveSettings() {
     let settingB64Encoded = btoa(settingsObjectStringified);
 
     // Met à jour le cookie de paramètres
-    document.cookie = "settings=" + settingB64Encoded + "; path=/DringTime/; max-age=126144000; SameSite=None; secure=false";
+    document.cookie = "settings=" + settingB64Encoded + "; path=/; max-age=126144000; SameSite=None; secure=false";
 }
 
 async function loadSettings() {
