@@ -63,6 +63,7 @@ function setup() {
     updateAlarms();
     secondsEnableInputToggled(document.getElementById("slider-seconds"));
     fullScreenEnableInputToggled(document.getElementById("slider-fullscreen"));
+    load_settings_from_url();
 }
 
 function change_page(page) {
@@ -443,11 +444,11 @@ function secondsEnableInputToggled(elem) {
     askSave();
     let secondsPart = document.getElementsByClassName("seconds_timer_part");
     if (elem.checked) {
-        for (let i = 0; i<secondsPart.length; i++) {
+        for (let i = 0; i < secondsPart.length; i++) {
             secondsPart[i].style = "opacity: 1; max-width: 180px;";
         }
     } else {
-        for (let i = 0; i<secondsPart.length; i++) {
+        for (let i = 0; i < secondsPart.length; i++) {
             secondsPart[i].style = "opacity: 0; max-width: 0px;";
         }
     }
@@ -529,7 +530,7 @@ async function update() {
     let spansDigits = remainingTimeElement.querySelector("#default_timer_digits").getElementsByClassName("timer_digits");
     let scrollingSpansDigits = remainingTimeElement.querySelector("#visual_scroller_digits").getElementsByClassName("timer_digits");
 
-    let spans = Array.from(spansDigits[0].getElementsByTagName("span")).concat(Array.from(spansDigits[1].getElementsByTagName("span"))); 
+    let spans = Array.from(spansDigits[0].getElementsByTagName("span")).concat(Array.from(spansDigits[1].getElementsByTagName("span")));
     let scrollingSpans = Array.from(scrollingSpansDigits[0].getElementsByTagName("span")).concat(Array.from(scrollingSpansDigits[1].getElementsByTagName("span")));
 
     for (let i = 0; i < spans.length; i++) {
@@ -538,7 +539,7 @@ async function update() {
         if (spanElem.innerText != newTimerValue[i]) {
             spanElem.style = "transition: none !important";
             scrollingSpanElem.style = "transition: none !important";
-            
+
             spanElem.style.transform = "translateY(-70px)";
             scrollingSpanElem.style.transform = "translateY(-70px)";
             setTimeout(function () { spanElem.style = ""; scrollingSpanElem.style = "" }, 500);
@@ -546,7 +547,7 @@ async function update() {
 
             let digitValue = ":";
             if (newTimerValue[i] !== ":") {
-                if (newTimerValue[i-1] === ":") {
+                if (newTimerValue[i - 1] === ":") {
                     digitValue = (parseInt(newTimerValue[i]) + 1) % 6;
                 } else {
                     digitValue = (parseInt(newTimerValue[i]) + 1) % 10;
@@ -599,6 +600,61 @@ function saveSettings() {
 
     // Met à jour le cookie de paramètres
     document.cookie = "settings=" + settingB64Encoded + "; path=/; max-age=126144000; SameSite=None; secure=false";
+}
+
+function load_settings_from_url() {
+    // Récupère l'url et la découpe
+    const url = window.location.href.split("/");
+    var settings = url[url.length - 1]
+
+    if (settings.includes("?")) {
+        settings = "?" + settings.split("?")[1]
+    }
+
+
+    // Si l'url contient des paramètre, on l'analyse
+    if (settings.startsWith("?")) {
+        settings = settings.substring(1);
+
+        //Récupère les éléments à modifier
+        let labelColorElement = document.getElementById("choose_labels_color");
+        let backgroundColorElement = document.getElementById("choose_background_color");
+        let sliderFullscreen = document.getElementById("slider-fullscreen");
+        let sliderShowSeconds = document.getElementById("slider-seconds");
+
+        // Itère dans les paramètres pour les mettre à jour
+        const settingsParts = settings.split("&");
+        for (let i = 0; i < settingsParts.length; i++) {
+            const settingsPair = settingsParts[i].split("=");
+            const settingsName = settingsPair[0];
+            switch (settingsName) {
+                case ("label_color"):
+                    labelColorElement.value = settingsPair[1];
+                    document.documentElement.style.setProperty('--text-color', settingsPair[1]);
+                    document.querySelector('#choose_labels_color').dispatchEvent(new Event('input', { bubbles: true }));
+                    break;
+                case ("background_color"):
+                    backgroundColorElement.value = settingsPair[1];
+                    document.documentElement.style.setProperty('--background-color', settingsPair[1]);
+                    document.querySelector('#choose_background_color').dispatchEvent(new Event('input', { bubbles: true }));
+                    break;
+                case ("alarms_provider"):
+                    window.alarmsProvider = settingsPair[1];
+                    break;
+                case ("enable_fullscreen"):
+                    sliderFullscreen.checked = settingsPair[1];
+                    fullScreenEnableInputToggled(sliderFullscreen);
+                    break;
+                case ("enable_seconds"):
+                    sliderShowSeconds.checked = settingsPair[1];
+                    secondsEnableInputToggled(sliderShowSeconds);
+                    break;
+                default:
+                    console.warn("Paramètre inconnu : \"" + settingsName + "\".");
+                    break;
+            }
+        }
+    }
 }
 
 async function loadSettings() {
