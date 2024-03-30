@@ -622,6 +622,9 @@ function load_settings_from_url() {
         let sliderFullscreen = document.getElementById("slider-fullscreen");
         let sliderShowSeconds = document.getElementById("slider-seconds");
 
+        // Définit une variable pour savoir si on doit demander à l'utilisateur de sauvegarder les paramètres
+        var needSave = false;
+
         // Itère dans les paramètres pour les mettre à jour
         const settingsParts = settings.split("&");
         for (let i = 0; i < settingsParts.length; i++) {
@@ -635,6 +638,7 @@ function load_settings_from_url() {
                         labelColorElement.value = settingsValue;
                         document.documentElement.style.setProperty('--text-color', settingsValue);
                         document.querySelector('#choose_labels_color').dispatchEvent(new Event('input', { bubbles: true }));
+                        needSave = true;
                     } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
                     break;
                 case ("background_color"):
@@ -643,29 +647,36 @@ function load_settings_from_url() {
                         backgroundColorElement.value = settingsValue;
                         document.documentElement.style.setProperty('--background-color', settingsValue);
                         document.querySelector('#choose_background_color').dispatchEvent(new Event('input', { bubbles: true }));
+                        needSave = true;
                     } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
                     break;
                 case ("alarms_provider"):
                     if (settingsValue.startsWith("r-") || settingsValue.startsWith("l-")) {
                         window.alarmsProvider = settingsValue;
+                        needSave = true;
                     } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
                     break;
                 case ("enable_fullscreen"):
                     if (settingsValue == "true" || settingsValue == "false") {
                         sliderFullscreen.checked = settingsValue == "true";
                         fullScreenEnableInputToggled(sliderFullscreen);
+                        needSave = true;
                     } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
                     break;
                 case ("enable_seconds"):
                     if (settingsValue == "true" || settingsValue == "false") {
                         sliderShowSeconds.checked = settingsValue == "true";
                         secondsEnableInputToggled(sliderShowSeconds);
+                        needSave = true;
                     } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
                     break;
                 default:
                     console.warn("Paramètre inconnu : \"" + settingsName + "\".");
                     break;
             }
+
+            // On fait la demande pour sauvegarder
+            if (needSave) askSave();
         }
     }
 }
