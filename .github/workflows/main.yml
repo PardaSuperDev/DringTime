@@ -17,3 +17,4 @@ jobs:
         server: ftp.cluster029.hosting.ovh.net
         username: dringth
         password: ${{ secrets.ftp_password }}
+        server-dir: ./www/
