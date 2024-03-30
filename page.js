@@ -627,27 +627,40 @@ function load_settings_from_url() {
         for (let i = 0; i < settingsParts.length; i++) {
             const settingsPair = settingsParts[i].split("=");
             const settingsName = settingsPair[0];
+            const settingsValue = settingsPair[1];
             switch (settingsName) {
                 case ("label_color"):
-                    labelColorElement.value = settingsPair[1];
-                    document.documentElement.style.setProperty('--text-color', settingsPair[1]);
-                    document.querySelector('#choose_labels_color').dispatchEvent(new Event('input', { bubbles: true }));
+                    var reg = /^#([0-9a-f]{3}){1,2}$/i
+                    if (reg.test(settingsValue)) {
+                        labelColorElement.value = settingsValue;
+                        document.documentElement.style.setProperty('--text-color', settingsValue);
+                        document.querySelector('#choose_labels_color').dispatchEvent(new Event('input', { bubbles: true }));
+                    } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
                     break;
                 case ("background_color"):
-                    backgroundColorElement.value = settingsPair[1];
-                    document.documentElement.style.setProperty('--background-color', settingsPair[1]);
-                    document.querySelector('#choose_background_color').dispatchEvent(new Event('input', { bubbles: true }));
+                    var reg = /^#([0-9a-f]{3}){1,2}$/i
+                    if (reg.test(settingsValue)) {
+                        backgroundColorElement.value = settingsValue;
+                        document.documentElement.style.setProperty('--background-color', settingsValue);
+                        document.querySelector('#choose_background_color').dispatchEvent(new Event('input', { bubbles: true }));
+                    } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
                     break;
                 case ("alarms_provider"):
-                    window.alarmsProvider = settingsPair[1];
+                    if (settingsValue.startsWith("r-") || settingsValue.startsWith("l-")) {
+                        window.alarmsProvider = settingsValue;
+                    } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
                     break;
                 case ("enable_fullscreen"):
-                    sliderFullscreen.checked = settingsPair[1];
-                    fullScreenEnableInputToggled(sliderFullscreen);
+                    if (settingsValue == "true" || settingsValue == "false") {
+                        sliderFullscreen.checked = settingsValue == "true";
+                        fullScreenEnableInputToggled(sliderFullscreen);
+                    } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
                     break;
                 case ("enable_seconds"):
-                    sliderShowSeconds.checked = settingsPair[1];
-                    secondsEnableInputToggled(sliderShowSeconds);
+                    if (settingsValue == "true" || settingsValue == "false") {
+                        sliderShowSeconds.checked = settingsValue == "true";
+                        secondsEnableInputToggled(sliderShowSeconds);
+                    } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
                     break;
                 default:
                     console.warn("Paramètre inconnu : \"" + settingsName + "\".");
