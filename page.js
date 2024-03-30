@@ -429,6 +429,11 @@ function askSave() {
     let savedIconElement = document.getElementById("saved_icon");
     saveIconElement.hidden = false;
     savedIconElement.hidden = true;
+
+    let clipboardSaveIconElement = document.getElementById("clipboard_save_icon");
+    let clipboarsdSavedIconElement = document.getElementById("clipboard_saved_icon");
+    clipboardSaveIconElement.hidden = false;
+    clipboarsdSavedIconElement.hidden = true;
 }
 
 function changeProvider(element) {
@@ -600,6 +605,37 @@ function saveSettings() {
 
     // Met à jour le cookie de paramètres
     document.cookie = "settings=" + settingB64Encoded + "; path=/; max-age=126144000; SameSite=None; secure=false";
+}
+
+function saveSettingsToClipboard() {
+    // Met à jour l'icon d'enregistrement
+    let saveIconElement = document.getElementById("clipboard_save_icon");
+    let savedIconElement = document.getElementById("clipboard_saved_icon");
+    saveIconElement.hidden = true;
+    savedIconElement.hidden = false;
+
+    // Crée l'url et la copie dans le presse papier
+
+    // Récupère les éléments couleur
+    let labelColorElement = document.getElementById("choose_labels_color");
+    let backgroundColorElement = document.getElementById("choose_background_color");
+
+    // Récupère les autres éléments
+    let sliderFullscreen = document.getElementById("slider-fullscreen");
+    let sliderShowSeconds = document.getElementById("slider-seconds");
+
+    var elements = [
+        "label_color=" + labelColorElement.value,
+        "background_color=" + backgroundColorElement.value,
+        "alarms_provider=" + window.alarmsProvider,
+        "enable_fullscreen=" + sliderFullscreen.checked,
+        "enable_seconds=" + sliderShowSeconds.checked
+    ];
+
+    var urlElements = "https://dring-time.fr/?" + elements.join("&");
+
+    navigator.clipboard.writeText(urlElements);
+    console.log("URL value : " + urlElements);
 }
 
 function load_settings_from_url() {
