@@ -31,6 +31,8 @@ window.remoteProviderList = [];
 window.localProviderList = [];
 window.page = "timers";
 window.textRenderingType = "ClearType";
+window.currentTime = new Date();
+window.lastTimeUpdate = 0;
 
 function convertTimeToSeconds(time) {
     let hours = parseInt(time.substring(0, 2));
@@ -66,6 +68,7 @@ function setup() {
     secondsEnableInputToggled(document.getElementById("slider-seconds"));
     fullScreenEnableInputToggled(document.getElementById("slider-fullscreen"));
     load_settings_from_url();
+    updateTimeFromServer();
 }
 
 function adjustCss() {
@@ -104,6 +107,13 @@ function timers_modified() {
     if (window.onbeforeunload === null) {
         window.onbeforeunload = function () { return 'Sure?'; };
     }
+}
+
+async function updateTimeFromServer() {
+    var requestData = await fetch('https://worldtimeapi.org/api/timezone/Europe/Paris', { mode: 'cors', method: 'GET', headers: { 'Content-Type': 'text/plain' } })
+    var dataJson = await requestData.json();
+
+    window.currentTime = new Date(dataJson["datetime"]);
 }
 
 function add_timers_row(day) {
@@ -471,8 +481,16 @@ function secondsEnableInputToggled(elem) {
     }
 }
 
-async function update() {
+async function update(deltaTime) {
     /** Fonction appelée de manière régulière pour mettre à jour les timers.*/
+
+    window.currentTime.setMilliseconds(window.currentTime.getMilliseconds() + deltaTime * 1000);
+    window.lastTimeUpdate += deltaTime;
+
+    if (window.lastTimeUpdate > 3600) {
+        updateTimeFromServer();
+        window.lastTimeUpdate = 0;
+    }
 
     // On récupère les éléments timer
     let remainingTimeElement = document.getElementById("remaining_time_alarm");
@@ -485,7 +503,7 @@ async function update() {
     let showSecondsSlider = document.getElementById("slider-seconds");
 
     // Récupère le jour et l'heure actuelle
-    let date = new Date()
+    let date = window.currentTime;
     let day = date.getDay();
 
     // Récupère les sonneries de la journée actuelle
@@ -556,7 +574,7 @@ async function update() {
         if (spanElem.innerText != newTimerValue[i]) {
             spanElem.style = "transition: none !important";
             scrollingSpanElem.style = "transition: none !important";
-            
+
             const transformString = textRenderingType == "ClearType" ? "translateY(-70px)" : "translateY(-85px)"
 
             spanElem.style.transform = transformString;
@@ -791,4 +809,4 @@ Coloris({
 
 // Lance l'execution régulière de `update()`. 
 // Le timeout est de 200 ms pour éviter la désincronisation et avoir une grande précision des secondes.
-setInterval(update, 200);
+setInterval(() => { update(0.2) }, 200);
