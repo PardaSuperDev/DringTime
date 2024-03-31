@@ -18,3 +18,8 @@ jobs:
         username: dringth
         password: ${{ secrets.ftp_password }}
         server-dir: ./www/
+        exclude: |
+          **/.git*
+          **/.git*/**
+          README.md
+          .gitignore
