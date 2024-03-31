@@ -28,10 +28,10 @@ Le site est accéssible sur [dring-time.fr](https://dring-time.fr) ou sur les [p
 
 # Crédits
 
-- **Idée originale** : Autiinpu
-- **Développeur principal** : Yannis300307
+- **Idée originale**: Autiinpu
+- **Développeur principal**: Yannis300307
 - **Gestionnaire nom de domaine et base de donnée**: Yannis300307
-- **Aide au debugging et proposition de features** : Bijunoka
+- **Aide au debugging et proposition de features**: Bijunoka
 
 ## Aide au financement :
 - Yannis300307
@@ -44,8 +44,8 @@ Le site est accéssible sur [dring-time.fr](https://dring-time.fr) ou sur les [p
 
 ## Bibliothèque utilisée
 
-Coloris : https://github.com/mdbassit/Coloris
+Coloris: https://github.com/mdbassit/Coloris
 
 ## Assets svg
 
-SVG Repo : https://www.svgrepo.com/
+SVG Repo: https://www.svgrepo.com/
