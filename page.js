@@ -59,11 +59,21 @@ async function updateAlarms() {
 }
 
 function setup() {
+    adjustCss();
     loadSettings();
     updateAlarms();
     secondsEnableInputToggled(document.getElementById("slider-seconds"));
     fullScreenEnableInputToggled(document.getElementById("slider-fullscreen"));
     load_settings_from_url();
+}
+
+function adjustCss() {
+    // Si la plateforme n'est pas Windows, alors le système de rendu n'est pas ClearType et est donc en FreeType
+    // On ajuste alors la font en coséquence
+    if (!navigator.userAgent.toLowerCase().includes("win")) {
+        var timerElem = document.getElementById("remaining_time_alarm");
+        timerElem.style = "line-height: 0.85;";
+    }
 }
 
 function change_page(page) {
