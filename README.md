@@ -30,10 +30,10 @@ Le site est accéssible sur [dring-time.fr](https://dring-time.fr) ou sur les [p
 
 - **Idée originale** : Autiinpu
 - **Développeur principal** : Yannis300307
-- **Gestinnaire nom de domaine et base de donnée**: Yannis300307
-- **Aide au débugging et proposition de features** : Bijunoka
+- **Gestionnaire nom de domaine et base de donnée**: Yannis300307
+- **Aide au debugging et proposition de features** : Bijunoka
 
-## Aide au financements :
+## Aide au financement :
 - Yannis300307
 - Autiinpu
 - Bijunoka
