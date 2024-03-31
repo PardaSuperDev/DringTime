@@ -29,7 +29,8 @@ window.settings_opened = false; // Utlisée pour connaitre l'état d'ouverture d
 window.alarmsProvider = "";
 window.remoteProviderList = [];
 window.localProviderList = [];
-window.page = "timers"
+window.page = "timers";
+window.textRenderingType = "ClearType";
 
 function convertTimeToSeconds(time) {
     let hours = parseInt(time.substring(0, 2));
@@ -73,6 +74,7 @@ function adjustCss() {
     if (!navigator.userAgent.toLowerCase().includes("win")) {
         var timerElem = document.getElementById("remaining_time_alarm");
         timerElem.style = "line-height: 0.85;";
+        textRenderingType = "FreeType";
     }
 }
 
@@ -554,9 +556,11 @@ async function update() {
         if (spanElem.innerText != newTimerValue[i]) {
             spanElem.style = "transition: none !important";
             scrollingSpanElem.style = "transition: none !important";
+            
+            const transformString = textRenderingType == "ClearType" ? "translateY(-70px)" : "translateY(-85px)"
 
-            spanElem.style.transform = "translateY(-70px)";
-            scrollingSpanElem.style.transform = "translateY(-70px)";
+            spanElem.style.transform = transformString;
+            scrollingSpanElem.style.transform = transformString;
             setTimeout(function () { spanElem.style = ""; scrollingSpanElem.style = "" }, 500);
             spanElem.innerText = newTimerValue[i] === undefined ? "" : newTimerValue[i];
 
