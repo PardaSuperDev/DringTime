@@ -7,7 +7,7 @@
  * cette fonction pour rendre la page plus rapide...". Je sais que certaines parties
  * du code ne sont pas les plus optimisées. Si vous avez des idées d'optimisation
  * et / ou d'amélioration ou même des bugs, vous pouvez faire une issue sur:
- * https://github.com/autiinpu2/timer-sonneries.
+ * https://github.com/PardaSuperDev/DringTime.
  * 
  * Ce code est actuelement sous license MIT donc vous pouvez librement le réutiliser.
  * Bonne journée !
@@ -29,7 +29,10 @@ window.settings_opened = false; // Utlisée pour connaitre l'état d'ouverture d
 window.alarmsProvider = "";
 window.remoteProviderList = [];
 window.localProviderList = [];
-window.page = "timers"
+window.page = "timers_page";
+window.textRenderingType = "ClearType";
+window.currentTime = new Date();
+window.lastTimeUpdate = 0;
 
 function convertTimeToSeconds(time) {
     let hours = parseInt(time.substring(0, 2));
@@ -59,30 +62,40 @@ async function updateAlarms() {
 }
 
 function setup() {
+    adjustCss();
     loadSettings();
     updateAlarms();
     secondsEnableInputToggled(document.getElementById("slider-seconds"));
     fullScreenEnableInputToggled(document.getElementById("slider-fullscreen"));
+    load_settings_from_url();
+    updateTimeFromServer();
 }
 
-function change_page(page) {
-    var submitNewElem = document.getElementById("submit_new_page");
-    var timersPageElem = document.getElementById("timers_page");
-    if (page === "submit_new" && page !== window.page) {
-        timersPageElem.style = "opacity: 0;";
-        submitNewElem.style = "opacity: 0; position: absolute;"
-        setTimeout(() => {
-            timersPageElem.style = "display: none;";
-            submitNewElem.style = "opacity: 1; position: relative;"
-        }, 500);
-    } if (page === "timers_page" && page !== window.page) {
-        submitNewElem.style = "opacity: 0;";
-        timersPageElem.style = "opacity: 0; position: absolute;"
-        setTimeout(() => {
-            submitNewElem.style = "display: none;";
-            timersPageElem.style = "opacity: 1; position: relative;"
-        }, 500);
+function adjustCss() {
+    // Si la plateforme n'est pas Windows, alors le système de rendu n'est pas ClearType et est donc en FreeType
+    // On ajuste alors la font en coséquence
+    if (!navigator.userAgent.toLowerCase().includes("win")) {
+        var timerElem = document.getElementById("remaining_time_alarm");
+        timerElem.style = "line-height: 0.85;";
+        textRenderingType = "FreeType";
     }
+}
+function change_page(page) {
+    
+    if (page !== window.page) {
+        var oldPage = document.getElementById(window.page);
+        var newPage = document.getElementById(page);
+
+    } else {
+        return
+    }
+    oldPage.style = "opacity: 0;";
+    newPage.style = "opacity: 0; position: absolute;"
+    setTimeout(() => {
+        oldPage.style = "display: none;";
+        newPage.style = "opacity: 1; position: relative;"
+    }, 500);
+
     if (window.settings_opened) toggle_settings_bar();
     window.page = page;
 }
@@ -91,6 +104,13 @@ function timers_modified() {
     if (window.onbeforeunload === null) {
         window.onbeforeunload = function () { return 'Sure?'; };
     }
+}
+
+async function updateTimeFromServer() {
+    var requestData = await fetch('https://worldtimeapi.org/api/timezone/Europe/Paris', { mode: 'cors', method: 'GET', headers: { 'Content-Type': 'text/plain' } })
+    var dataJson = await requestData.json();
+
+    window.currentTime = new Date(dataJson["datetime"]);
 }
 
 function add_timers_row(day) {
@@ -428,6 +448,11 @@ function askSave() {
     let savedIconElement = document.getElementById("saved_icon");
     saveIconElement.hidden = false;
     savedIconElement.hidden = true;
+
+    let clipboardSaveIconElement = document.getElementById("clipboard_save_icon");
+    let clipboarsdSavedIconElement = document.getElementById("clipboard_saved_icon");
+    clipboardSaveIconElement.hidden = false;
+    clipboarsdSavedIconElement.hidden = true;
 }
 
 function changeProvider(element) {
@@ -443,18 +468,26 @@ function secondsEnableInputToggled(elem) {
     askSave();
     let secondsPart = document.getElementsByClassName("seconds_timer_part");
     if (elem.checked) {
-        for (let i = 0; i<secondsPart.length; i++) {
+        for (let i = 0; i < secondsPart.length; i++) {
             secondsPart[i].style = "opacity: 1; max-width: 180px;";
         }
     } else {
-        for (let i = 0; i<secondsPart.length; i++) {
+        for (let i = 0; i < secondsPart.length; i++) {
             secondsPart[i].style = "opacity: 0; max-width: 0px;";
         }
     }
 }
 
-async function update() {
+async function update(deltaTime) {
     /** Fonction appelée de manière régulière pour mettre à jour les timers.*/
+
+    window.currentTime.setMilliseconds(window.currentTime.getMilliseconds() + deltaTime * 1000);
+    window.lastTimeUpdate += deltaTime;
+
+    if (window.lastTimeUpdate > 3600) {
+        updateTimeFromServer();
+        window.lastTimeUpdate = 0;
+    }
 
     // On récupère les éléments timer
     let remainingTimeElement = document.getElementById("remaining_time_alarm");
@@ -467,7 +500,7 @@ async function update() {
     let showSecondsSlider = document.getElementById("slider-seconds");
 
     // Récupère le jour et l'heure actuelle
-    let date = new Date()
+    let date = window.currentTime;
     let day = date.getDay();
 
     // Récupère les sonneries de la journée actuelle
@@ -529,7 +562,7 @@ async function update() {
     let spansDigits = remainingTimeElement.querySelector("#default_timer_digits").getElementsByClassName("timer_digits");
     let scrollingSpansDigits = remainingTimeElement.querySelector("#visual_scroller_digits").getElementsByClassName("timer_digits");
 
-    let spans = Array.from(spansDigits[0].getElementsByTagName("span")).concat(Array.from(spansDigits[1].getElementsByTagName("span"))); 
+    let spans = Array.from(spansDigits[0].getElementsByTagName("span")).concat(Array.from(spansDigits[1].getElementsByTagName("span")));
     let scrollingSpans = Array.from(scrollingSpansDigits[0].getElementsByTagName("span")).concat(Array.from(scrollingSpansDigits[1].getElementsByTagName("span")));
 
     for (let i = 0; i < spans.length; i++) {
@@ -538,15 +571,17 @@ async function update() {
         if (spanElem.innerText != newTimerValue[i]) {
             spanElem.style = "transition: none !important";
             scrollingSpanElem.style = "transition: none !important";
-            
-            spanElem.style.transform = "translateY(-70px)";
-            scrollingSpanElem.style.transform = "translateY(-70px)";
+
+            const transformString = textRenderingType == "ClearType" ? "translateY(-70px)" : "translateY(-85px)"
+
+            spanElem.style.transform = transformString;
+            scrollingSpanElem.style.transform = transformString;
             setTimeout(function () { spanElem.style = ""; scrollingSpanElem.style = "" }, 500);
             spanElem.innerText = newTimerValue[i] === undefined ? "" : newTimerValue[i];
 
             let digitValue = ":";
             if (newTimerValue[i] !== ":") {
-                if (newTimerValue[i-1] === ":") {
+                if (newTimerValue[i - 1] === ":") {
                     digitValue = (parseInt(newTimerValue[i]) + 1) % 6;
                 } else {
                     digitValue = (parseInt(newTimerValue[i]) + 1) % 10;
@@ -598,7 +633,117 @@ function saveSettings() {
     let settingB64Encoded = btoa(settingsObjectStringified);
 
     // Met à jour le cookie de paramètres
-    document.cookie = "settings=" + settingB64Encoded + "; path=/DringTime/; max-age=126144000; SameSite=None; secure=false";
+    document.cookie = "settings=" + settingB64Encoded + "; path=/; max-age=126144000; SameSite=None; secure=false";
+}
+
+function saveSettingsToClipboard() {
+    // Met à jour l'icon d'enregistrement
+    let saveIconElement = document.getElementById("clipboard_save_icon");
+    let savedIconElement = document.getElementById("clipboard_saved_icon");
+    saveIconElement.hidden = true;
+    savedIconElement.hidden = false;
+
+    // Crée l'url et la copie dans le presse papier
+
+    // Récupère les éléments couleur
+    let labelColorElement = document.getElementById("choose_labels_color");
+    let backgroundColorElement = document.getElementById("choose_background_color");
+
+    // Récupère les autres éléments
+    let sliderFullscreen = document.getElementById("slider-fullscreen");
+    let sliderShowSeconds = document.getElementById("slider-seconds");
+
+    var elements = [
+        "label_color=" + labelColorElement.value,
+        "background_color=" + backgroundColorElement.value,
+        "alarms_provider=" + window.alarmsProvider,
+        "enable_fullscreen=" + sliderFullscreen.checked,
+        "enable_seconds=" + sliderShowSeconds.checked
+    ];
+
+    var urlElements = "https://dring-time.fr/?" + elements.join("&");
+
+    navigator.clipboard.writeText(urlElements);
+    console.log("URL value : " + urlElements);
+}
+
+function load_settings_from_url() {
+    // Récupère l'url et la découpe
+    const url = window.location.href.split("/");
+    var settings = url[url.length - 1]
+
+    if (settings.includes("?")) {
+        settings = "?" + settings.split("?")[1]
+    }
+
+
+    // Si l'url contient des paramètre, on l'analyse
+    if (settings.startsWith("?")) {
+        settings = settings.substring(1);
+
+        //Récupère les éléments à modifier
+        let labelColorElement = document.getElementById("choose_labels_color");
+        let backgroundColorElement = document.getElementById("choose_background_color");
+        let sliderFullscreen = document.getElementById("slider-fullscreen");
+        let sliderShowSeconds = document.getElementById("slider-seconds");
+
+        // Définit une variable pour savoir si on doit demander à l'utilisateur de sauvegarder les paramètres
+        var needSave = false;
+
+        // Itère dans les paramètres pour les mettre à jour
+        const settingsParts = settings.split("&");
+        for (let i = 0; i < settingsParts.length; i++) {
+            const settingsPair = settingsParts[i].split("=");
+            const settingsName = settingsPair[0];
+            const settingsValue = settingsPair[1];
+            switch (settingsName) {
+                case ("label_color"):
+                    var reg = /^#([0-9a-f]{3}){1,2}$/i
+                    if (reg.test(settingsValue)) {
+                        labelColorElement.value = settingsValue;
+                        document.documentElement.style.setProperty('--text-color', settingsValue);
+                        document.querySelector('#choose_labels_color').dispatchEvent(new Event('input', { bubbles: true }));
+                        needSave = true;
+                    } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
+                    break;
+                case ("background_color"):
+                    var reg = /^#([0-9a-f]{3}){1,2}$/i
+                    if (reg.test(settingsValue)) {
+                        backgroundColorElement.value = settingsValue;
+                        document.documentElement.style.setProperty('--background-color', settingsValue);
+                        document.querySelector('#choose_background_color').dispatchEvent(new Event('input', { bubbles: true }));
+                        needSave = true;
+                    } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
+                    break;
+                case ("alarms_provider"):
+                    if (settingsValue.startsWith("r-") || settingsValue.startsWith("l-")) {
+                        window.alarmsProvider = settingsValue;
+                        needSave = true;
+                    } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
+                    break;
+                case ("enable_fullscreen"):
+                    if (settingsValue == "true" || settingsValue == "false") {
+                        sliderFullscreen.checked = settingsValue == "true";
+                        fullScreenEnableInputToggled(sliderFullscreen);
+                        needSave = true;
+                    } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
+                    break;
+                case ("enable_seconds"):
+                    if (settingsValue == "true" || settingsValue == "false") {
+                        sliderShowSeconds.checked = settingsValue == "true";
+                        secondsEnableInputToggled(sliderShowSeconds);
+                        needSave = true;
+                    } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
+                    break;
+                default:
+                    console.warn("Paramètre inconnu : \"" + settingsName + "\".");
+                    break;
+            }
+
+            // On fait la demande pour sauvegarder
+            if (needSave) askSave();
+        }
+    }
 }
 
 async function loadSettings() {
@@ -661,4 +806,4 @@ Coloris({
 
 // Lance l'execution régulière de `update()`. 
 // Le timeout est de 200 ms pour éviter la désincronisation et avoir une grande précision des secondes.
-setInterval(update, 200);
+setInterval(() => { update(0.2) }, 200);
