@@ -41,3 +41,11 @@ Le site est accéssible sur [dring-time.fr](https://dring-time.fr) ou sur les [p
 - Tipragot
 
 <!-- Ajouter lien vers page des crédits -->
+
+## Bibliothèque utilisée
+
+Coloris : https://github.com/mdbassit/Coloris
+
+## Assets svg
+
+SVG Repo : https://www.svgrepo.com/
