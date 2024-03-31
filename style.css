@@ -317,3 +317,8 @@ body {
 option {
     font-family: "Arial";
 }
+
+.hyperlink {
+    color: rgb(0, 132, 255);
+    text-decoration: none;
+}
