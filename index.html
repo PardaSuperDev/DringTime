@@ -9,14 +9,14 @@
     <script src="page.js"></script>
     <title>Sonneries</title>
      <meta charset="UTF-8"> 
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="assets/favicon.ico">
 </head>
 
 <body onload="setup();">
     <div id="settings_container">
         <div id="settings_icon_container">
             <a onclick="toggle_settings_bar();">
-                <img src="settings.svg" alt="settings">
+                <img src="assets/settings.svg" alt="settings">
             </a>
         </div>
         <div id="settings_bar">
@@ -39,12 +39,12 @@
                     <button class="stylized_button" style="margin-left: 5px; width: 40px; font-size: 25px;"
                         onclick="change_page('submit_new');"><b>+</b></button>
                     <button class="stylized_button" style="margin-left: 30px;" onclick="saveSettings();">
-                        <img src="save.svg" alt="save" id="save_icon" hidden>
-                        <img src="saved.svg" alt="saved" id="saved_icon">
+                        <img src="assets/save.svg" alt="save" id="save_icon" hidden>
+                        <img src="assets/saved.svg" alt="saved" id="saved_icon">
                     </button>
                     <button class="stylized_button" style="margin-left: 2px;" onclick="saveSettingsToClipboard();">
-                        <img src="clipboard-add.svg" alt="save" id="clipboard_save_icon" hidden>
-                        <img src="clipboard-saved.svg" alt="saved" id="clipboard_saved_icon">
+                        <img src="assets/clipboard-add.svg" alt="save" id="clipboard_save_icon" hidden>
+                        <img src="assets/clipboard-saved.svg" alt="saved" id="clipboard_saved_icon">
                     </button>
                 </div>
                 <div class="settings_bar_content">
@@ -120,8 +120,8 @@
                                     oninput="timers_modified();">
                             </div>
                         </div>
-                        <a class="add_timer_button" onclick="add_timers_row(0);"><img src="add.svg" alt="add line"></a>
-                        <a class="remove_line_button" onclick="remove_timers_row(0, this);"><img src="remove.svg"
+                        <a class="add_timer_button" onclick="add_timers_row(0);"><img src="assets/add.svg" alt="add line"></a>
+                        <a class="remove_line_button" onclick="remove_timers_row(0, this);"><img src="assets/remove.svg"
                                 alt="add line"></a>
                     </div>
                     <div class="day_column">
@@ -132,8 +132,8 @@
                                     oninput="timers_modified();">
                             </div>
                         </div>
-                        <a class="add_timer_button" onclick="add_timers_row(1);"><img src="add.svg" alt="add line"></a>
-                        <a class="remove_line_button" onclick="remove_timers_row(1, this);"><img src="remove.svg"
+                        <a class="add_timer_button" onclick="add_timers_row(1);"><img src="assets/add.svg" alt="add line"></a>
+                        <a class="remove_line_button" onclick="remove_timers_row(1, this);"><img src="assets/remove.svg"
                                 alt="add line"></a>
                     </div>
                     <div class="day_column">
@@ -144,8 +144,8 @@
                                     oninput="timers_modified();">
                             </div>
                         </div>
-                        <a class="add_timer_button" onclick="add_timers_row(2);"><img src="add.svg" alt="add line"></a>
-                        <a class="remove_line_button" onclick="remove_timers_row(2, this);"><img src="remove.svg"
+                        <a class="add_timer_button" onclick="add_timers_row(2);"><img src="assets/add.svg" alt="add line"></a>
+                        <a class="remove_line_button" onclick="remove_timers_row(2, this);"><img src="assets/remove.svg"
                                 alt="add line"></a>
                     </div>
                     <div class="day_column">
@@ -156,8 +156,8 @@
                                     oninput="timers_modified();">
                             </div>
                         </div>
-                        <a class="add_timer_button" onclick="add_timers_row(3);"><img src="add.svg" alt="add line"></a>
-                        <a class="remove_line_button" onclick="remove_timers_row(3, this);"><img src="remove.svg"
+                        <a class="add_timer_button" onclick="add_timers_row(3);"><img src="assets/add.svg" alt="add line"></a>
+                        <a class="remove_line_button" onclick="remove_timers_row(3, this);"><img src="assets/remove.svg"
                                 alt="add line"></a>
                     </div>
                     <div class="day_column">
@@ -168,8 +168,8 @@
                                     oninput="timers_modified();">
                             </div>
                         </div>
-                        <a class="add_timer_button" onclick="add_timers_row(4);"><img src="add.svg" alt="add line"></a>
-                        <a class="remove_line_button" onclick="remove_timers_row(4, this);"><img src="remove.svg"
+                        <a class="add_timer_button" onclick="add_timers_row(4);"><img src="assets/add.svg" alt="add line"></a>
+                        <a class="remove_line_button" onclick="remove_timers_row(4, this);"><img src="assets/remove.svg"
                                 alt="add line"></a>
                     </div>
                     <div class="day_column">
@@ -180,8 +180,8 @@
                                     oninput="timers_modified();">
                             </div>
                         </div>
-                        <a class="add_timer_button" onclick="add_timers_row(5);"><img src="add.svg" alt="add line"></a>
-                        <a class="remove_line_button" onclick="remove_timers_row(5, this);"><img src="remove.svg"
+                        <a class="add_timer_button" onclick="add_timers_row(5);"><img src="assets/add.svg" alt="add line"></a>
+                        <a class="remove_line_button" onclick="remove_timers_row(5, this);"><img src="assets/remove.svg"
                                 alt="add line"></a>
                     </div>
                     <div class="day_column">
@@ -192,8 +192,8 @@
                                     oninput="timers_modified();">
                             </div>
                         </div>
-                        <a class="add_timer_button" onclick="add_timers_row(6);"><img src="add.svg" alt="add line"></a>
-                        <a class="remove_line_button" onclick="remove_timers_row(6, this);"><img src="remove.svg"
+                        <a class="add_timer_button" onclick="add_timers_row(6);"><img src="assets/add.svg" alt="add line"></a>
+                        <a class="remove_line_button" onclick="remove_timers_row(6, this);"><img src="assets/remove.svg"
                                 alt="add line"></a>
                     </div>
                 </div>
