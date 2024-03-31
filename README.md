@@ -8,23 +8,23 @@ Le site est accéssible sur [dring-time.fr](https://dring-time.fr) ou sur les [p
 
 ## Page principale
 
-![main-screenshot](https://github.com/PardaSuperDev/DringTime/blob/Readme/.github/repo_assets/dring-time-screenshot-1.png?raw=true)
+![main-screenshot](https://github.com/PardaSuperDev/DringTime/blob/main/.github/repo_assets/dring-time-screenshot-1.png?raw=true)
 
 ### Possibilité de changer le thème
 
-![other-color-screenshot](https://github.com/PardaSuperDev/DringTime/blob/Readme/.github/repo_assets/dring-time-screenshot-2.png?raw=true)
+![other-color-screenshot](https://github.com/PardaSuperDev/DringTime/blob/main/.github/repo_assets/dring-time-screenshot-2.png?raw=true)
 
 ### Cliquer sur un des timers pour se concentrer dessus
 
-![timer-focus-screenshot](https://github.com/PardaSuperDev/DringTime/blob/Readme/.github/repo_assets/dring-time-screenshot-3.png?raw=true)
+![timer-focus-screenshot](https://github.com/PardaSuperDev/DringTime/blob/main/.github/repo_assets/dring-time-screenshot-3.png?raw=true)
 
 ### Possibilité de changer le canal de sonneries
 
-![provider-select-screenshot](https://github.com/PardaSuperDev/DringTime/blob/Readme/.github/repo_assets/dring-time-provider-selection-screenshot.png?raw=true)
+![provider-select-screenshot](https://github.com/PardaSuperDev/DringTime/blob/main/.github/repo_assets/dring-time-provider-selection-screenshot.png?raw=true)
 
 ### Changement de toutes les couleurs facile
 
-![other-color-screenshot](https://github.com/PardaSuperDev/DringTime/blob/Readme/.github/repo_assets/dring-time-color-selection-screenshot.png?raw=true)
+![other-color-screenshot](https://github.com/PardaSuperDev/DringTime/blob/main/.github/repo_assets/dring-time-color-selection-screenshot.png?raw=true)
 
 # Crédits
 
