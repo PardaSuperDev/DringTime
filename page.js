@@ -262,6 +262,15 @@ function save_new_timers() {
 
 }
 
+function connectAccountClicked() {
+    var emailInput = document.getElementById("account_email_input");
+    var passwordInput = document.getElementById("account_password_input");
+
+    console.log(emailInput.value, passwordInput.value);
+
+    
+}
+
 async function publishAlarms() {
     var timerNameInput = document.getElementById("new_timers_name_input");
     var resultLabel = document.getElementById("new_timers_save_result_label");

@@ -65,7 +65,7 @@
                 <div class="settings_bar_content">
                     <button class="stylized_button" onclick="change_page('account_connection_page');">
                         <img src="assets/user_icon.svg" alt="credits_icon">
-                        Se Connecter
+                        Compte
                     </button>
 
                     <button class="stylized_button" onclick="change_page('credits_page');">
@@ -255,7 +255,19 @@
         </div>
 
         <div id="account_connection_page" class="page" style="display: none; opacity: 0;">
-            account
+            <div style="justify-content: center;">
+                <h2>Se connecter</h2>
+
+                <div>
+                    <p>Email : <input type="text" style="margin-left: 7.5ch; display: inline;" class="stylized_button outlined_button" id="account_email_input"></p>
+                    <p>Mot de passe : <input type="password" class="stylized_button outlined_button" style="display: inline;" id="account_password_input"></p>
+                </div>
+                <button class="stylized_button outlined_button" style="display: flex; margin-left: auto; margin-right: auto; margin-bottom: 30px;" onclick="connectAccountClicked();">Valider</button>
+
+            </div>
+            
+            Pas de Compte ?
+            <button class="stylized_button" style="display: inline; color:rgb(0, 132, 255);">Créer un compte</button>
 
             <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
                 style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
