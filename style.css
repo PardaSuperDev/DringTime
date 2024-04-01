@@ -81,7 +81,7 @@ body {
     position: absolute;
     display: flex;
     z-index: 9;
-    height: 150px;
+    height: 170px;
 }
 
 #settings_bar {
@@ -110,6 +110,7 @@ body {
     min-width: max-content;
     margin-top: 5px;
     margin-bottom: 5px;
+    width: 100%;
 }
 
 .centered_text {

@@ -60,8 +60,15 @@
                             onchange="secondsEnableInputToggled(this);">
                         <div class="slider"></div>
                     </label>
+                </div>
 
-                    <button class="stylized_button" style="margin-left: 135px;" onclick="change_page('credits_page');">
+                <div class="settings_bar_content">
+                    <button class="stylized_button" onclick="change_page('account_connection_page');">
+                        <img src="assets/user_icon.svg" alt="credits_icon">
+                        Se Connecter
+                    </button>
+
+                    <button class="stylized_button" onclick="change_page('credits_page');">
                         <img src="assets/credits-icon.svg" alt="credits_icon">
                         Crédits
                     </button>
@@ -242,6 +249,13 @@
                     class="hyperlink" target="_blank" rel="noopener noreferrer">github.com/PardaSuperDev/DringTime</a>
             </h3>
 
+
+            <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
+                style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
+        </div>
+
+        <div id="account_connection_page" class="page" style="display: none; opacity: 0;">
+            account
 
             <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
                 style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
