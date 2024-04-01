@@ -34,6 +34,8 @@ window.textRenderingType = "ClearType";
 window.currentTime = new Date();
 window.lastTimeUpdate = 0;
 
+var cursorLastMoveDelay = 0;
+
 function convertTimeToSeconds(time) {
     let hours = parseInt(time.substring(0, 2));
     let minutes = parseInt(time.substring(3, 5));
@@ -69,6 +71,7 @@ function setup() {
     fullScreenEnableInputToggled(document.getElementById("slider-fullscreen"));
     load_settings_from_url();
     updateTimeFromServer();
+    setupCursorMoveDetection();
 }
 
 function adjustCss() {
@@ -80,8 +83,8 @@ function adjustCss() {
         textRenderingType = "FreeType";
     }
 }
+
 function change_page(page) {
-    
     if (page !== window.page) {
         var oldPage = document.getElementById(window.page);
         var newPage = document.getElementById(page);
@@ -104,6 +107,22 @@ function timers_modified() {
     if (window.onbeforeunload === null) {
         window.onbeforeunload = function () { return 'Sure?'; };
     }
+}
+
+function setupCursorMoveDetection() {
+    // Enregistre l'evenement de déplacement de la souris
+    window.addEventListener("mousemove", () => {
+        cursorLastMoveDelay = 0;
+        document.body.style.cursor = "";
+    })
+
+    // Détecte toutes de 0.2 secondes si le delay avant de masquer est atteint
+    setInterval(() => {
+        if (cursorLastMoveDelay > 4 && document.body.style.cursor !== "none") {
+            document.body.style.cursor = "none";
+        }
+        cursorLastMoveDelay += 0.2;
+    }, 200)
 }
 
 async function updateTimeFromServer() {
