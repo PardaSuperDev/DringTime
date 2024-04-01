@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, getDocs, getDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { createUserWithEmailAndPassword, getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
 
 const firebaseConfig = {
     apiKey: "AIzaSyADkVmRSqXomcAa7UkazwPRR054seizJLo",
@@ -63,7 +63,31 @@ function createAccount(email, password) {
         });
 }
 
+async function connectAccount(email, password) {
+    const auth = getAuth();
+    var returnCode = 1;
+
+    var errorCode = null;
+    var errorMessage = null;
+    var user = null;
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Signed in 
+            user = userCredential.user;
+            console.log(user);
+            returnCode = 0;
+        })
+        .catch((error) => {
+            errorCode = error.code;
+            errorMessage = error.message;
+            console.log("error !!");
+        });
+
+    return [returnCode, returnCode == 0 ? user : (errorCode + ": " + errorMessage)];
+}
+
 window.getAlarmsList = getAlarmsList
 window.getAlarmsProviders = getAlarmsProviders
 window.sendNewAlarms = sendNewAlarms
 window.createAccount = createAccount
+window.connectAccount = connectAccount

@@ -262,13 +262,15 @@ function save_new_timers() {
 
 }
 
-function connectAccountClicked() {
+async function connectAccountClicked() {
     var emailInput = document.getElementById("account_email_input");
     var passwordInput = document.getElementById("account_password_input");
 
     console.log(emailInput.value, passwordInput.value);
 
-    
+    const connectionResult = await window.connectAccount()
+
+    console.log(connectionResult);
 }
 
 async function publishAlarms() {
