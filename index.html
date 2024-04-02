@@ -22,46 +22,46 @@
         <div id="settings_bar">
             <div id="settings_bar_container_lines">
                 <div class="settings_bar_content">
-                    <button class="stylized_button" onclick="setColor('labels')">
+                    <button class="stylized_button" onclick="setColor('labels')" title="Changer la couleur du texte">
                         <input type="button" class="hidden_input" id="choose_labels_color" data-coloris value="#FFFFFF">
                         <span class="color_label">texte</span>
                     </button>
-                    <button class="stylized_button" onclick="setColor('background')">
+                    <button class="stylized_button" onclick="setColor('background')" title="Changer la couleur du fond">
                         <input type="button" class="hidden_input" id="choose_background_color" data-coloris
                             value="#000000">
                         <span class="color_label">fond</span>
                     </button>
                     <p style="margin-left: 5px; color: white;">Lieu: </p>
                     <select name="AlarmsProvider" onChange="changeProvider(this);" class="stylized_button"
-                        id="alarm_providers_combo" style="max-width: 8em; min-width: 8em">
+                        id="alarm_providers_combo" style="max-width: 8em; min-width: 8em" title="Nom du canal des sonneries">
                         <option value="">Non select.</option>
                     </select>
                     <button class="stylized_button" style="margin-left: 5px; width: 40px; font-size: 25px;"
-                        onclick="change_page('submit_new_page');"><b>+</b></button>
-                    <button class="stylized_button" style="margin-left: 30px;" onclick="saveSettings();">
+                        onclick="change_page('submit_new_page');" title="Créer des sonneries"><b>+</b></button>
+                    <button class="stylized_button" style="margin-left: 30px;" onclick="saveSettings();" title="Enregistrer les paramètres">
                         <img src="assets/save.svg" alt="save" id="save_icon" hidden>
                         <img src="assets/saved.svg" alt="saved" id="saved_icon">
                     </button>
-                    <button class="stylized_button" style="margin-left: 2px;" onclick="saveSettingsToClipboard();">
+                    <button class="stylized_button" style="margin-left: 2px;" onclick="saveSettingsToClipboard();" title="Copier les paramètres en URL">
                         <img src="assets/clipboard-add.svg" alt="save" id="clipboard_save_icon" hidden>
                         <img src="assets/clipboard-saved.svg" alt="saved" id="clipboard_saved_icon">
                     </button>
                 </div>
                 <div class="settings_bar_content">
                     <span class="centered_text not_custom_text_color">Plein ecran</span>
-                    <label class="slider-container" for="slider-fullscreen">
+                    <label class="slider-container" for="slider-fullscreen" title="Plein écran lorsque l'on clique sur un timer">
                         <input type="checkbox" class="slider-input" name="slider-fullscreen" id="slider-fullscreen"
                             onchange="fullScreenEnableInputToggled(this);">
                         <div class="slider"></div>
                     </label>
                     <span class="centered_text not_custom_text_color">Secondes</span>
-                    <label class="slider-container" for="slider-seconds">
+                    <label class="slider-container" for="slider-seconds" title="Afficher les heures lorsque le temps - 1h">
                         <input type="checkbox" class="slider-input" name="slider-seconds" id="slider-seconds"
                             onchange="secondsEnableInputToggled(this);">
                         <div class="slider"></div>
                     </label>
 
-                    <button class="stylized_button" style="margin-left: 135px;" onclick="change_page('credits_page');">
+                    <button class="stylized_button" style="margin-left: 135px;" onclick="change_page('credits_page');" title="Voir les crédits du site">
                         <img src="assets/credits-icon.svg" alt="credits_icon">
                         Crédits
                     </button>
@@ -113,8 +113,8 @@
             <div class="new_timers_settings_container">
                 <input type="text" list="browsers" class="stylized_button outlined_button" id="new_timers_name_input"
                     value="Mes-Sonneries" maxlength=24 minlength=5>
-                <button class="stylized_button outlined_button" onclick="save_new_timers();">Enr. local</button>
-                <button class="stylized_button outlined_button" onclick="publishAlarms();">Publier</button>
+                <button class="stylized_button outlined_button" onclick="save_new_timers();" title="Enregistrer les sonneries">Enr. local</button>
+                <button class="stylized_button outlined_button" onclick="publishAlarms();" title="Publier les sonneries sur le cloud (accessible à tout le monde)">Publier</button>
                 <span id="new_timers_save_result_label"></span>
             </div>
             <div class="timers_table_container">
