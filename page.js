@@ -268,14 +268,17 @@ async function connectAccountClicked() {
 
     var infoBox = document.getElementById("connection_info_label");
 
-    console.log(emailInput.value, passwordInput.value);
-
-    const connectionResult = await window.connectAccount()
+    const connectionResult = await window.connectAccount(emailInput.value, passwordInput.value);
 
     console.log(connectionResult);
 
-    infoBox.innerText = connectionResult[1];
-    infoBox.style = "display: flex;";
+    if (connectionResult[0] == 1) {
+        infoBox.innerText = connectionResult[1];
+        infoBox.style = "display: flex;";
+    } else {
+        infoBox.innerText = "Connecté !";
+        infoBox.style = "display: flex; background-color: rgb(0, 117, 25); outline-color: green;";
+    }
 }
 
 async function publishAlarms() {

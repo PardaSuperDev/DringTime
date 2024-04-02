@@ -70,7 +70,8 @@ async function connectAccount(email, password) {
     var errorCode = null;
     var errorMessage = null;
     var user = null;
-    signInWithEmailAndPassword(auth, email, password)
+    console.log(email);
+    await signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Signed in 
             user = userCredential.user;
@@ -83,7 +84,7 @@ async function connectAccount(email, password) {
             console.log("error !!");
         });
 
-    return [returnCode, returnCode == 0 ? user : (errorCode + ": " + errorMessage)];
+    return [returnCode, returnCode == 0 ? user : errorCode];
 }
 
 window.getAlarmsList = getAlarmsList
