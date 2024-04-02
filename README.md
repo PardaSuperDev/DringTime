@@ -2,7 +2,7 @@
 
 Dring time est un site Internet qui vous indique dans combien de temps est ce que la sonnerie va retentir. Cela vous permet de tout le temps savoir quand est la prochaine sonnerie.
 
-Le site est accéssible sur [dring-time.fr](https://dring-time.fr) ou sur les [pages github](https://pardasuperdev.github.io/DringTime/).
+Le site est accessible sur [dring-time.fr](https://dring-time.fr) ou sur les [pages github](https://pardasuperdev.github.io/DringTime/).
 
 # Illustrations
 
@@ -10,7 +10,7 @@ Le site est accéssible sur [dring-time.fr](https://dring-time.fr) ou sur les [p
 
 ![main-screenshot](https://github.com/PardaSuperDev/DringTime/blob/main/.github/repo_assets/dring-time-screenshot-1.png?raw=true)
 
-### Possibilité de changer le thème
+### Possibilitée de changer le thème
 
 ![other-color-screenshot](https://github.com/PardaSuperDev/DringTime/blob/main/.github/repo_assets/dring-time-screenshot-2.png?raw=true)
 
@@ -18,7 +18,7 @@ Le site est accéssible sur [dring-time.fr](https://dring-time.fr) ou sur les [p
 
 ![timer-focus-screenshot](https://github.com/PardaSuperDev/DringTime/blob/main/.github/repo_assets/dring-time-screenshot-3.png?raw=true)
 
-### Possibilité de changer le canal de sonneries
+### Possibilitée de changer le canal de sonneries
 
 ![provider-select-screenshot](https://github.com/PardaSuperDev/DringTime/blob/main/.github/repo_assets/dring-time-provider-selection-screenshot.png?raw=true)
 
