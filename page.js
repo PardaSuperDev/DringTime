@@ -35,6 +35,7 @@ window.currentTime = new Date();
 window.lastTimeUpdate = 0;
 
 var cursorLastMoveDelay = 0;
+var lastTimeUpdateEpoch = (new Date()).getTime();
 
 function convertTimeToSeconds(time) {
     let hours = parseInt(time.substring(0, 2));
@@ -497,8 +498,13 @@ function secondsEnableInputToggled(elem) {
     }
 }
 
-async function update(deltaTime) {
+async function update() {
     /** Fonction appelée de manière régulière pour mettre à jour les timers.*/
+    var currentTime = (new Date()).getTime();
+
+    var deltaTime = (currentTime-lastTimeUpdateEpoch)/1000;
+
+    lastTimeUpdateEpoch = currentTime;
 
     window.currentTime.setMilliseconds(window.currentTime.getMilliseconds() + deltaTime * 1000);
     window.lastTimeUpdate += deltaTime;
@@ -826,4 +832,4 @@ Coloris({
 
 // Lance l'execution régulière de `update()`. 
 // Le timeout est de 200 ms pour éviter la désincronisation et avoir une grande précision des secondes.
-setInterval(() => { update(0.2) }, 200);
+setInterval(() => { update() }, 200);
