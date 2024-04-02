@@ -738,6 +738,7 @@ function load_settings_from_url() {
                     if (settingsValue.startsWith("r-") || settingsValue.startsWith("l-")) {
                         window.alarmsProvider = settingsValue;
                         needSave = true;
+                        updateAlarms();
                     } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
                     break;
                 case ("enable_fullscreen"):
