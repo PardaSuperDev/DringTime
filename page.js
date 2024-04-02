@@ -266,11 +266,16 @@ async function connectAccountClicked() {
     var emailInput = document.getElementById("account_email_input");
     var passwordInput = document.getElementById("account_password_input");
 
+    var infoBox = document.getElementById("connection_info_label");
+
     console.log(emailInput.value, passwordInput.value);
 
     const connectionResult = await window.connectAccount()
 
     console.log(connectionResult);
+
+    infoBox.innerText = connectionResult[1];
+    infoBox.style = "display: flex;";
 }
 
 async function publishAlarms() {
