@@ -15,7 +15,7 @@
         #game {
             width: 100vw;
             height: 100vh;
-            background-color: black;
+            background-color: transparent;
             display: flex;
         }
     </style>
@@ -117,10 +117,10 @@
                 bot_pad_passed = false;
                 score = 0;
             }
-            if (ball_y > 1 / 2) {
+            if (ball_y > 1 / 2 - 1/20) {
                 ball_dir = -ball_dir;
             }
-            if (ball_y < -1 / 2) {
+            if (ball_y < -1 / 2 + 1/20) {
                 ball_dir = -ball_dir;
             }
 
@@ -173,21 +173,21 @@
             const height = window.innerHeight
             const width = height * 1.1;
 
+            var elementColor=getComputedStyle(window.top.document.body,"")["color"];
 
             // Draw a rectangle
-            ctx.fillStyle = 'white';
+            ctx.fillStyle = elementColor;
             ctx.fillRect(window.innerWidth / 2 - width / 1.5 - width / 20, player_pad_y * height, width / 20, height / 5);
 
             ctx.fillRect(window.innerWidth / 2 + width / 1.5, bot_pad_y * height, width / 20, height / 5);
 
             ctx.beginPath();
             ctx.arc(ball_x * width + window.innerWidth / 2, ball_y * height + window.innerHeight / 2, height / 20, 0, 2 * Math.PI, false);
-            ctx.fillStyle = 'white';
             ctx.fill();
 
             // Render the score
             ctx.font = "48px Arial";
-            ctx.fillText("Score : " + score, 10, 50);
+            ctx.fillText("Score : " + score, 10, window.innerHeight-28);
         }
 
         function update(timeStamp) {

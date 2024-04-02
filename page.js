@@ -31,6 +31,8 @@ window.remoteProviderList = [];
 window.localProviderList = [];
 window.page = "timers"
 
+window.game_started = true; // Remplacer par false
+
 function convertTimeToSeconds(time) {
     let hours = parseInt(time.substring(0, 2));
     let minutes = parseInt(time.substring(3, 5));
@@ -406,6 +408,9 @@ async function updateProvidersCombo() {
 function toggle_settings_bar() {
     let settingsBar = document.getElementById("settings_bar");
     let settingsIcon = document.getElementById("settings_icon_container");
+
+    let gameIframe = document.getElementById("game_iframe");
+
     if (window.settings_opened) {
         settingsBar.style = "width: 0px";
         if (window.toggled_view) {
@@ -413,6 +418,7 @@ function toggle_settings_bar() {
         } else {
             settingsIcon.style = "opacity: 1"
         }
+        if (game_started) gameIframe.focus();
     } else {
         settingsBar.style = "width: var(--max-settings-bar-lenght)";
         settingsIcon.style = "opacity: 1"
@@ -644,6 +650,14 @@ async function loadSettings() {
         }
     }
 }
+
+window.addEventListener("click", () => {
+    if (!settings_opened && game_started) setTimeout(() => {
+        let gameIframe = document.getElementById("game_iframe");
+
+        gameIframe.focus()
+    }, 10);
+})
 
 // Paramètre les éléments Coloris
 Coloris({
