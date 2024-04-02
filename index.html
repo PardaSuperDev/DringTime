@@ -15,53 +15,53 @@
 <body onload="setup();">
     <div id="settings_container">
         <div id="settings_icon_container">
-            <a onclick="toggle_settings_bar();">
+            <a title="Ouvrir les paramètres" onclick="toggle_settings_bar();">
                 <img src="assets/settings.svg" alt="settings">
             </a>
         </div>
         <div id="settings_bar">
             <div id="settings_bar_container_lines">
                 <div class="settings_bar_content">
-                    <button class="stylized_button" onclick="setColor('labels')">
+                    <button class="stylized_button" title="Modifier la couleur des textes" onclick="setColor('labels')">
                         <input type="button" class="hidden_input" id="choose_labels_color" data-coloris value="#FFFFFF">
                         <span class="color_label">texte</span>
                     </button>
-                    <button class="stylized_button" onclick="setColor('background')">
+                    <button class="stylized_button" title="Modifier la couleur du fond" onclick="setColor('background')">
                         <input type="button" class="hidden_input" id="choose_background_color" data-coloris
                             value="#000000">
                         <span class="color_label">fond</span>
                     </button>
                     <p style="margin-left: 5px; color: white;">Lieu: </p>
-                    <select name="AlarmsProvider" onChange="changeProvider(this);" class="stylized_button"
+                    <select name="AlarmsProvider" title="Choisir le fournisseur d'alarmes" onChange="changeProvider(this);" class="stylized_button"
                         id="alarm_providers_combo" style="max-width: 8em; min-width: 8em">
                         <option value="">Non select.</option>
                     </select>
-                    <button class="stylized_button" style="margin-left: 5px; width: 40px; font-size: 25px;"
+                    <button class="stylized_button" style="margin-left: 5px; width: 40px; font-size: 25px;" title="Créer une nouvelle sonnerie"
                         onclick="change_page('submit_new_page');"><b>+</b></button>
-                    <button class="stylized_button" style="margin-left: 30px;" onclick="saveSettings();">
+                    <button class="stylized_button" style="margin-left: 30px;" title="Enregistrer les paramètres" onclick="saveSettings();">
                         <img src="assets/save.svg" alt="save" id="save_icon" hidden>
                         <img src="assets/saved.svg" alt="saved" id="saved_icon">
                     </button>
-                    <button class="stylized_button" style="margin-left: 2px;" onclick="saveSettingsToClipboard();">
+                    <button class="stylized_button" style="margin-left: 2px;" title="Créer un lien pour ces paramètres" onclick="saveSettingsToClipboard();">
                         <img src="assets/clipboard-add.svg" alt="save" id="clipboard_save_icon" hidden>
                         <img src="assets/clipboard-saved.svg" alt="saved" id="clipboard_saved_icon">
                     </button>
                 </div>
                 <div class="settings_bar_content">
                     <span class="centered_text not_custom_text_color">Plein ecran</span>
-                    <label class="slider-container" for="slider-fullscreen">
+                    <label class="slider-container" for="slider-fullscreen" title="Activer/Désactiver le mode plein écran">
                         <input type="checkbox" class="slider-input" name="slider-fullscreen" id="slider-fullscreen"
                             onchange="fullScreenEnableInputToggled(this);">
                         <div class="slider"></div>
                     </label>
                     <span class="centered_text not_custom_text_color">Secondes</span>
-                    <label class="slider-container" for="slider-seconds">
+                    <label class="slider-container" for="slider-seconds" title="Activer/Désactiver l'affichage des secondes">
                         <input type="checkbox" class="slider-input" name="slider-seconds" id="slider-seconds"
                             onchange="secondsEnableInputToggled(this);">
                         <div class="slider"></div>
                     </label>
 
-                    <button class="stylized_button" style="margin-left: 135px;" onclick="change_page('credits_page');">
+                    <button class="stylized_button" style="margin-left: 135px;" title="Afficher les Crédits" onclick="change_page('credits_page');">
                         <img src="assets/credits-icon.svg" alt="credits_icon">
                         Crédits
                     </button>
@@ -127,7 +127,7 @@
                                     oninput="timers_modified();">
                             </div>
                         </div>
-                        <a class="add_timer_button" onclick="add_timers_row(0);"><img src="assets/add.svg"
+                        <a class="add_timer_button"  onclick="add_timers_row(0);"><img src="assets/add.svg"
                                 alt="add line"></a>
                         <a class="remove_line_button" onclick="remove_timers_row(0, this);"><img src="assets/remove.svg"
                                 alt="add line"></a>
