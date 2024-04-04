@@ -36,6 +36,14 @@ window.lastTimeUpdate = 0;
 
 var cursorLastMoveDelay = 0;
 
+var user = null;
+
+const connectionResultsDict = {
+    "auth/invalid-email": "Email Invalide",
+    "auth/missing-password": "Mot de passe non renseigné",
+    "auth/invalid-credential": "Informations invalides",
+};
+
 function convertTimeToSeconds(time) {
     let hours = parseInt(time.substring(0, 2));
     let minutes = parseInt(time.substring(3, 5));
@@ -273,7 +281,7 @@ async function connectAccountClicked() {
     console.log(connectionResult);
 
     if (connectionResult[0] == 1) {
-        infoBox.innerText = connectionResult[1];
+        infoBox.innerText = connectionResult[1] in connectionResultsDict ? connectionResultsDict[connectionResult[1]] : connectionResult[1];
         infoBox.style = "display: flex;";
     } else {
         infoBox.innerText = "Connecté !";
