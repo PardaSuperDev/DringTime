@@ -284,6 +284,7 @@ async function connectAccountClicked() {
         infoBox.innerText = connectionResult[1] in connectionResultsDict ? connectionResultsDict[connectionResult[1]] : connectionResult[1];
         infoBox.style = "display: flex;";
     } else {
+        user = connectionResult[1];
         infoBox.innerText = "Connecté !";
         infoBox.style = "display: flex; background-color: rgb(0, 117, 25); outline-color: green;";
     }
@@ -302,15 +303,21 @@ async function publishAlarms() {
     }
 
     if (concatenatedData[0]) {
-        try {
-            await window.sendNewAlarms(timerNameInput.value, concatenatedData[1]);
-            resultLabel.innerText = "Les sonneries ont bien été envoyé !";
-            resultLabel.style = "color: green;";
-            window.onbeforeunload = null;
-        } catch (e) {
+        if (user === null) {
             console.warn("Impossible de publier les sonneries : " + e.message);
-            resultLabel.innerText = "Ce nom de sonnerie semble déja utilisé.";
+            resultLabel.innerText = "Merci de vous connecter dans les paramètres.";
             resultLabel.style = "color: red;";
+        } else {
+            try {
+                await window.sendNewAlarms(timerNameInput.value, concatenatedData[1]);
+                resultLabel.innerText = "Les sonneries ont bien été envoyé !";
+                resultLabel.style = "color: green;";
+                window.onbeforeunload = null;
+            } catch (e) {
+                console.warn("Impossible de publier les sonneries : " + e.message);
+                resultLabel.innerText = "Ce nom de sonnerie semble déja utilisé.";
+                resultLabel.style = "color: red;";
+            }
         }
     } else {
         resultLabel.innerText = "Des horaires sont invalides !";
