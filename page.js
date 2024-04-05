@@ -311,7 +311,7 @@ async function publishAlarms() {
         } else {
             try {
                 await window.sendNewAlarms(timerNameInput.value, concatenatedData[1]);
-                resultLabel.innerText = "Les sonneries ont bien été envoyé !";
+                resultLabel.innerText = "Les sonneries ont bien été envoyées !";
                 resultLabel.style = "color: green;";
                 window.onbeforeunload = null;
             } catch (e) {
