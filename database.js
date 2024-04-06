@@ -30,6 +30,7 @@ export async function getAlarmsProviders() {
 async function sendNewAlarms(name, data) {
     await setDoc(doc(db, "horaires-sonneries", name), {
         data: data,
+        user_uid: user_uid,
     });
 }
 
@@ -75,7 +76,8 @@ async function connectAccount(email, password) {
         .then((userCredential) => {
             // Signed in 
             user = userCredential.user;
-            console.log(user);
+            user_uid = user.uid;
+
             returnCode = 0;
         })
         .catch((error) => {
@@ -92,3 +94,4 @@ window.getAlarmsProviders = getAlarmsProviders
 window.sendNewAlarms = sendNewAlarms
 window.createAccount = createAccount
 window.connectAccount = connectAccount
+var user_uid = "";
