@@ -305,7 +305,7 @@ async function publishAlarms() {
 
     if (concatenatedData[0]) {
         if (user === null) {
-            console.warn("Impossible de publier les sonneries : " + e.message);
+            console.warn("Merci de vous connecter dans les paramètres avant d'envoyer des sonneries.");
             resultLabel.innerText = "Merci de vous connecter dans les paramètres.";
             resultLabel.style = "color: red;";
         } else {
