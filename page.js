@@ -271,6 +271,10 @@ function save_new_timers() {
 
 }
 
+async function createAccountClicked() {
+    // TODO
+}
+
 async function connectAccountClicked() {
     var emailInput = document.getElementById("account_email_input");
     var passwordInput = document.getElementById("account_password_input");
