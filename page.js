@@ -272,7 +272,21 @@ function save_new_timers() {
 }
 
 async function createAccountClicked() {
-    // TODO
+    var emailInput = document.getElementById("account_create_email_input");
+    var passwordInput = document.getElementById("account_create_password_input");
+    var passwordConfirmInput = document.getElementById("account_confirm_password_input");
+
+    var infoBox = document.getElementById("account_creation_info_label");
+
+    if (passwordInput.value !== passwordConfirmInput) {
+        infoBox.innerText = "Mots de passe non identiques";
+        infoBox.style = "display: flex;";
+        return;
+    }
+
+    const connectionResult = await window.createAccount(emailInput.value, passwordInput.value);
+
+    console.log(connectionResult);
 }
 
 async function connectAccountClicked() {
