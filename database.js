@@ -51,17 +51,27 @@ async function getAlarmsList(name) {
 
 function createAccount(email, password) {
     const auth = getAuth();
+    var returnCode = 1;
+
+    var errorCode = null;
+    var errorMessage = null;
+    var user = null;
+
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Signed up 
-            const user = userCredential.user;
-            console.log(user);
+            user = userCredential.user;
+            user_uid = user.uid;
+
+            returnCode = 0;
         })
         .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode, errorMessage);
+            errorCode = error.code;
+            errorMessage = error.message;
+            console.log("error !!");
         });
+    
+    return [returnCode, returnCode == 0 ? user : errorCode];
 }
 
 async function connectAccount(email, password) {
