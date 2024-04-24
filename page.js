@@ -43,6 +43,8 @@ const connectionResultsDict = {
     "auth/invalid-email": "Email Invalide",
     "auth/missing-password": "Mot de passe non renseigné",
     "auth/invalid-credential": "Informations invalides",
+    "auth/weak-password": "Le mot de passe doit faire au moins 6 charactères",
+    "auth/email-already-in-use": "Email déjà utilisé",
 };
 
 function convertTimeToSeconds(time) {
@@ -287,6 +289,15 @@ async function createAccountClicked() {
     const connectionResult = await window.createAccount(emailInput.value, passwordInput.value);
 
     console.log(connectionResult);
+
+    if (connectionResult[0] == 1) {
+        infoBox.innerText = connectionResult[1] in connectionResultsDict ? connectionResultsDict[connectionResult[1]] : connectionResult[1];
+        infoBox.style = "display: flex;";
+    } else {
+        user = connectionResult[1];
+        infoBox.innerText = "Connecté !";
+        infoBox.style = "display: flex; background-color: rgb(0, 117, 25); outline-color: green;";
+    }
 }
 
 async function connectAccountClicked() {

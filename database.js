@@ -49,7 +49,7 @@ async function getAlarmsList(name) {
     return alarms;
 }
 
-function createAccount(email, password) {
+async function createAccount(email, password) {
     const auth = getAuth();
     var returnCode = 1;
 
@@ -57,7 +57,7 @@ function createAccount(email, password) {
     var errorMessage = null;
     var user = null;
 
-    createUserWithEmailAndPassword(auth, email, password)
+    await createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Signed up 
             user = userCredential.user;
@@ -71,6 +71,7 @@ function createAccount(email, password) {
             console.log("error !!");
         });
     
+    console.log(returnCode, user, errorCode);
     return [returnCode, returnCode == 0 ? user : errorCode];
 }
 
