@@ -278,7 +278,7 @@ async function createAccountClicked() {
 
     var infoBox = document.getElementById("account_creation_info_label");
 
-    if (passwordInput.value !== passwordConfirmInput) {
+    if (passwordInput.value !== passwordConfirmInput.value) {
         infoBox.innerText = "Mots de passe non identiques";
         infoBox.style = "display: flex;";
         return;
