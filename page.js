@@ -323,7 +323,12 @@ async function connectAccountClicked() {
     infoBox.innerText = "Connection...";
     infoBox.style = "display: flex; background-color: rgb(213, 159, 0); outline-color: rgb(168, 126, 0);";
 
-    if (emailInput.value.toLowerCase() === "never gonna" && passwordInput.value.toLowerCase() === "give you up") { window.location = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; return; }
+    if (emailInput.value.toLowerCase() === "never gonna" && passwordInput.value.toLowerCase() === "give you up") {
+        emailInput.value = "";
+        passwordInput.value = "";
+        window.location = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; 
+        return; 
+    }
 
     const connectionResult = await window.connectAccount(emailInput.value, passwordInput.value);
 
