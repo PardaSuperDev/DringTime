@@ -286,6 +286,9 @@ async function createAccountClicked() {
         return;
     }
 
+    infoBox.innerText = "Création du compte...";
+    infoBox.style = "display: flex; background-color: rgb(213, 159, 0); outline-color: rgb(168, 126, 0);";
+
     const connectionResult = await window.createAccount(emailInput.value, passwordInput.value);
 
     console.log(connectionResult);
@@ -305,6 +308,9 @@ async function connectAccountClicked() {
     var passwordInput = document.getElementById("account_password_input");
 
     var infoBox = document.getElementById("connection_info_label");
+
+    infoBox.innerText = "Connection...";
+    infoBox.style = "display: flex; background-color: rgb(213, 159, 0); outline-color: rgb(168, 126, 0);";
 
     const connectionResult = await window.connectAccount(emailInput.value, passwordInput.value);
 
