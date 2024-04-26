@@ -273,6 +273,17 @@ function save_new_timers() {
 
 }
 
+function manageAccountClicked() {
+    if (window.user != null) {
+        let mailTitle = document.getElementById("acount_manage_email_title");
+
+        mailTitle.innerText = window.user.email;
+        change_page("account_manage_page");
+    } else {
+        change_page("account_connection_page");
+    }
+}
+
 async function createAccountClicked() {
     var emailInput = document.getElementById("account_create_email_input");
     var passwordInput = document.getElementById("account_create_password_input");

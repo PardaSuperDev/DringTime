@@ -338,3 +338,7 @@ option {
     margin-right: auto;
     margin-left: auto;
 }
+
+#acount_manage_email_title {
+    color: lightgray;
+}

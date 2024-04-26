@@ -63,7 +63,7 @@
                 </div>
 
                 <div class="settings_bar_content">
-                    <button class="stylized_button" onclick="change_page('account_connection_page');" title="Gérer son compte">
+                    <button class="stylized_button" onclick="manageAccountClicked();" title="Gérer son compte">
                         <img src="assets/user_icon.svg" alt="credits_icon">
                         Compte
                     </button>
@@ -305,6 +305,15 @@
 
             <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
                 style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
+        </div>
+
+        <div id="account_manage_page" class="page" style="display: none; opacity: 0;">
+            <div style="justify-content: center;">
+            <h2>Vous êtes connecté au compte <span id="acount_manage_email_title">Pourquoi avez-vous cassé la page ?</span></h2>
+            
+            <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
+                style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
+            </div>
         </div>
 
     </div>
