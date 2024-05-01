@@ -125,17 +125,17 @@
                 // Calculate the extra rotation of the ball
                 let rotation_extra = (player_rect[1] - ball[1]) / player_rect[3] * 2
 
-                ball[3] = ball[3] + rotation_extra;
+                ball[3] = Math.PI - ball[3] - rotation_extra;
+                console.log(rotation_extra);
 
-                if (ball[3] - Math.PI > 0.3) {
-                    ball[3] = -0.3;
-                } else if (ball[3] - Math.PI < -0.3) {
-                    ball[3] = 0.3;
+                /*
+                if (ball[3] - Math.PI > max_extra_ball_rotation) {
+                    ball[3] = max_extra_ball_rotation;
+                } else if (ball[3] - Math.PI < -max_extra_ball_rotation) {
+                    ball[3] = -max_extra_ball_rotation;
                 } else {
-                    ball[3] = ball[3] - rotation_extra + Math.PI;
-                }
-
-                console.log(ball[3]);
+                    ball[3] += Math.PI;
+                }*/
 
                 ball[0] -= x_step;
                 ball[1] -= y_step;
@@ -149,15 +149,20 @@
 
                 console.log(rotation_extra);
 
-                ball[3] = ball[3] + rotation_extra;
+                ball[3] = Math.PI - ball[3] + rotation_extra;
 
-                if (ball[3] > 0.3) {
-                    ball[3] = 0.3 + Math.PI;
-                } else if (ball[3] < -0.3) {
-                    ball[3] = -0.3 + Math.PI;
+                /*
+                if (ball[3] > max_extra_ball_rotation) {
+                    ball[3] = Math.PI+max_extra_ball_rotation;
+                    console.log("a");
+                } else if (ball[3] < -max_extra_ball_rotation) {
+                    ball[3] = Math.PI-max_extra_ball_rotation;
+                    console.log("b");
                 } else {
-                    ball[3] = ball[3] - rotation_extra + Math.PI;
-                }
+                    ball[3] -= Math.PI;
+                    console.log("c");
+                }*/
+
                 ball[0] -= x_step;
                 ball[1] -= y_step;
             }
