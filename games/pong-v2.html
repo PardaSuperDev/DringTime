@@ -132,7 +132,7 @@
                 } else if (ball[3] - Math.PI < -0.3) {
                     ball[3] = 0.3;
                 } else {
-                    ball[3] = ball[3] + rotation_extra + Math.PI;
+                    ball[3] = ball[3] - rotation_extra + Math.PI;
                 }
 
                 console.log(ball[3]);
@@ -156,7 +156,7 @@
                 } else if (ball[3] < -0.3) {
                     ball[3] = -0.3 + Math.PI;
                 } else {
-                    ball[3] = ball[3] + rotation_extra + Math.PI;
+                    ball[3] = ball[3] - rotation_extra + Math.PI;
                 }
                 ball[0] -= x_step;
                 ball[1] -= y_step;
