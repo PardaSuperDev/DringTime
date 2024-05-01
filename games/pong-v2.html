@@ -46,13 +46,13 @@
         var score = 0;
 
 
-        var player_rect = [10, default_height / 2, 10, 100];
-        var bot_rect = [1480, default_height / 2, 10, 100];
+        var player_rect = [40, default_height / 2, 40, 250];
+        var bot_rect = [1460, default_height / 2, 40, 250];
 
-        var ball = [default_width / 2, default_height / 2, 20, Math.PI];
+        var ball = [default_width / 2, default_height / 2, 50, Math.PI];
 
         const player_speed = 400;
-        const ball_speed = 500;
+        const ball_speed = 800;
         const max_extra_ball_rotation = 0.8
 
         var ball_limit_passed = false;
@@ -197,17 +197,19 @@
 
             // Restart the game if the ball goes out of the screen at the left or at the right
             if (ball[0] < -ball[2]) {
-                player_rect = [10, default_height / 2, 10, 100];
-                bot_rect = [1480, default_height / 2, 10, 100];
-                ball = [default_width / 2, default_height / 2, 20, Math.PI];
+                player_rect = [40, default_height / 2, 40, 250];
+                bot_rect = [1460, default_height / 2, 40, 250];
+
+                ball = [default_width / 2, default_height / 2, 50, Math.PI];
 
                 score++;
                 ball_limit_passed = false;
             }
             if (ball[0] > default_width + ball[2]) {
-                player_rect = [10, default_height / 2, 10, 100];
-                bot_rect = [1480, default_height / 2, 10, 100];
-                ball = [default_width / 2, default_height / 2, 20, Math.PI];
+                player_rect = [40, default_height / 2, 40, 250];
+                bot_rect = [1460, default_height / 2, 40, 250];
+
+                ball = [default_width / 2, default_height / 2, 50, Math.PI];
 
                 score = 0;
                 ball_limit_passed = false;
