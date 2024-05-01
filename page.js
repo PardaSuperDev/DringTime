@@ -73,6 +73,11 @@ function setup() {
     updateTimeFromServer();
 }
 
+function updateGameIframeColor() {
+    var elementColor=getComputedStyle(window.top.document.body,"")["color"]
+    document.getElementById("game_iframe").contentWindow.postMessage({"color": elementColor});
+}
+
 function adjustCss() {
     // Si la plateforme n'est pas Windows, alors le système de rendu n'est pas ClearType et est donc en FreeType
     // On ajuste alors la font en coséquence
@@ -811,8 +816,8 @@ Coloris({
     margin: 30,
     defaultColor: "#FFFFFF",
     onChange: (color, input) => {
-        if (input.id === "choose_labels_color") document.documentElement.style.setProperty('--text-color', color);
-        else if (input.id === "choose_background_color") document.documentElement.style.setProperty('--background-color', color);
+        if (input.id === "choose_labels_color") {document.documentElement.style.setProperty('--text-color', color); updateGameIframeColor();}
+        else if (input.id === "choose_background_color") {document.documentElement.style.setProperty('--background-color', color)};
 
         askSave();
     }

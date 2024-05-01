@@ -10,14 +10,18 @@
             height: 100%;
             margin: 0px;
             display: flex;
-            background-color: black;
+            background-color: transparent;
         }
 
         #game {
-            width: 600px;
-            height: 450;
-            background-color: white;
-            display: flex;
+            margin: auto;
+			padding: 0;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+            background-color: transparent;
         }
     </style>
 </head>
@@ -26,6 +30,8 @@
     <canvas id="game"></canvas>
 
     <script>
+        var color = "#ffffff";
+
         const default_width = 1500;
         const default_height = 1000;
 
@@ -74,6 +80,29 @@
                 up_pressed = false;
             }
         });
+
+        window.addEventListener('resize', () => {
+			const windowWidth = window.innerWidth;
+			const windowHeight = window.innerHeight;
+			const height = (windowWidth / 16) * 9;
+
+			if (windowWidth < windowHeight) {
+				canvas.width = windowWidth;
+				canvas.height = height;
+				return;
+			} else if (windowWidth > windowHeight && height > windowHeight) {
+				canvas.width = (windowHeight / 9) * 16;
+				canvas.height = windowHeight;
+				return;
+			}
+
+			canvas.width = windowWidth;
+			canvas.height = height;
+		});
+
+		window.addEventListener('DOMContentLoaded', () => {
+			window.dispatchEvent(new Event('resize'));
+		});
 
         function circleRect(rx, ry, rw, rh, cx, cy, radius) {
             /**Code from : https://www.jeffreythompson.org/collision-detection/circle-rect.php*/
@@ -128,10 +157,11 @@
                 ball[3] = Math.PI - ball[3] - rotation_extra;
                 console.log(rotation_extra);
 
-                if (Math.sin(ball[3])>0.8) {
+                // TODO : Fix the code bellow
+                if (Math.sin(ball[3]) > 0.8) {
                     ball[3] = Math.PI + 0.8;
-                } else if (Math.sin(ball[3])<-0.8) {
-                    ball[3] = Math.PI-0.8;
+                } else if (Math.sin(ball[3]) < -0.8) {
+                    ball[3] = Math.PI - 0.8;
                 }
 
                 /*
@@ -157,9 +187,10 @@
 
                 ball[3] = Math.PI - ball[3] + rotation_extra;
 
-                if (Math.sin(ball[3])>0.8) {
+                // TODO : Fix the code bellow
+                if (Math.sin(ball[3]) > 0.8) {
                     ball[3] = Math.PI - 0.8;
-                } else if (Math.sin(ball[3])<-0.8) {
+                } else if (Math.sin(ball[3]) < -0.8) {
                     ball[3] = Math.PI + 0.8;
                 }
 
@@ -225,7 +256,7 @@
             ctx.fillStyle = 'white';
             ctx.clearRect(0, 0, default_width, default_height);
 
-            ctx.fillStyle = 'red';
+            ctx.fillStyle = color;
             // Render the player pad
             ctx.fillRect(player_rect[0] - player_rect[2] / 2, player_rect[1] - player_rect[3] / 2, player_rect[2], player_rect[3]);
 
@@ -249,6 +280,10 @@
 
             requestAnimationFrame(update);
         }
+
+        window.addEventListener("message", (event) => {
+            color = event["data"]["color"];
+        }, false);
 
         requestAnimationFrame(update);
 
