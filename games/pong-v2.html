@@ -21,6 +21,7 @@
 			bottom: 0;
 			left: 0;
 			right: 0;
+            height: 100%;
             background-color: transparent;
         }
     </style>
@@ -81,28 +82,6 @@
             }
         });
 
-        window.addEventListener('resize', () => {
-			const windowWidth = window.innerWidth;
-			const windowHeight = window.innerHeight;
-			const height = (windowWidth / 16) * 9;
-
-			if (windowWidth < windowHeight) {
-				canvas.width = windowWidth;
-				canvas.height = height;
-				return;
-			} else if (windowWidth > windowHeight && height > windowHeight) {
-				canvas.width = (windowHeight / 9) * 16;
-				canvas.height = windowHeight;
-				return;
-			}
-
-			canvas.width = windowWidth;
-			canvas.height = height;
-		});
-
-		window.addEventListener('DOMContentLoaded', () => {
-			window.dispatchEvent(new Event('resize'));
-		});
 
         function circleRect(rx, ry, rw, rh, cx, cy, radius) {
             /**Code from : https://www.jeffreythompson.org/collision-detection/circle-rect.php*/
