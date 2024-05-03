@@ -37,6 +37,8 @@ window.lastTimeUpdate = 0;
 var cursorLastMoveDelay = 0;
 var lastTimeUpdateEpoch = (new Date()).getTime();
 
+window.game_started = false; // Remplacer par false
+
 function convertTimeToSeconds(time) {
     let hours = parseInt(time.substring(0, 2));
     let minutes = parseInt(time.substring(3, 5));
@@ -74,6 +76,12 @@ function setup() {
     updateTimeFromServer();
     setupCursorMoveDetection();
 }
+
+function updateGameIframeColor() {
+    var elementColor=getComputedStyle(window.top.document.body,"")["color"]
+    document.getElementById("game_iframe").contentWindow.postMessage({"color": elementColor});
+}
+
 
 function adjustCss() {
     // Si la plateforme n'est pas Windows, alors le système de rendu n'est pas ClearType et est donc en FreeType
@@ -446,6 +454,9 @@ async function updateProvidersCombo() {
 function toggle_settings_bar() {
     let settingsBar = document.getElementById("settings_bar");
     let settingsIcon = document.getElementById("settings_icon_container");
+
+    let gameIframe = document.getElementById("game_iframe");
+
     if (window.settings_opened) {
         settingsBar.style = "width: 0px";
         if (window.toggled_view) {
@@ -453,6 +464,7 @@ function toggle_settings_bar() {
         } else {
             settingsIcon.style = "opacity: 1"
         }
+        if (game_started) gameIframe.focus();
     } else {
         settingsBar.style = "width: var(--max-settings-bar-lenght)";
         settingsIcon.style = "opacity: 1"
@@ -810,11 +822,33 @@ async function loadSettings() {
             // Met à jour les couleurs des sélécteurs
             document.querySelector('#choose_labels_color').dispatchEvent(new Event('input', { bubbles: true }));
             document.querySelector('#choose_background_color').dispatchEvent(new Event('input', { bubbles: true }));
+            
+            // Met à jour les couleurs du l'iframe
+            updateGameIframeColor();
 
             break;
         }
     }
 }
+
+function switchGamesActivation() {
+    /**Fonction secrete pour activer un pong. ;-) */
+    if (window.game_started) {
+        window.game_started = false;
+        document.getElementById("game_iframe").src = "";
+    } else {
+        window.game_started = true;
+        document.getElementById("game_iframe").src = "games/pong-v2.html";
+    }
+}
+
+window.addEventListener("click", () => {
+    if (!settings_opened && game_started) setTimeout(() => {
+        let gameIframe = document.getElementById("game_iframe");
+
+        gameIframe.focus()
+    }, 10);
+})
 
 // Paramètre les éléments Coloris
 Coloris({
@@ -823,8 +857,8 @@ Coloris({
     margin: 30,
     defaultColor: "#FFFFFF",
     onChange: (color, input) => {
-        if (input.id === "choose_labels_color") document.documentElement.style.setProperty('--text-color', color);
-        else if (input.id === "choose_background_color") document.documentElement.style.setProperty('--background-color', color);
+        if (input.id === "choose_labels_color") {document.documentElement.style.setProperty('--text-color', color); if (window.game_started) {updateGameIframeColor();}}
+        else if (input.id === "choose_background_color") {document.documentElement.style.setProperty('--background-color', color)};
 
         askSave();
     }

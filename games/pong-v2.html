@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pong</title>
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            display: flex;
+            background-color: transparent;
+        }
+
+        #game {
+            margin: auto;
+			padding: 0;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+            height: 100%;
+            background-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="game"></canvas>
+
+    <script>
+        var color = "#ffffff";
+
+        const default_width = 1500;
+        const default_height = 1000;
+
+        const canvas = document.getElementById("game");
+
+        /** @type {CanvasRenderingContext2D} */
+        const ctx = canvas.getContext("2d");
+
+        ctx.canvas.width = default_width;
+        ctx.canvas.height = default_height;
+
+
+        var down_pressed = false;
+        var up_pressed = false
+
+        var lastTimeStamp = 0;
+
+        var score = 0;
+
+
+        var player_rect = [40, default_height / 2, 40, 250];
+        var bot_rect = [1460, default_height / 2, 40, 250];
+
+        var ball = [default_width / 2, default_height / 2, 50, Math.PI];
+
+        const player_speed = 400;
+        const ball_speed = 800;
+        const max_extra_ball_rotation = 0.8
+
+        var ball_limit_passed = false;
+
+        document.addEventListener('keydown', function (event) {
+            if (event.keyCode == 40) {
+                down_pressed = true;
+            }
+            else if (event.keyCode == 38) {
+                up_pressed = true;
+            }
+        });
+
+        document.addEventListener('keyup', function (event) {
+            if (event.keyCode == 40) {
+                down_pressed = false;
+            }
+            else if (event.keyCode == 38) {
+                up_pressed = false;
+            }
+        });
+
+
+        function circleRect(rx, ry, rw, rh, cx, cy, radius) {
+            /**Code from : https://www.jeffreythompson.org/collision-detection/circle-rect.php*/
+
+            // temporary variables to set edges for testing
+            let testX = cx;
+            let testY = cy;
+
+            // which edge is closest?
+            if (cx < rx) testX = rx;      // test left edge
+            else if (cx > rx + rw) testX = rx + rw;   // right edge
+            if (cy < ry) testY = ry;      // top edge
+            else if (cy > ry + rh) testY = ry + rh;   // bottom edge
+
+            // get distance from closest edges
+            let distX = cx - testX;
+            let distY = cy - testY;
+            let distance = Math.sqrt((distX * distX) + (distY * distY));
+
+            // if the distance is less than the radius, collision!
+            if (distance <= radius) {
+                return true;
+            }
+            return false;
+        }
+
+        function update_physics(timeStamp) {
+            const deltaTime = (timeStamp - lastTimeStamp) / 1000;
+            lastTimeStamp = timeStamp;
+
+            // Make the player movement
+            if (down_pressed) player_rect[1] += deltaTime * player_speed;
+            if (up_pressed) player_rect[1] -= deltaTime * player_speed;
+
+
+            // Check if the player is out of the screen
+            if (player_rect[1] + player_rect[3] / 2 > default_height) player_rect[1] = default_height - player_rect[3] / 2;
+            if (player_rect[1] - player_rect[3] / 2 < 0) player_rect[1] = player_rect[3] / 2;
+
+            let x_step = ball_speed * deltaTime * Math.cos(ball[3]);
+            let y_step = ball_speed * deltaTime * Math.sin(ball[3]);
+
+            ball[0] += x_step;
+            ball[1] += y_step;
+
+            if (!ball_limit_passed && circleRect(player_rect[0] - player_rect[2] / 2, player_rect[1] - player_rect[3] / 2, player_rect[2], player_rect[3],
+                ball[0], ball[1], ball[2])) {
+
+                // Calculate the extra rotation of the ball
+                let rotation_extra = (player_rect[1] - ball[1]) / player_rect[3] * 2
+
+                ball[3] = Math.PI - ball[3] - rotation_extra;
+                console.log(rotation_extra);
+
+                // TODO : Fix the code bellow
+                if (Math.sin(ball[3]) > 0.8) {
+                    ball[3] = Math.PI + 0.8;
+                } else if (Math.sin(ball[3]) < -0.8) {
+                    ball[3] = Math.PI - 0.8;
+                }
+
+                /*
+                if (ball[3] - Math.PI > max_extra_ball_rotation) {
+                    ball[3] = max_extra_ball_rotation;
+                } else if (ball[3] - Math.PI < -max_extra_ball_rotation) {
+                    ball[3] = -max_extra_ball_rotation;
+                } else {
+                    ball[3] += Math.PI;
+                }*/
+
+                ball[0] -= x_step;
+                ball[1] -= y_step;
+            }
+
+            if (!ball_limit_passed && circleRect(bot_rect[0] - bot_rect[2] / 2, bot_rect[1] - bot_rect[3] / 2, bot_rect[2], bot_rect[3],
+                ball[0], ball[1], ball[2])) {
+
+                // Calculate the extra rotation of the ball
+                let rotation_extra = (bot_rect[1] - ball[1]) / bot_rect[3] * 2
+
+                console.log(rotation_extra);
+
+                ball[3] = Math.PI - ball[3] + rotation_extra;
+
+                // TODO : Fix the code bellow
+                if (Math.sin(ball[3]) > 0.8) {
+                    ball[3] = Math.PI - 0.8;
+                } else if (Math.sin(ball[3]) < -0.8) {
+                    ball[3] = Math.PI + 0.8;
+                }
+
+                /*
+                if (ball[3] > max_extra_ball_rotation) {
+                    ball[3] = Math.PI+max_extra_ball_rotation;
+                    console.log("a");
+                } else if (ball[3] < -max_extra_ball_rotation) {
+                    ball[3] = Math.PI-max_extra_ball_rotation;
+                    console.log("b");
+                } else {
+                    ball[3] -= Math.PI;
+                    console.log("c");
+                }*/
+
+                ball[0] -= x_step;
+                ball[1] -= y_step;
+            }
+
+            // Detect if the ball is passed behind one of the pads
+            ball_limit_passed = ball[0] - ball[2] < player_rect[0] + player_rect[2] / 2 || ball[0] + ball[2] > bot_rect[0] - bot_rect[2] / 2;
+
+            ball[3] %= Math.PI * 2;
+
+            // Make the bot moving
+            let y_dist = bot_rect[1] - ball[1];
+            let half_height = bot_rect[3] / 2;
+
+            if (y_dist > half_height) {
+                bot_rect[1] -= player_speed * deltaTime;
+            }
+            if (y_dist < -half_height) {
+                bot_rect[1] += player_speed * deltaTime;
+            }
+
+            // Restart the game if the ball goes out of the screen at the left or at the right
+            if (ball[0] < -ball[2]) {
+                player_rect = [40, default_height / 2, 40, 250];
+                bot_rect = [1460, default_height / 2, 40, 250];
+
+                ball = [default_width / 2, default_height / 2, 50, Math.PI];
+
+                score = 0;
+                ball_limit_passed = false;
+            }
+            if (ball[0] > default_width + ball[2]) {
+                player_rect = [40, default_height / 2, 40, 250];
+                bot_rect = [1460, default_height / 2, 40, 250];
+
+                ball = [default_width / 2, default_height / 2, 50, Math.PI];
+
+                score ++;
+                ball_limit_passed = false;
+            }
+
+            // Make the ball bounce if it goes out of the screen
+            if (ball[1] < ball[2] || ball[1] > default_height - ball[2]) {
+                ball[3] = -ball[3]
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = 'white';
+            ctx.clearRect(0, 0, default_width, default_height);
+
+            ctx.fillStyle = color;
+            // Render the player pad
+            ctx.fillRect(player_rect[0] - player_rect[2] / 2, player_rect[1] - player_rect[3] / 2, player_rect[2], player_rect[3]);
+
+            // Render the bot pad
+            ctx.fillRect(bot_rect[0] - bot_rect[2] / 2, bot_rect[1] - bot_rect[3] / 2, bot_rect[2], bot_rect[3]);
+
+            // Render the ball
+            ctx.beginPath();
+            ctx.arc(ball[0], ball[1], ball[2], 0, 2 * Math.PI, false);
+            ctx.fill();
+
+            // Render the score
+            ctx.font = "48px Arial";
+            ctx.fillText("Score : " + score, 10, 970);
+        }
+
+        function update(timeStamp) {
+            /**Called each frames*/
+            update_physics(timeStamp);
+            draw();
+
+            requestAnimationFrame(update);
+        }
+
+        window.addEventListener("message", (event) => {
+            color = event["data"]["color"];
+        }, false);
+
+        requestAnimationFrame(update);
+
+    </script>
+</body>
+
+</html>

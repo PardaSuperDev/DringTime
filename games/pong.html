@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pong</title>
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            display: flex;
+        }
+
+        #game {
+            width: 100vw;
+            height: 100vh;
+            background-color: transparent;
+            display: flex;
+        }
+    </style>
+    <script defer>
+        var canvas = document.getElementById("game");
+
+        var player_pad_y = 0.5-1/10;
+
+        var bot_pad_y = 0.5-1/10;
+
+        var down_pressed = false;
+        var up_pressed = false
+
+        var lastTimeStamp = 0;
+
+        var ball_x = 0.;
+        var ball_y = 0.;
+        var ball_dir = 0.;
+        const ball_speed = 1;
+
+        var player_pad_passed = false;
+        var bot_pad_passed = false;
+
+        const players_speed = 0.5;
+
+        var score = 0;
+
+        document.addEventListener('keydown', function (event) {
+            if (event.keyCode == 38) {
+                down_pressed = true;
+            }
+            else if (event.keyCode == 40) {
+                up_pressed = true;
+            }
+        });
+
+        document.addEventListener('keyup', function (event) {
+            if (event.keyCode == 38) {
+                down_pressed = false;
+            }
+            else if (event.keyCode == 40) {
+                up_pressed = false;
+            }
+        });
+
+        function detect_rectangle_circle(rect_x, rect_y, rect_width, rect_height, circle_x, circle_y, circle_radius) {
+            testX = circle_x;
+            testY = circle_y;
+
+            if (circle_x < rect_x) {
+                testX = rect_x;
+            }
+            if (circle_x > rect_x + rect_width) {
+                testX = rect_x + rect_width;
+            }
+            if (circle_y < rect_y) {
+                testY = rect_y;
+            }
+            if (circle_y > rect_y + rect_height) {
+                testY = rect_y + rect_height;
+            }
+            var distX = circle_x - testX;
+            var distY = circle_y - testY;
+            var distance = Math.sqrt(distX * distX + distY * distY);
+
+            return distance < circle_radius;
+        }
+
+        function update_physics(timeStamp) {
+            const deltaTime = (timeStamp - lastTimeStamp) / 1000;
+            lastTimeStamp = timeStamp;
+            if (down_pressed) {
+                player_pad_y -= players_speed * deltaTime;
+            }
+            if (up_pressed) {
+                player_pad_y += players_speed * deltaTime;
+            }
+            x_step = ball_speed * deltaTime * Math.cos(ball_dir);
+            y_step = ball_speed * deltaTime * Math.sin(ball_dir);
+
+            ball_x += x_step;
+            ball_y += y_step;
+            //ball_dir+=Math.PI*deltaTime*1;
+
+            // old code
+            if (ball_x > 1) {
+                ball_x = 0.;
+                ball_y = 0.;
+                ball_dir = 0;
+                player_pad_passed = false;
+                bot_pad_passed = false;
+                score += 1;
+            }
+            if (ball_x < -1) {
+                ball_x = 0.;
+                ball_y = 0.;
+                ball_dir = 0;
+                player_pad_passed = false;
+                bot_pad_passed = false;
+                score = 0;
+            }
+            if (ball_y > 1 / 2 - 1/20) {
+                ball_dir = -ball_dir;
+            }
+            if (ball_y < -1 / 2 + 1/20) {
+                ball_dir = -ball_dir;
+            }
+
+            // detect the collision with the player and bot pads
+            if (detect_rectangle_circle(-0.667 - 1 / 20, player_pad_y, 1 / 20, 1 / 5, ball_x, ball_y + 0.5, 1 / 20) && !player_pad_passed) {
+                ball_dir = Math.PI - ball_dir - (player_pad_y - (ball_y + 0.5 - 1 / 5 / 2))*6;
+                ball_x -= x_step;
+                ball_y -= y_step;
+            }
+            if (detect_rectangle_circle(0.62 + 1 / 20, bot_pad_y, 1 / 20, 1 / 5, ball_x, ball_y + 0.5, 1 / 20) && !bot_pad_passed) {
+                ball_dir = Math.PI - ball_dir - (bot_pad_y - (ball_y + 0.5 - 1 / 5 / 2))*6;
+                ball_x -= x_step;
+                ball_y -= y_step;
+            }
+
+            if (detect_rectangle_circle(-0.667 - 1 / 20, player_pad_y, 1 / 20, 1 / 5, ball_x, ball_y + 0.5, 1 / 20) && !player_pad_passed) {
+                player_pad_passed = true;
+            }
+            if (detect_rectangle_circle(0.62 + 1 / 20, bot_pad_y, 1 / 20, 1 / 5, ball_x, ball_y + 0.5, 1 / 20) && !bot_pad_passed) {
+                bot_pad_passed = true;
+            }
+
+            // make the bot pad move
+
+            y_dist = bot_pad_y - (ball_y + 0.5 - 1 / 5 / 2);
+
+            if (y_dist > 0.01) {
+                bot_pad_y -= players_speed * deltaTime;
+            }
+            if (y_dist < -0.01) {
+                bot_pad_y += players_speed * deltaTime;
+            }
+            console.log(y_dist);
+            //bot_pad_y = ball_y+0.5-1/5/2;
+            
+            player_pad_y = Math.max(0, player_pad_y);
+            player_pad_y = Math.min(player_pad_y, 1 - 1 / 5);
+
+            bot_pad_y = Math.min(1-1/5, bot_pad_y);
+            bot_pad_y = Math.max(bot_pad_y, 0);
+        }
+
+        function draw() {
+            var canvas = document.getElementById("game");
+
+            ctx = canvas.getContext("2d");
+            ctx.canvas.width = window.innerWidth;
+            ctx.canvas.height = window.innerHeight;
+
+            const height = window.innerHeight
+            const width = height * 1.1;
+
+            var elementColor=getComputedStyle(window.top.document.body,"")["color"];
+
+            // Draw a rectangle
+            ctx.fillStyle = elementColor;
+            ctx.fillRect(window.innerWidth / 2 - width / 1.5 - width / 20, player_pad_y * height, width / 20, height / 5);
+
+            ctx.fillRect(window.innerWidth / 2 + width / 1.5, bot_pad_y * height, width / 20, height / 5);
+
+            ctx.beginPath();
+            ctx.arc(ball_x * width + window.innerWidth / 2, ball_y * height + window.innerHeight / 2, height / 20, 0, 2 * Math.PI, false);
+            ctx.fill();
+
+            // Render the score
+            ctx.font = "48px Arial";
+            ctx.fillText("Score : " + score, 10, window.innerHeight-28);
+        }
+
+        function update(timeStamp) {
+            update_physics(timeStamp);
+            draw();
+
+            requestAnimationFrame(update);
+        }
+
+        requestAnimationFrame(update);
+
+    </script>
+</head>
+
+<body>
+    <canvas id="game"></canvas>
+</body>
+
+</html>
