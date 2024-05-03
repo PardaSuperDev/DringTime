@@ -34,6 +34,9 @@ window.textRenderingType = "ClearType";
 window.currentTime = new Date();
 window.lastTimeUpdate = 0;
 
+var cursorLastMoveDelay = 0;
+var lastTimeUpdateEpoch = (new Date()).getTime();
+
 window.game_started = false; // Remplacer par false
 
 function convertTimeToSeconds(time) {
@@ -71,12 +74,14 @@ function setup() {
     fullScreenEnableInputToggled(document.getElementById("slider-fullscreen"));
     load_settings_from_url();
     updateTimeFromServer();
+    setupCursorMoveDetection();
 }
 
 function updateGameIframeColor() {
     var elementColor=getComputedStyle(window.top.document.body,"")["color"]
     document.getElementById("game_iframe").contentWindow.postMessage({"color": elementColor});
 }
+
 
 function adjustCss() {
     // Si la plateforme n'est pas Windows, alors le système de rendu n'est pas ClearType et est donc en FreeType
@@ -87,8 +92,8 @@ function adjustCss() {
         textRenderingType = "FreeType";
     }
 }
+
 function change_page(page) {
-    
     if (page !== window.page) {
         var oldPage = document.getElementById(window.page);
         var newPage = document.getElementById(page);
@@ -111,6 +116,22 @@ function timers_modified() {
     if (window.onbeforeunload === null) {
         window.onbeforeunload = function () { return 'Sure?'; };
     }
+}
+
+function setupCursorMoveDetection() {
+    // Enregistre l'evenement de déplacement de la souris
+    window.addEventListener("mousemove", () => {
+        cursorLastMoveDelay = 0;
+        document.body.style.cursor = "";
+    })
+
+    // Détecte toutes de 0.2 secondes si le delay avant de masquer est atteint
+    setInterval(() => {
+        if (cursorLastMoveDelay > 4 && document.body.style.cursor !== "none") {
+            document.body.style.cursor = "none";
+        }
+        cursorLastMoveDelay += 0.2;
+    }, 200)
 }
 
 async function updateTimeFromServer() {
@@ -489,8 +510,13 @@ function secondsEnableInputToggled(elem) {
     }
 }
 
-async function update(deltaTime) {
+async function update() {
     /** Fonction appelée de manière régulière pour mettre à jour les timers.*/
+    var currentTime = (new Date()).getTime();
+
+    var deltaTime = (currentTime-lastTimeUpdateEpoch)/1000;
+
+    lastTimeUpdateEpoch = currentTime;
 
     window.currentTime.setMilliseconds(window.currentTime.getMilliseconds() + deltaTime * 1000);
     window.lastTimeUpdate += deltaTime;
@@ -730,6 +756,7 @@ function load_settings_from_url() {
                     if (settingsValue.startsWith("r-") || settingsValue.startsWith("l-")) {
                         window.alarmsProvider = settingsValue;
                         needSave = true;
+                        updateAlarms();
                     } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
                     break;
                 case ("enable_fullscreen"):
@@ -839,4 +866,4 @@ Coloris({
 
 // Lance l'execution régulière de `update()`. 
 // Le timeout est de 200 ms pour éviter la désincronisation et avoir une grande précision des secondes.
-setInterval(() => { update(0.2) }, 200);
+setInterval(() => { update() }, 200);
