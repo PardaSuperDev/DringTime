@@ -135,7 +135,7 @@ function setupCursorMoveDetection() {
 }
 
 async function updateTimeFromServer() {
-    var requestData = await fetch('https://worldtimeapi.org/api/timezone/Europe/Paris', { mode: 'cors', method: 'GET', headers: { 'Content-Type': 'text/plain' } })
+    var requestData = await fetch('https://worldtimeapi.org/api/timezone/Europe/Paris', { cache: "no-store", mode: 'cors', method: 'GET', headers: { 'Content-Type': 'text/plain' } })
     var dataJson = await requestData.json();
 
     window.currentTime = new Date(dataJson["datetime"]);
