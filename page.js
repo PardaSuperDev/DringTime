@@ -838,7 +838,7 @@ function switchGamesActivation() {
         document.getElementById("game_iframe").src = "";
     } else {
         window.game_started = true;
-        document.getElementById("game_iframe").src = "games/pong-v2.html";
+        document.getElementById("game_iframe").src = "activities/pong.html";
     }
 }
 
