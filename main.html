@@ -65,8 +65,14 @@
                             onchange="secondsEnableInputToggled(this);">
                         <div class="slider"></div>
                     </label>
-
-                    <button class="stylized_button" style="margin-left: 135px;" onclick="change_page('credits_page');"
+                    
+                    <!--Réorganisation dans la branche `account`-->
+                    <button class="stylized_button" style="margin-left: 5px;" onclick="change_page('activities_page');"
+                        title="Activer des activités">
+                        <img src="assets/activities-icon.svg" alt="activities_icon">
+                        Activités
+                    </button>
+                    <button class="stylized_button" style="margin-left: 5px;" onclick="change_page('credits_page');"
                         title="Voir les crédits du site">
                         <img src="assets/credits-icon.svg" alt="credits_icon">
                         Crédits
@@ -256,6 +262,12 @@
                     class="hyperlink" target="_blank" rel="noopener noreferrer">contact@dring-time.fr</a>.</h3>
 
 
+            <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
+                style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
+        </div>
+
+        <div id="activities_page" class="page" style="display: none; opacity: 0;">
+            <h1>Activités</h1>
             <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
                 style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
         </div>
