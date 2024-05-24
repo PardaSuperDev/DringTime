@@ -284,6 +284,12 @@ function manageAccountClicked() {
     }
 }
 
+function disconnectAccountClicked() {
+    window.signOutAccount();
+    user = null;
+    change_page("timers_page");
+}
+
 async function createAccountClicked() {
     var emailInput = document.getElementById("account_create_email_input");
     var passwordInput = document.getElementById("account_create_password_input");

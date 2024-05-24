@@ -75,6 +75,15 @@ async function createAccount(email, password) {
     return [returnCode, returnCode == 0 ? user : errorCode];
 }
 
+async function signOutAccount() {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+    // Sign-out successful.
+    }).catch((error) => {
+    // An error happened.
+    });
+}
+
 async function connectAccount(email, password) {
     const auth = getAuth();
     var returnCode = 1;
@@ -105,4 +114,5 @@ window.getAlarmsProviders = getAlarmsProviders
 window.sendNewAlarms = sendNewAlarms
 window.createAccount = createAccount
 window.connectAccount = connectAccount
+window.signOutAccount = signOutAccount
 var user_uid = "";
