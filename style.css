@@ -322,3 +322,32 @@ option {
     color: rgb(0, 132, 255);
     text-decoration: none;
 }
+
+.activity-card {
+    background-color: #494949;
+    border-radius: 20px;
+    outline: solid 2px #666666;
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 10px;
+}
+
+.activity-card img {
+    outline: solid 1px #666666;
+    border-radius: 15px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+#activities-list {
+    margin: 50px;
+}
+
+.activity-card-name {
+    justify-content: center;
+    display: flex;
+    margin: 0px;
+    margin-top: 10px;
+}

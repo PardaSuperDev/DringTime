@@ -67,7 +67,7 @@
                     </label>
                     
                     <!--Réorganisation dans la branche `account`-->
-                    <button class="stylized_button" style="margin-left: 5px;" onclick="change_page('activities_page');"
+                    <button class="stylized_button" style="margin-left: 5px;" onclick="openActivitiesPage();"
                         title="Activer des activités">
                         <img src="assets/activities-icon.svg" alt="activities_icon">
                         Activités
@@ -268,6 +268,8 @@
 
         <div id="activities_page" class="page" style="display: none; opacity: 0;">
             <h1>Activités</h1>
+            <p>Chargement des activités ...</p>
+            <div id="activities-list"></div>
             <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
                 style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
         </div>

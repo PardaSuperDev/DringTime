@@ -1,8 +1,0 @@
-{
-    "pong" : {
-        "name": "Pong",
-        "description": "Un simple pong pour passer le temps.",
-        "picture" : "",
-        "link-html": "/activities/pong.html"
-    }
-}

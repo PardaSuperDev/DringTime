@@ -1,0 +1,20 @@
+{
+    "pong": {
+        "name": "Pong",
+        "description": "Un simple pong pour passer le temps.",
+        "picture": "/activities/assets/pong-icon.png",
+        "link-html": "/activities/pong.html"
+    },
+    "test": {
+        "name": "Pong",
+        "description": "Un simple pong pour passer le temps.",
+        "picture": "/activities/assets/pong-icon.png",
+        "link-html": "/activities/pong.html"
+    },
+    "autre-test": {
+        "name": "Pong",
+        "description": "Un simple pong pour passer le temps.",
+        "picture": "/activities/assets/pong-icon.png",
+        "link-html": "/activities/pong.html"
+    }
+}

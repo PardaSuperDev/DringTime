@@ -78,8 +78,8 @@ function setup() {
 }
 
 function updateGameIframeColor() {
-    var elementColor=getComputedStyle(window.top.document.body,"")["color"]
-    document.getElementById("game_iframe").contentWindow.postMessage({"color": elementColor});
+    var elementColor = getComputedStyle(window.top.document.body, "")["color"]
+    document.getElementById("game_iframe").contentWindow.postMessage({ "color": elementColor });
 }
 
 
@@ -317,6 +317,24 @@ function remove_timers_row(day, removeButton) {
     timers_modified();
 }
 
+async function openActivitiesPage() {
+    change_page('activities_page');
+
+    let response = await fetch("/activities/info.json");
+    let info = await response.json();
+
+    let activities = Object.keys(info);
+    for (let i = 0; i < activities.length; i++) {
+        const activity = info[activities[i]];
+        console.log(activity);
+
+        let element = document.createElement("a");
+        element.className = "activity-card";
+        element.innerHTML = `<img src=${activity['picture']}><p class="activity-card-name">${activity['name']}</p>`;
+        document.getElementById("activities-list").append(element);
+    }
+}
+
 function toggle_view(type) {
     /** Inverse le type de vue. `type` est l'id de la vue sur laquelle se concentrer.
      */
@@ -514,7 +532,7 @@ async function update() {
     /** Fonction appelée de manière régulière pour mettre à jour les timers.*/
     var currentTime = (new Date()).getTime();
 
-    var deltaTime = (currentTime-lastTimeUpdateEpoch)/1000;
+    var deltaTime = (currentTime - lastTimeUpdateEpoch) / 1000;
 
     lastTimeUpdateEpoch = currentTime;
 
@@ -822,7 +840,7 @@ async function loadSettings() {
             // Met à jour les couleurs des sélécteurs
             document.querySelector('#choose_labels_color').dispatchEvent(new Event('input', { bubbles: true }));
             document.querySelector('#choose_background_color').dispatchEvent(new Event('input', { bubbles: true }));
-            
+
             // Met à jour les couleurs du l'iframe
             updateGameIframeColor();
 
@@ -857,8 +875,8 @@ Coloris({
     margin: 30,
     defaultColor: "#FFFFFF",
     onChange: (color, input) => {
-        if (input.id === "choose_labels_color") {document.documentElement.style.setProperty('--text-color', color); if (window.game_started) {updateGameIframeColor();}}
-        else if (input.id === "choose_background_color") {document.documentElement.style.setProperty('--background-color', color)};
+        if (input.id === "choose_labels_color") { document.documentElement.style.setProperty('--text-color', color); if (window.game_started) { updateGameIframeColor(); } }
+        else if (input.id === "choose_background_color") { document.documentElement.style.setProperty('--background-color', color) };
 
         askSave();
     }
