@@ -39,7 +39,7 @@ var lastTimeUpdateEpoch = (new Date()).getTime();
 
 window.activity_started = false; // Remplacer par false
 
-var activities_info = {};
+var activities_info = null;
 
 function convertTimeToSeconds(time) {
     let hours = parseInt(time.substring(0, 2));
@@ -322,24 +322,26 @@ function remove_timers_row(day, removeButton) {
 async function openActivitiesPage() {
     change_page('activities_page');
 
-    let response = await fetch("/activities/info.json");
-    activities_info = await response.json();
+    if (activities_info == null) {
+        let response = await fetch("/activities/info.json");
+        activities_info = await response.json();
 
-    let activities = Object.keys(activities_info);
-    for (let i = 0; i < activities.length; i++) {
-        const activity = activities_info[activities[i]];
-        console.log(activity);
+        let activities = Object.keys(activities_info);
+        for (let i = 0; i < activities.length; i++) {
+            const activity = activities_info[activities[i]];
+            console.log(activity);
 
-        let element = document.createElement("a");
-        element.className = "activity-card";
-        // Attention ! L'usage de innerHTML peut entrainer des failles xss ! Il ne faut par laisser n'importe qui créer des activités !
-        element.innerHTML = `<img src=${activity['picture']}><p class="activity-card-name">${activity['name']}</p>`;
-        element.setAttribute("onclick", `selectActivity("${activities[i]}")`);
-        element.title = activity["descrition"];
-        document.getElementById("activities-list").append(element);
+            let element = document.createElement("a");
+            element.className = "activity-card";
+            // Attention ! L'usage de innerHTML peut entrainer des failles xss ! Il ne faut par laisser n'importe qui créer des activités !
+            element.innerHTML = `<img src=${activity['picture']}><p class="activity-card-name">${activity['name']}</p>`;
+            element.setAttribute("onclick", `selectActivity("${activities[i]}")`);
+            element.title = activity["descrition"];
+            document.getElementById("activities-list").append(element);
+        }
+
+        document.getElementById("loading-activities-text").remove();
     }
-
-    document.getElementById("loading-activities-text").remove();
 }
 
 function selectActivity(activity_name) {
