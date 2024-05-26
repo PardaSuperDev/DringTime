@@ -1,8 +1,8 @@
 {
     "none": {
-        "name": "Pong",
+        "name": "Aucune",
         "description": "Fermer l'activité.",
-        "picture": "",
+        "picture": "/activities/assets/none-icon.png",
         "link-html": ""
     },
     "pong": {
@@ -11,15 +11,15 @@
         "picture": "/activities/assets/pong-icon.png",
         "link-html": "/activities/pong.html"
     },
-    "test": {
-        "name": "Pong",
-        "description": "Un simple pong pour passer le temps.",
-        "picture": "/activities/assets/pong-icon.png",
-        "link-html": "/activities/pong.html"
+    "ads": {
+        "name": "Promotion site",
+        "description": "Faites la promotion de dring-time.",
+        "picture": "/activities/assets/ads-icon.png",
+        "link-html": "/activities/dring-time-ads.html"
     },
-    "autre-test": {
-        "name": "Pong",
-        "description": "Un simple pong pour passer le temps.",
+    "canvas-diapo": {
+        "name": "Canvas",
+        "description": "Afficher vos présentations.",
         "picture": "/activities/assets/pong-icon.png",
         "link-html": "/activities/pong.html"
     }
