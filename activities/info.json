@@ -20,7 +20,7 @@
     "canvas-diapo": {
         "name": "Canvas",
         "description": "Afficher vos présentations.",
-        "picture": "/activities/assets/pong-icon.png",
-        "link-html": "/activities/pong.html"
+        "picture": "/activities/assets/canva-icon.png",
+        "link-html": "/activities/canva-viewer.html"
     }
 }
