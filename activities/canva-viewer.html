@@ -14,10 +14,10 @@
 
 <body>
     <div style="position: relative; width: 100%; height: 0; padding-top: 56.2225%;
- padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 20px; margin-bottom: 20px; overflow: hidden;
  border-radius: 8px; will-change: transform;">
         <iframe id="canva-iframe" loading="lazy"
-            style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+            style="position: absolute; width: 100%; height: 80%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
             src="">
         </iframe>
     </div>
@@ -32,17 +32,21 @@
         var transitionDelayInput = document.getElementById("transition-delay");
 
         function loadView() {
-            iframe.src = presentationLinkInput.value;
+            var url = presentationLinkInput.value;
+            if (!url.endsWith("?embed")) {
+                url += "?embed";
+            }
+            iframe.src = url;
 
-            setInterval(nextPage, transitionDelayInput.value*1000)
+            setInterval(nextPage, transitionDelayInput.value * 1000)
         }
 
         function nextPage() {
             var url = document.getElementById("canva-iframe").src;
             if (url.includes("#")) {
                 let currentPage = parseInt(url.slice(url.indexOf("#") + 1));
-                
-                let newUrl = url.slice(0, url.indexOf("#")) + "#" + Math.max(((currentPage + 1) % (parseInt(pageCountInput.value)+1)), 1);
+
+                let newUrl = url.slice(0, url.indexOf("#")) + "#" + Math.max(((currentPage + 1) % (parseInt(pageCountInput.value) + 1)), 1);
                 document.getElementById("canva-iframe").src = newUrl;
             } else {
                 let newUrl = url + "#2";
