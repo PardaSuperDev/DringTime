@@ -869,16 +869,6 @@ async function loadSettings() {
     }
 }
 
-function switchGamesActivation() {
-    /**Fonction secrete pour activer un pong. ;-) */
-    if (window.activity_started) {
-        window.activity_started = false;
-        document.getElementById("game_iframe").src = "";
-    } else {
-        window.activity_started = true;
-        document.getElementById("game_iframe").src = "activities/pong.html";
-    }
-}
 
 window.addEventListener("click", () => {
     if (!settings_opened && activity_started) setTimeout(() => {
