@@ -37,7 +37,9 @@ window.lastTimeUpdate = 0;
 var cursorLastMoveDelay = 0;
 var lastTimeUpdateEpoch = (new Date()).getTime();
 
-window.game_started = false; // Remplacer par false
+window.activity_started = false; // Remplacer par false
+
+var activities_info = {};
 
 function convertTimeToSeconds(time) {
     let hours = parseInt(time.substring(0, 2));
@@ -321,11 +323,11 @@ async function openActivitiesPage() {
     change_page('activities_page');
 
     let response = await fetch("/activities/info.json");
-    let info = await response.json();
+    activities_info = await response.json();
 
-    let activities = Object.keys(info);
+    let activities = Object.keys(activities_info);
     for (let i = 0; i < activities.length; i++) {
-        const activity = info[activities[i]];
+        const activity = activities_info[activities[i]];
         console.log(activity);
 
         let element = document.createElement("a");
@@ -333,14 +335,20 @@ async function openActivitiesPage() {
         // Attention ! L'usage de innerHTML peut entrainer des failles xss ! Il ne faut par laisser n'importe qui créer des activités !
         element.innerHTML = `<img src=${activity['picture']}><p class="activity-card-name">${activity['name']}</p>`;
         element.setAttribute("onclick", `selectActivity("${activities[i]}")`);
+        element.title = activity["descrition"];
         document.getElementById("activities-list").append(element);
     }
 
     document.getElementById("loading-activities-text").remove();
 }
 
-function selectActivity(activity) {
-    console.log("Loading activity " + activity + "...");
+function selectActivity(activity_name) {
+    console.log("Loading activity " + activity_name + "...");
+
+    let activity = activities_info[activity_name];
+
+    document.getElementById("game_iframe").src = activity["link-html"];
+    change_page("timers_page");
 }
 
 function toggle_view(type) {
@@ -490,7 +498,7 @@ function toggle_settings_bar() {
         } else {
             settingsIcon.style = "opacity: 1"
         }
-        if (game_started) gameIframe.focus();
+        if (activity_started) gameIframe.focus();
     } else {
         settingsBar.style = "width: var(--max-settings-bar-lenght)";
         settingsIcon.style = "opacity: 1"
@@ -859,17 +867,17 @@ async function loadSettings() {
 
 function switchGamesActivation() {
     /**Fonction secrete pour activer un pong. ;-) */
-    if (window.game_started) {
-        window.game_started = false;
+    if (window.activity_started) {
+        window.activity_started = false;
         document.getElementById("game_iframe").src = "";
     } else {
-        window.game_started = true;
+        window.activity_started = true;
         document.getElementById("game_iframe").src = "activities/pong.html";
     }
 }
 
 window.addEventListener("click", () => {
-    if (!settings_opened && game_started) setTimeout(() => {
+    if (!settings_opened && activity_started) setTimeout(() => {
         let gameIframe = document.getElementById("game_iframe");
 
         gameIframe.focus()
@@ -883,7 +891,7 @@ Coloris({
     margin: 30,
     defaultColor: "#FFFFFF",
     onChange: (color, input) => {
-        if (input.id === "choose_labels_color") { document.documentElement.style.setProperty('--text-color', color); if (window.game_started) { updateGameIframeColor(); } }
+        if (input.id === "choose_labels_color") { document.documentElement.style.setProperty('--text-color', color); if (window.activity_started) { updateGameIframeColor(); } }
         else if (input.id === "choose_background_color") { document.documentElement.style.setProperty('--background-color', color) };
 
         askSave();
