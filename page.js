@@ -330,9 +330,17 @@ async function openActivitiesPage() {
 
         let element = document.createElement("a");
         element.className = "activity-card";
+        // Attention ! L'usage de innerHTML peut entrainer des failles xss ! Il ne faut par laisser n'importe qui créer des activités !
         element.innerHTML = `<img src=${activity['picture']}><p class="activity-card-name">${activity['name']}</p>`;
+        element.setAttribute("onclick", `selectActivity("${activities[i]}")`);
         document.getElementById("activities-list").append(element);
     }
+
+    document.getElementById("loading-activities-text").remove();
+}
+
+function selectActivity(activity) {
+    console.log("Loading activity " + activity + "...");
 }
 
 function toggle_view(type) {
