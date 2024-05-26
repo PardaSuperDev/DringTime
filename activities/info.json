@@ -1,4 +1,10 @@
 {
+    "none": {
+        "name": "Pong",
+        "description": "Fermer l'activité.",
+        "picture": "",
+        "link-html": ""
+    },
     "pong": {
         "name": "Pong",
         "description": "Un simple pong pour passer le temps.",

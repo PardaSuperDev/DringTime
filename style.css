@@ -341,6 +341,7 @@ option {
     outline: solid 1px #666666;
     border-radius: 15px;
     height: 100px;
+    width: 133px;
     display: flex;
     justify-content: center;
 }

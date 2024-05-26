@@ -336,7 +336,7 @@ async function openActivitiesPage() {
             // Attention ! L'usage de innerHTML peut entrainer des failles xss ! Il ne faut par laisser n'importe qui créer des activités !
             element.innerHTML = `<img src=${activity['picture']}><p class="activity-card-name">${activity['name']}</p>`;
             element.setAttribute("onclick", `selectActivity("${activities[i]}")`);
-            element.title = activity["descrition"];
+            element.title = activity["description"];
             document.getElementById("activities-list").append(element);
         }
 
@@ -351,6 +351,8 @@ function selectActivity(activity_name) {
 
     document.getElementById("game_iframe").src = activity["link-html"];
     change_page("timers_page");
+
+    window.activity_started = true;
 }
 
 function toggle_view(type) {
@@ -500,7 +502,7 @@ function toggle_settings_bar() {
         } else {
             settingsIcon.style = "opacity: 1"
         }
-        if (activity_started) gameIframe.focus();
+        if (window.activity_started) {gameIframe.focus()};
     } else {
         settingsBar.style = "width: var(--max-settings-bar-lenght)";
         settingsIcon.style = "opacity: 1"
