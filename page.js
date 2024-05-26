@@ -79,9 +79,9 @@ function setup() {
     setupCursorMoveDetection();
 }
 
-function updateGameIframeColor() {
+function updateActivityIframeColor() {
     var elementColor = getComputedStyle(window.top.document.body, "")["color"]
-    document.getElementById("game_iframe").contentWindow.postMessage({ "color": elementColor });
+    document.getElementById("activity_iframe").contentWindow.postMessage({ "color": elementColor });
 }
 
 
@@ -349,7 +349,7 @@ function selectActivity(activity_name) {
 
     let activity = activities_info[activity_name];
 
-    document.getElementById("game_iframe").src = activity["link-html"];
+    document.getElementById("activity_iframe").src = activity["link-html"];
     change_page("timers_page");
 
     window.activity_started = true;
@@ -493,7 +493,7 @@ function toggle_settings_bar() {
     let settingsBar = document.getElementById("settings_bar");
     let settingsIcon = document.getElementById("settings_icon_container");
 
-    let gameIframe = document.getElementById("game_iframe");
+    let activityIframe = document.getElementById("activity_iframe");
 
     if (window.settings_opened) {
         settingsBar.style = "width: 0px";
@@ -502,7 +502,7 @@ function toggle_settings_bar() {
         } else {
             settingsIcon.style = "opacity: 1"
         }
-        if (window.activity_started) {gameIframe.focus()};
+        if (window.activity_started) {activityIframe.focus()};
     } else {
         settingsBar.style = "width: var(--max-settings-bar-lenght)";
         settingsIcon.style = "opacity: 1"
@@ -862,7 +862,7 @@ async function loadSettings() {
             document.querySelector('#choose_background_color').dispatchEvent(new Event('input', { bubbles: true }));
 
             // Met à jour les couleurs du l'iframe
-            updateGameIframeColor();
+            updateActivityIframeColor();
 
             break;
         }
@@ -872,9 +872,9 @@ async function loadSettings() {
 
 window.addEventListener("click", () => {
     if (!settings_opened && activity_started) setTimeout(() => {
-        let gameIframe = document.getElementById("game_iframe");
+        let activityIframe = document.getElementById("activity_iframe");
 
-        gameIframe.focus()
+        activityIframe.focus()
     }, 10);
 })
 
@@ -885,7 +885,7 @@ Coloris({
     margin: 30,
     defaultColor: "#FFFFFF",
     onChange: (color, input) => {
-        if (input.id === "choose_labels_color") { document.documentElement.style.setProperty('--text-color', color); if (window.activity_started) { updateGameIframeColor(); } }
+        if (input.id === "choose_labels_color") { document.documentElement.style.setProperty('--text-color', color); if (window.activity_started) { updateActivityIframeColor(); } }
         else if (input.id === "choose_background_color") { document.documentElement.style.setProperty('--background-color', color) };
 
         askSave();
