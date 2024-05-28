@@ -9,27 +9,71 @@
         #presentation-link {
             width: 40em;
         }
+
+        #iframe-div {
+            position: absolute;
+            box-shadow: 0 2px 8px 0 rgba(63, 69, 81, 0.16);
+            margin-top: 20px;
+            margin-bottom: 20px;
+            overflow: visible;
+            border-radius: 8px;
+            will-change: transform;
+            resize: both;
+            padding: 5px;
+            background-color: red;
+            overflow: auto;
+            min-height: max-content;
+            min-width: max-content;
+            display: block;
+        }
+
+        #canva-iframe {
+            height: 90%;
+            width: 100%;
+            display: block;
+            margin-left: 3%;
+            margin-right: auto;
+        }
+
+        #resize-area {
+            margin-top: 10px;
+            cursor: grab;
+            background-color: green;
+            height: 20px;
+            width: 20px;
+            display: block;
+        }
     </style>
 </head>
 
 <body>
-    <div style="position: relative; width: 100%; height: 0; padding-top: 56.2225%;
- padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 20px; margin-bottom: 20px; overflow: hidden;
- border-radius: 8px; will-change: transform;">
+    <div style="transform: translate(0, 0);" id="iframe-div">
         <iframe id="canva-iframe" loading="lazy"
-            style="position: absolute; width: 100%; height: 80%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
-            src="">
+            style="position: relative; min-height: 200px; top: 0; left: 0; border: none; padding: 0;margin: 0;" src="">
         </iframe>
+        <div id="resize-area"></div>
     </div>
-    <input type="text" id="presentation-link" value="https://www.canva.com/design/">
-    <input type="number" id="page-count">
-    <input type="number" id="transition-delay">
-    <button onclick="loadView()">Charger</button>
+    <div>
+        <input type="text" id="presentation-link" value="https://www.canva.com/design/">
+        <input type="number" id="page-count">
+        <input type="number" id="transition-delay">
+        <button onclick="loadView()">Charger</button>
+    </div>
     <script>
         var presentationLinkInput = document.getElementById("presentation-link");
         var iframe = document.getElementById("canva-iframe");
         var pageCountInput = document.getElementById("page-count");
         var transitionDelayInput = document.getElementById("transition-delay");
+        var iframeDiv = document.getElementById("iframe-div");
+        var grabDiv = document.getElementById("resize-area");
+
+        var iframe_grab_offset_x = 0;
+        var iframe_grab_offset_y = 0;
+
+        var iframe_x_pos = 0;
+        var iframe_y_pos = 0;
+
+        var iframe_grabed = false;
 
         function loadView() {
             var url = presentationLinkInput.value;
@@ -53,6 +97,31 @@
                 document.getElementById("canva-iframe").src = newUrl;
             }
         }
+
+        grabDiv.addEventListener("mousedown", (event) => {
+            iframe_grab_offset_x = event.pageX - iframe_x_pos;
+            iframe_grab_offset_y = event.pageY - iframe_y_pos;
+            iframe_grabed = true;
+        });
+
+        document.addEventListener("mousemove", (event) => {
+            if (iframe_grabed) {
+                iframe_x_pos = event.pageX - iframe_grab_offset_x;
+                iframe_y_pos = event.pageY - iframe_grab_offset_y;
+
+                iframeDiv.style.transform = "translate(" + iframe_x_pos + "px, " + iframe_y_pos + "px)";
+            }
+        });
+
+        document.addEventListener("mouseup", (event) => {
+            if (iframe_grabed) {
+                iframe_x_pos = event.pageX - iframe_grab_offset_x;
+                iframe_y_pos = event.pageY - iframe_grab_offset_y;
+                iframe_grabed = false;
+
+                iframeDiv.style.transform = "translate(" + iframe_x_pos + "px, " + iframe_y_pos + "px)";
+            }
+        });
     </script>
 </body>
 
