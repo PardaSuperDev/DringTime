@@ -20,7 +20,8 @@
             will-change: transform;
             resize: both;
             padding: 5px;
-            background-color: red;
+            background-color: rgb(109, 109, 109);
+            box-shadow: 5px 5px 5px rgb(63, 63, 63);
             overflow: auto;
             min-height: max-content;
             min-width: max-content;
@@ -28,32 +29,48 @@
         }
 
         #canva-iframe {
-            height: 90%;
+            height: 100%;
             width: 100%;
             display: block;
-            margin-left: 3%;
             margin-right: auto;
+            outline: solid 1px rgb(56, 56, 56);
+            border-radius: 5px;
         }
 
         #resize-area {
+            z-index: 2;
             margin-top: 10px;
             cursor: grab;
-            background-color: green;
-            height: 20px;
-            width: 20px;
+            height: min-content;
+            width: min-content;
             display: block;
+            padding: 0px;
+            position: absolute;
+            bottom: 0px;
+        }
+
+        #settings {
+            bottom: 15px;
+            position: absolute;
+        }
+
+        body {
+            height: 100%;
         }
     </style>
 </head>
 
 <body>
-    <div style="transform: translate(0, 0);" id="iframe-div">
+    <div style="transform: translate(0px, 0px);" id="iframe-div">
+        <div id="resize-area">
+            <img src="/assets/move.svg" alt="move" style="pointer-events: none; margin: 0px;">
+        </div>
         <iframe id="canva-iframe" loading="lazy"
-            style="position: relative; min-height: 200px; top: 0; left: 0; border: none; padding: 0;margin: 0;" src="">
+            style="position: relative; min-height: 200px; border: none; padding: 0;margin: 0;" src="">
         </iframe>
-        <div id="resize-area"></div>
+        
     </div>
-    <div>
+    <div id="settings">
         <input type="text" id="presentation-link" value="https://www.canva.com/design/">
         <input type="number" id="page-count">
         <input type="number" id="transition-delay">
