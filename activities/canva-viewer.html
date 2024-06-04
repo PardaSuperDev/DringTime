@@ -13,8 +13,6 @@
         #iframe-div {
             position: absolute;
             box-shadow: 0 2px 8px 0 rgba(63, 69, 81, 0.16);
-            margin-top: 20px;
-            margin-bottom: 20px;
             overflow: visible;
             border-radius: 8px;
             will-change: transform;
@@ -55,26 +53,34 @@
         }
 
         body {
-            height: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #main-div {
+            height: 100vh;
+            overflow: hidden;
         }
     </style>
 </head>
 
 <body>
-    <div style="transform: translate(0px, 0px);" id="iframe-div">
-        <div id="resize-area">
-            <img src="/assets/move.svg" alt="move" style="pointer-events: none; margin: 0px;">
+    <div id="main-div">
+        <div style="transform: translate(0px, 0px);" id="iframe-div">
+            <div id="resize-area">
+                <img src="/assets/move.svg" alt="move" style="pointer-events: none; margin: 0px;">
+            </div>
+            <iframe id="canva-iframe" loading="lazy"
+                style="position: relative; min-height: 200px; border: none; padding: 0;margin: 0;" src="">
+            </iframe>
+
         </div>
-        <iframe id="canva-iframe" loading="lazy"
-            style="position: relative; min-height: 200px; border: none; padding: 0;margin: 0;" src="">
-        </iframe>
-        
-    </div>
-    <div id="settings">
-        <input type="text" id="presentation-link" value="https://www.canva.com/design/">
-        <input type="number" id="page-count">
-        <input type="number" id="transition-delay">
-        <button onclick="loadView()">Charger</button>
+        <div id="settings">
+            <input type="text" id="presentation-link" value="https://www.canva.com/design/">
+            <input type="number" id="page-count">
+            <input type="number" id="transition-delay">
+            <button onclick="loadView()">Charger</button>
+        </div>
     </div>
     <script>
         var presentationLinkInput = document.getElementById("presentation-link");
@@ -83,6 +89,7 @@
         var transitionDelayInput = document.getElementById("transition-delay");
         var iframeDiv = document.getElementById("iframe-div");
         var grabDiv = document.getElementById("resize-area");
+        var mainDiv = document.getElementById("main-div");
 
         var iframe_grab_offset_x = 0;
         var iframe_grab_offset_y = 0;
@@ -119,12 +126,18 @@
             iframe_grab_offset_x = event.pageX - iframe_x_pos;
             iframe_grab_offset_y = event.pageY - iframe_y_pos;
             iframe_grabed = true;
+            iframe.style.pointerEvents = "none";
         });
 
         document.addEventListener("mousemove", (event) => {
             if (iframe_grabed) {
                 iframe_x_pos = event.pageX - iframe_grab_offset_x;
                 iframe_y_pos = event.pageY - iframe_grab_offset_y;
+
+                if (iframe_x_pos < 0) iframe_x_pos = 0;
+                if (iframe_y_pos < 0) iframe_y_pos = 0;
+                if (iframe_x_pos+iframeDiv.getBoundingClientRect().width > mainDiv.getBoundingClientRect().width) iframe_x_pos = mainDiv.getBoundingClientRect().width - iframeDiv.getBoundingClientRect().width;
+                if (iframe_y_pos+iframeDiv.getBoundingClientRect().height > mainDiv.getBoundingClientRect().height) iframe_y_pos = mainDiv.getBoundingClientRect().height - iframeDiv.getBoundingClientRect().height;
 
                 iframeDiv.style.transform = "translate(" + iframe_x_pos + "px, " + iframe_y_pos + "px)";
             }
@@ -134,7 +147,15 @@
             if (iframe_grabed) {
                 iframe_x_pos = event.pageX - iframe_grab_offset_x;
                 iframe_y_pos = event.pageY - iframe_grab_offset_y;
+                
+                if (iframe_x_pos < 0) iframe_x_pos = 0;
+                if (iframe_y_pos < 0) iframe_y_pos = 0;
+                if (iframe_x_pos+iframeDiv.getBoundingClientRect().width > mainDiv.getBoundingClientRect().width) iframe_x_pos = mainDiv.getBoundingClientRect().width - iframeDiv.getBoundingClientRect().width;
+                if (iframe_y_pos+iframeDiv.getBoundingClientRect().height > mainDiv.getBoundingClientRect().height) iframe_y_pos = mainDiv.getBoundingClientRect().height - iframeDiv.getBoundingClientRect().height;
+
+                
                 iframe_grabed = false;
+                iframe.style.pointerEvents = "all";
 
                 iframeDiv.style.transform = "translate(" + iframe_x_pos + "px, " + iframe_y_pos + "px)";
             }
