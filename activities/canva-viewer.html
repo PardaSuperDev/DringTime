@@ -6,6 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canva Viewer</title>
     <style>
+        @font-face {
+            font-family: consolas2;
+            src: url("/assets/consola.ttf");
+            font-weight: bold;
+        }
+
+        :root {
+            color: var(--text-color);
+            font-family: consolas2;
+        }
+
         #presentation-link {
             width: 40em;
         }
@@ -55,6 +66,7 @@
             padding: 10px;
             border-radius: 10px;
             margin-left: 60px;
+            width: 45em;
             /*TRANSFORM to hide*/
         }
 
@@ -64,17 +76,34 @@
 
         input {
             border-radius: 5px;
+            outline: solid 1px white;
+            border: solid 0px;
+            margin: 2px;
+            display: block;
         }
 
         input {
             background-color: rgb(34, 34, 34);
+            left: 160px;
+            position: absolute;
+        }
+
+        span {
+            color: white;
         }
 
         button {
             background-color: rgb(51, 51, 51);
-            outline-color: white;
+            outline: 1px solid white;
+            border : 0px;
             border-radius: 5px;
             color: white;
+            padding: 3px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: grey;
         }
 
         body {
@@ -108,9 +137,9 @@
 
         </div>
         <div id="settings">
-            <input type="text" id="presentation-link" value="https://www.canva.com/design/">
-            <input type="number" id="page-count">
-            <input type="number" id="transition-delay">
+            <span style="display: flex; margin: 5px;">Embed Url: <input type="text" id="presentation-link" value="https://www.canva.com/design/"></span>
+            <span style="display: flex; margin: 5px;">Nombre de pages: <input type="number" id="page-count"></span>
+            <span style="display: flex; margin: 5px;">Delay de diapo: <input type="number" id="transition-delay"></span>
             <button onclick="loadView()">Charger</button>
         </div>
     </div>
