@@ -50,6 +50,31 @@
         #settings {
             bottom: 15px;
             position: absolute;
+
+            background-color: rgb(82, 82, 82);
+            padding: 10px;
+            border-radius: 10px;
+            margin-left: 60px;
+            /*TRANSFORM to hide*/
+        }
+
+        input, select, textarea {
+            color: white;
+        }
+
+        input {
+            border-radius: 5px;
+        }
+
+        input {
+            background-color: rgb(34, 34, 34);
+        }
+
+        button {
+            background-color: rgb(51, 51, 51);
+            outline-color: white;
+            border-radius: 5px;
+            color: white;
         }
 
         body {
@@ -61,6 +86,13 @@
             height: 100vh;
             overflow: hidden;
         }
+
+        #show-hide-button {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+        }
+
     </style>
 </head>
 
@@ -82,6 +114,9 @@
             <button onclick="loadView()">Charger</button>
         </div>
     </div>
+    <a onclick="" title="Montrer / Cacher les paramètres" id="show-hide-button">
+    <img src="/activities/assets/down-arrow.svg" alt="Montrer">
+    </a>
     <script>
         var presentationLinkInput = document.getElementById("presentation-link");
         var iframe = document.getElementById("canva-iframe");
