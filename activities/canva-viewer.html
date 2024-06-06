@@ -67,7 +67,8 @@
             border-radius: 10px;
             margin-left: 60px;
             width: 45em;
-            /*TRANSFORM to hide*/
+            transform: translateY(200px);
+            transition: transform 1s ease;
         }
 
         input, select, textarea {
@@ -128,11 +129,11 @@
 <body>
     <div id="main-div">
         <div style="transform: translate(0px, 0px);" id="iframe-div">
-            <div id="resize-area">
+            <div id="resize-area" style="user-select: none">
                 <img src="/assets/move.svg" alt="move" style="pointer-events: none; margin: 0px;">
             </div>
             <iframe id="canva-iframe" loading="lazy"
-                style="position: relative; min-height: 200px; border: none; padding: 0;margin: 0;" src="">
+                style="position: relative; min-height: 200px; border: none; padding: 0; margin: 0;" src="">
             </iframe>
 
         </div>
@@ -143,10 +144,13 @@
             <button onclick="loadView()">Charger</button>
         </div>
     </div>
-    <a onclick="" title="Montrer / Cacher les paramètres" id="show-hide-button">
-    <img src="/activities/assets/down-arrow.svg" alt="Montrer">
+    <a onclick="toggleSettingsVisibility();" title="Montrer / Cacher les paramètres" id="show-hide-button">
+        <img src="/activities/assets/down-arrow.svg" alt="Montrer" style="display: none;" id="hide-settings">
+        <img src="/activities/assets/up-arrow.svg" alt="Cacher" id="show-settings">
     </a>
     <script>
+        var settingsVisibility = false;
+
         var presentationLinkInput = document.getElementById("presentation-link");
         var iframe = document.getElementById("canva-iframe");
         var pageCountInput = document.getElementById("page-count");
@@ -154,6 +158,9 @@
         var iframeDiv = document.getElementById("iframe-div");
         var grabDiv = document.getElementById("resize-area");
         var mainDiv = document.getElementById("main-div");
+        var settingsDiv = document.getElementById("settings");
+        var settingsShowAUp = document.getElementById("show-settings");
+        var settingsHideAUp = document.getElementById("hide-settings");
 
         var iframe_grab_offset_x = 0;
         var iframe_grab_offset_y = 0;
@@ -183,6 +190,21 @@
             } else {
                 let newUrl = url + "#2";
                 document.getElementById("canva-iframe").src = newUrl;
+            }
+        }
+
+        function toggleSettingsVisibility() {
+            settingsVisibility = !settingsVisibility;
+
+            if (settingsVisibility) {
+                settingsDiv.style.transform = "translateY(0px)";
+                settingsHideAUp.style = "";
+                settingsShowAUp.style = "display: none";
+            }
+            if (!settingsVisibility) {
+                settingsDiv.style.transform = "translateY(200px)";
+                settingsShowAUp.style = "";
+                settingsHideAUp.style = "display: none";
             }
         }
 
