@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canva Viewer</title>
+    <style>
+        @font-face {
+            font-family: consolas2;
+            src: url("/assets/consola.ttf");
+            font-weight: bold;
+        }
+
+        :root {
+            color: var(--text-color);
+            font-family: consolas2;
+        }
+
+        #presentation-link {
+            width: 40em;
+        }
+
+        #iframe-div {
+            position: absolute;
+            box-shadow: 0 2px 8px 0 rgba(63, 69, 81, 0.16);
+            overflow: visible;
+            border-radius: 8px;
+            will-change: transform;
+            resize: both;
+            padding: 5px;
+            background-color: rgb(109, 109, 109);
+            box-shadow: 5px 5px 5px rgb(63, 63, 63);
+            overflow: auto;
+            min-height: max-content;
+            min-width: max-content;
+            display: block;
+        }
+
+        #canva-iframe {
+            height: 100%;
+            width: 100%;
+            display: block;
+            margin-right: auto;
+            outline: solid 1px rgb(56, 56, 56);
+            border-radius: 5px;
+        }
+
+        #resize-area {
+            z-index: 2;
+            margin-top: 10px;
+            cursor: grab;
+            height: min-content;
+            width: min-content;
+            display: block;
+            padding: 0px;
+            position: absolute;
+            bottom: 0px;
+        }
+
+        #settings {
+            bottom: 15px;
+            position: absolute;
+
+            background-color: rgb(82, 82, 82);
+            padding: 10px;
+            border-radius: 10px;
+            margin-left: 60px;
+            width: 45em;
+            transform: translateY(200px);
+            transition: transform 1s ease;
+        }
+
+        input, select, textarea {
+            color: white;
+        }
+
+        input {
+            border-radius: 5px;
+            outline: solid 1px white;
+            border: solid 0px;
+            margin: 2px;
+            display: block;
+        }
+
+        input {
+            background-color: rgb(34, 34, 34);
+            left: 160px;
+            position: absolute;
+        }
+
+        span {
+            color: white;
+        }
+
+        button {
+            background-color: rgb(51, 51, 51);
+            outline: 1px solid white;
+            border : 0px;
+            border-radius: 5px;
+            color: white;
+            padding: 3px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: grey;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #main-div {
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #show-hide-button {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="main-div">
+        <div style="transform: translate(0px, 0px);" id="iframe-div">
+            <div id="resize-area" style="user-select: none">
+                <img src="/assets/move.svg" alt="move" style="pointer-events: none; margin: 0px;">
+            </div>
+            <iframe id="canva-iframe" loading="lazy"
+                style="position: relative; min-height: 200px; border: none; padding: 0; margin: 0;" src="">
+            </iframe>
+
+        </div>
+        <div id="settings">
+            <span style="display: flex; margin: 5px;">Embed Url: <input type="text" id="presentation-link" value="https://www.canva.com/design/"></span>
+            <span style="display: flex; margin: 5px;">Nombre de pages: <input type="number" id="page-count"></span>
+            <span style="display: flex; margin: 5px;">Delay de diapo: <input type="number" id="transition-delay"></span>
+            <button onclick="loadView()">Charger</button>
+        </div>
+    </div>
+    <a onclick="toggleSettingsVisibility();" title="Montrer / Cacher les paramètres" id="show-hide-button">
+        <img src="/activities/assets/down-arrow.svg" alt="Montrer" style="display: none;" id="hide-settings">
+        <img src="/activities/assets/up-arrow.svg" alt="Cacher" id="show-settings">
+    </a>
+    <script>
+        var settingsVisibility = false;
+
+        var presentationLinkInput = document.getElementById("presentation-link");
+        var iframe = document.getElementById("canva-iframe");
+        var pageCountInput = document.getElementById("page-count");
+        var transitionDelayInput = document.getElementById("transition-delay");
+        var iframeDiv = document.getElementById("iframe-div");
+        var grabDiv = document.getElementById("resize-area");
+        var mainDiv = document.getElementById("main-div");
+        var settingsDiv = document.getElementById("settings");
+        var settingsShowAUp = document.getElementById("show-settings");
+        var settingsHideAUp = document.getElementById("hide-settings");
+
+        var iframe_grab_offset_x = 0;
+        var iframe_grab_offset_y = 0;
+
+        var iframe_x_pos = 0;
+        var iframe_y_pos = 0;
+
+        var iframe_grabed = false;
+
+        function loadView() {
+            var url = presentationLinkInput.value;
+            if (!url.endsWith("?embed")) {
+                url += "?embed";
+            }
+            iframe.src = url;
+
+            setInterval(nextPage, transitionDelayInput.value * 1000)
+        }
+
+        function nextPage() {
+            var url = document.getElementById("canva-iframe").src;
+            if (url.includes("#")) {
+                let currentPage = parseInt(url.slice(url.indexOf("#") + 1));
+
+                let newUrl = url.slice(0, url.indexOf("#")) + "#" + Math.max(((currentPage + 1) % (parseInt(pageCountInput.value) + 1)), 1);
+                document.getElementById("canva-iframe").src = newUrl;
+            } else {
+                let newUrl = url + "#2";
+                document.getElementById("canva-iframe").src = newUrl;
+            }
+        }
+
+        function toggleSettingsVisibility() {
+            settingsVisibility = !settingsVisibility;
+
+            if (settingsVisibility) {
+                settingsDiv.style.transform = "translateY(0px)";
+                settingsHideAUp.style = "";
+                settingsShowAUp.style = "display: none";
+            }
+            if (!settingsVisibility) {
+                settingsDiv.style.transform = "translateY(200px)";
+                settingsShowAUp.style = "";
+                settingsHideAUp.style = "display: none";
+            }
+        }
+
+        grabDiv.addEventListener("mousedown", (event) => {
+            iframe_grab_offset_x = event.pageX - iframe_x_pos;
+            iframe_grab_offset_y = event.pageY - iframe_y_pos;
+            iframe_grabed = true;
+            iframe.style.pointerEvents = "none";
+        });
+
+        document.addEventListener("mousemove", (event) => {
+            if (iframe_grabed) {
+                iframe_x_pos = event.pageX - iframe_grab_offset_x;
+                iframe_y_pos = event.pageY - iframe_grab_offset_y;
+
+                if (iframe_x_pos < 0) iframe_x_pos = 0;
+                if (iframe_y_pos < 0) iframe_y_pos = 0;
+                if (iframe_x_pos+iframeDiv.getBoundingClientRect().width > mainDiv.getBoundingClientRect().width) iframe_x_pos = mainDiv.getBoundingClientRect().width - iframeDiv.getBoundingClientRect().width;
+                if (iframe_y_pos+iframeDiv.getBoundingClientRect().height > mainDiv.getBoundingClientRect().height) iframe_y_pos = mainDiv.getBoundingClientRect().height - iframeDiv.getBoundingClientRect().height;
+
+                iframeDiv.style.transform = "translate(" + iframe_x_pos + "px, " + iframe_y_pos + "px)";
+            }
+        });
+
+        document.addEventListener("mouseup", (event) => {
+            if (iframe_grabed) {
+                iframe_x_pos = event.pageX - iframe_grab_offset_x;
+                iframe_y_pos = event.pageY - iframe_grab_offset_y;
+                
+                if (iframe_x_pos < 0) iframe_x_pos = 0;
+                if (iframe_y_pos < 0) iframe_y_pos = 0;
+                if (iframe_x_pos+iframeDiv.getBoundingClientRect().width > mainDiv.getBoundingClientRect().width) iframe_x_pos = mainDiv.getBoundingClientRect().width - iframeDiv.getBoundingClientRect().width;
+                if (iframe_y_pos+iframeDiv.getBoundingClientRect().height > mainDiv.getBoundingClientRect().height) iframe_y_pos = mainDiv.getBoundingClientRect().height - iframeDiv.getBoundingClientRect().height;
+
+                
+                iframe_grabed = false;
+                iframe.style.pointerEvents = "all";
+
+                iframeDiv.style.transform = "translate(" + iframe_x_pos + "px, " + iframe_y_pos + "px)";
+            }
+        });
+    </script>
+</body>
+
+</html>

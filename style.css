@@ -32,6 +32,8 @@ body {
     padding: 0px;
     margin: 0px;
     position: absolute;
+    pointer-events: none;
+    z-index: 0;
 }
 
 .centered_content {
@@ -257,6 +259,8 @@ body {
 
 .page {
     transition: opacity 500ms ease;
+    pointer-events: all;
+    z-index: 2;
 }
 
 .not_custom_text_color {
@@ -321,4 +325,39 @@ option {
 .hyperlink {
     color: rgb(0, 132, 255);
     text-decoration: none;
+}
+
+.activity-card {
+    background-color: #494949;
+    border-radius: 20px;
+    outline: solid 2px #666666;
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+    transition: transform 400ms ease;
+    cursor: pointer;
+}
+
+.activity-card:hover {
+    transform: scale(1.1);
+}
+
+.activity-card img {
+    outline: solid 1px #666666;
+    border-radius: 15px;
+    height: 100px;
+    width: 133px;
+    display: flex;
+    justify-content: center;
+}
+
+#activities-list {
+    margin: 50px;
+}
+
+.activity-card-name {
+    justify-content: center;
+    display: flex;
+    margin: 0px;
+    margin-top: 10px;
 }
