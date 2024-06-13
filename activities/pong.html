@@ -31,7 +31,7 @@
     <canvas id="game"></canvas>
 
     <script>
-        var color = "#ffffff";
+        var color = "#000";
 
         const default_width = 1500;
         const default_height = 1000;
@@ -65,6 +65,8 @@
         var ball_limit_passed = false;
 
         var mousePressed = false;
+        var mouseX = 0;
+        var mouseY = 0;
 
         document.addEventListener('keydown', function (event) {
             if (event.keyCode == 40) {
@@ -86,12 +88,21 @@
         
         document.addEventListener('mousedown', function (event) {
             mousePressed = true;
+            mouseX = event.pageX;
+            mouseY = event.pageY;
         });
 
         document.addEventListener('mouseup', function (event) {
             mousePressed = false;
+            mouseX = event.pageX;
+            mouseY = event.pageY;
         });
 
+        document.addEventListener('mousemove', function (event) {
+            mousePressed = false;
+            mouseX = event.pageX;
+            mouseY = event.pageY;
+        });
 
         function circleRect(rx, ry, rw, rh, cx, cy, radius) {
             /**Code from : https://www.jeffreythompson.org/collision-detection/circle-rect.php*/
@@ -126,9 +137,13 @@
             if (down_pressed) player_rect[1] += deltaTime * player_speed;
             if (up_pressed) player_rect[1] -= deltaTime * player_speed;
             if (mousePressed) {
-                if (player_rect[1]) null; // TODO : Continue here
+                if (window.innerHeight/2>mouseY) {
+                    player_rect[1] -= deltaTime * player_speed;
+                }
+                if (window.innerHeight/2<mouseY) {
+                    player_rect[1] += deltaTime * player_speed;
+                }
             }
-
 
             // Check if the player is out of the screen
             if (player_rect[1] + player_rect[3] / 2 > default_height) player_rect[1] = default_height - player_rect[3] / 2;
