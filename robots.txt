@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /libs/
+Disallow: /assets/
+Disallow: /activities/
+Disallow: old.html
