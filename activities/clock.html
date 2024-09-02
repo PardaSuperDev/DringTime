@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock</title>
+    <style>
+        :root {
+            --radius: 250px;
+            --indicator-offset: 10px;
+            --color: transparent;
+        }
+
+        body {
+            background-color: transparent;
+            margin: 0;
+        }
+
+        #clock_container {
+            position: absolute;
+            width: 510px;
+            height: 510px;
+            background-color: red;
+            margin: 0;
+        }
+
+        #clock_frame {
+            border-radius: 50%;
+            border: solid var(--color) 5px;
+            width: calc(var(--radius)*2);
+            height: calc(var(--radius)*2);
+            background-color: transparent;
+            align-items: center;
+            display: flex;
+        }
+
+        .hand {
+            background-color: var(--color);
+            height: 10px;
+            border-radius: 5px;
+            margin-left: var(--radius);
+            /*On centre l'aiguille*/
+            transform: rotate(0deg);
+            transform-origin: left;
+            position: absolute;
+        }
+
+        .big-indicator {
+            width: 25px !important;
+            --indicator-offset: 20px;
+        }
+
+        #seconds-hand {
+            animation: rotate 60s infinite linear;
+            width: 180px;
+
+        }
+
+        #minutes-hand {
+            animation: rotate 3600s infinite linear;
+            width: 140px;
+
+        }
+
+        #hours-hand {
+            animation: rotate 43200s infinite linear;
+            width: 120px;
+
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(-0.25turn);
+            }
+
+            100% {
+                transform: rotate(0.75turn);
+            }
+        }
+
+        .indicator {
+            background-color: var(--color);
+            width: 15px;
+            height: 10px;
+            border-radius: 5px;
+            margin-left: var(--radius);
+            transform-origin: left;
+            position: absolute;
+
+            transform: rotate(var(--angle));
+
+            translate: calc(cos(var(--angle)) * (var(--radius) - var(--indicator-offset))) calc(sin(var(--angle)) * (var(--radius) - var(--indicator-offset)));
+        }
+    </style>
+</head>
+
+<body>
+    <div id="clock_container">
+        <div id="clock_frame">
+            <div class="hand" id="seconds-hand"></div>
+            <div class="hand" id="minutes-hand"></div>
+            <div class="hand" id="hours-hand"></div>
+
+            <div class="indicator big-indicator" style="--angle: 0deg;"></div>
+            <div class="indicator big-indicator" style="--angle: 90deg;"></div>
+            <div class="indicator big-indicator" style="--angle: 180deg;"></div>
+            <div class="indicator big-indicator" style="--angle: 270deg;"></div>
+            <div class="indicator big-indicator" style="--angle: 360deg;"></div>
+
+            <div class="indicator" style="--angle: 30deg;"></div>
+            <div class="indicator" style="--angle: 60deg;"></div>
+            <div class="indicator" style="--angle: 120deg;"></div>
+            <div class="indicator" style="--angle: 150deg;"></div>
+            <div class="indicator" style="--angle: 210deg;"></div>
+            <div class="indicator" style="--angle: 240deg;"></div>
+            <div class="indicator" style="--angle: 300deg;"></div>
+            <div class="indicator" style="--angle: 330deg;"></div>
+
+
+        </div>
+    </div>
+    <script>
+        var color = "white";
+
+        var clock_x = 0;
+        var clock_y = 0;
+        var radius = 250;
+
+        var mouse_origin_x = -1;
+        var mouse_origin_y = -1;
+
+        const hands = document.getElementsByClassName("hand");
+        const root = document.querySelector(':root');
+
+        function set_hour() {
+            var dt = new Date();
+            var seconds = dt.getSeconds() + (60 * dt.getMinutes()) + (3600 * dt.getHours());
+
+            for (let i = 0; i < hands.length; i++) {
+                const element = hands[i];
+                element.style.animationDelay = -seconds + "s";
+            }
+        }
+
+        window.addEventListener("message", (event) => {
+            color = event["data"]["color"];
+            root.style.setProperty('--color', color);
+        }, false);
+
+        document.getElementById("clock_container").addEventListener('mousemove', (event) => {
+            let dist_center = Math.sqrt((event.pageX - clock_x - 250) ** 2 + (event.pageY - clock_y - 250) ** 2)
+            if (dist_center < radius-50) {
+                document.getElementById("clock_container").style.cursor = "move";
+            } else if (event.pageX > clock_x+radius*2-20 && event.pageY > clock_y+radius*2-20) {
+                document.getElementById("clock_container").style.cursor = "nwse-resize";
+            } else {
+                document.getElementById("clock_container").style.cursor = "default";
+            }
+        });
+
+        document.getElementById("clock_container").addEventListener('mousedown', (event) => {
+            console.log("a");
+            let dist_center = Math.sqrt((event.pageX - clock_x - 250) ** 2 + (event.pageY - clock_y - 250) ** 2)
+            if (dist_center < radius-50) {
+                mouse_origin_x = event.pageX;
+                mouse_origin_y = event.pageY;
+            }
+        });
+
+
+        window.onload = set_hour;
+
+    </script>
+</body>
+
+</html>
