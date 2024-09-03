@@ -21,8 +21,9 @@
             position: absolute;
             width: 510px;
             height: 510px;
-            background-color: red;
+            background-color: transparent;
             margin: 0;
+            transform: translate(0px, 0px);
         }
 
         #clock_frame {
@@ -89,7 +90,8 @@
             position: absolute;
 
             transform: rotate(var(--angle));
-
+            
+            /*Place le trais au bon endroit sur le cadrant en fonction de sa rotation.*/
             translate: calc(cos(var(--angle)) * (var(--radius) - var(--indicator-offset))) calc(sin(var(--angle)) * (var(--radius) - var(--indicator-offset)));
         }
     </style>
@@ -126,9 +128,10 @@
         var clock_x = 0;
         var clock_y = 0;
         var radius = 250;
+        var dragging = false;
 
-        var mouse_origin_x = -1;
-        var mouse_origin_y = -1;
+        var mouse_relat_x = -1;
+        var mouse_relat_y = -1;
 
         const hands = document.getElementsByClassName("hand");
         const root = document.querySelector(':root');
@@ -160,11 +163,27 @@
         });
 
         document.getElementById("clock_container").addEventListener('mousedown', (event) => {
-            console.log("a");
             let dist_center = Math.sqrt((event.pageX - clock_x - 250) ** 2 + (event.pageY - clock_y - 250) ** 2)
             if (dist_center < radius-50) {
-                mouse_origin_x = event.pageX;
-                mouse_origin_y = event.pageY;
+                mouse_relat_x = event.pageX-clock_x;
+                mouse_relat_y = event.pageY-clock_y;
+                dragging = true;
+            }
+        });
+
+        window.addEventListener('mouseup', (event) => {
+            dragging = false;
+        });
+
+        window.addEventListener('mousemove', (event) => {
+            if (dragging) {
+                console.log("b");
+                clock_x = event.pageX-mouse_relat_x;
+                clock_y = event.pageY-mouse_relat_y;
+
+                const clock_container = document.getElementById("clock_container");
+
+                clock_container.style.transform = `translate(${clock_x}px, ${clock_y}px)`;
             }
         });
 
