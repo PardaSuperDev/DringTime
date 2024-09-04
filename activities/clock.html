@@ -188,7 +188,6 @@
 
             bg_color = event["data"]["background-color"];
             root.style.setProperty('--bg-color', bg_color);
-            console.log(bg_color);
         }, false);
 
         document.getElementById("clock_container").addEventListener('mousemove', (event) => {
@@ -233,8 +232,6 @@
                 radius = Math.max(event.pageX - clock_x, event.pageY - clock_y, 100) / 2;
 
                 root.style.setProperty('--radius', radius + "px");
-
-                console.log(radius);
             }
         });
 
