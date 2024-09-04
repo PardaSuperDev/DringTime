@@ -84,7 +84,7 @@ function setup() {
 
 async function setupDynamicIcon() {
     iconSVGBase = await (await fetch("assets/favicon.svg")).text();
-    updateFgColor();
+    updatePageColor();
 }
 
 function intTohHex(i) {
@@ -92,15 +92,16 @@ function intTohHex(i) {
     return hex.length == 1 ? "0" + hex : hex;
 }
 
-function updateFgColor() {
+function updatePageColor(fg_color = true) {
     var elementColor = getComputedStyle(window.top.document.body, "")["color"]
+    var elementBgColor = getComputedStyle(window.top.document.body, "")["background-color"]
 
     if (window.activity_started) {
-        document.getElementById("activity_iframe").contentWindow.postMessage({ "color": elementColor });
+        document.getElementById("activity_iframe").contentWindow.postMessage({ "color": elementColor, "background-color": elementBgColor });
     }
 
     // Met à jour la couleur du favicon (Fait clairement lag votre PC)
-    if (iconSVGBase.length > 0) {
+    if (fg_color && iconSVGBase.length > 0) {
         const components = elementColor.slice(4, -1).split(/, */); // Vive le regex !!
 
         const hexColor = "#" + intTohHex(+components[0]) + intTohHex(+components[1]) + intTohHex(+components[2]);
@@ -886,7 +887,7 @@ async function loadSettings() {
             document.querySelector('#choose_background_color').dispatchEvent(new Event('input', { bubbles: true }));
 
             // Met à jour les couleurs du l'iframe
-            updateFgColor();
+            updatePageColor();
 
             break;
         }
@@ -909,8 +910,8 @@ Coloris({
     margin: 30,
     defaultColor: "#FFFFFF",
     onChange: (color, input) => {
-        if (input.id === "choose_labels_color") { document.documentElement.style.setProperty('--text-color', color); { updateFgColor(); } }
-        else if (input.id === "choose_background_color") { document.documentElement.style.setProperty('--background-color', color) };
+        if (input.id === "choose_labels_color") { document.documentElement.style.setProperty('--text-color', color); updatePageColor(); }
+        else if (input.id === "choose_background_color") { document.documentElement.style.setProperty('--background-color', color); updatePageColor(false); };
 
         askSave();
     }
