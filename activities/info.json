@@ -22,5 +22,11 @@
         "description": "Afficher vos présentations.",
         "picture": "/activities/assets/canva-icon.png",
         "link-html": "/activities/canva-viewer.html"
+    },
+    "clock": {
+        "name": "Horloge",
+        "description": "Afficher une horloge.",
+        "picture": "/activities/assets/clock-icon.png",
+        "link-html": "/activities/clock.html"
     }
 }

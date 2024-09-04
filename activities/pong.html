@@ -290,6 +290,7 @@
 
         window.addEventListener("message", (event) => {
             color = event["data"]["color"];
+            console.log(color);
         }, false);
 
         requestAnimationFrame(update);

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock</title>
+    <style>
+        :root {
+            --radius: 250px;
+            --indicator-offset: 12px;
+            --color: transparent;
+        }
+
+        body {
+            background-color: transparent;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #clock_container {
+            position: absolute;
+            width: calc(var(--radius)*2+10);
+            height: calc(var(--radius)*2+10);
+            background-color: transparent;
+            margin: 0;
+            transform: translate(0px, 0px);
+        }
+
+        #clock_container:hover #resize_indicator {
+            opacity: 1;
+        }
+
+        #clock_frame {
+            border-radius: 50%;
+            border: solid var(--color) 5px;
+            width: calc(var(--radius)*2);
+            height: calc(var(--radius)*2);
+            background-color: transparent;
+            align-items: center;
+            display: flex;
+        }
+
+        .hand {
+            background-color: var(--color);
+            height: 10px;
+            border-radius: 5px;
+            margin-left: var(--radius);
+            /*On centre l'aiguille*/
+            transform: rotate(0deg);
+            transform-origin: left;
+            position: absolute;
+        }
+
+        .big-indicator {
+            width: 25px !important;
+            --indicator-offset: 20px;
+        }
+
+        #seconds-hand {
+            animation: rotate 60s infinite linear;
+            width: calc(var(--radius)*0.72);
+
+        }
+
+        #minutes-hand {
+            animation: rotate 3600s infinite linear;
+            width: calc(var(--radius)*0.56);
+
+        }
+
+        #hours-hand {
+            animation: rotate 43200s infinite linear;
+            width: calc(var(--radius)*0.48);
+
+        }
+
+        #resize_indicator {
+            width: 20px;
+            height: 20px;
+            border-right: solid 3px var(--color);
+            border-bottom: solid 3px var(--color);
+            border-radius: 2px;
+
+            transition: opacity 300ms ease;
+
+            opacity: 0;
+
+            position: absolute;
+            left: calc((var(--radius)*2) - 20px); /*Ne marche pas sans les espaces avant et apres le -.*/
+            top: calc((var(--radius)*2) - 20px);
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(-0.25turn);
+            }
+
+            100% {
+                transform: rotate(0.75turn);
+            }
+        }
+
+        .indicator {
+            background-color: var(--color);
+            width: 15px;
+            height: 10px;
+            border-radius: 5px;
+            margin-left: var(--radius);
+            transform-origin: left;
+            position: absolute;
+
+            transform: rotate(var(--angle));
+
+            /*Place le trais au bon endroit sur le cadrant en fonction de sa rotation.*/
+            translate: calc(cos(var(--angle)) * (var(--radius) - var(--indicator-offset))) calc(sin(var(--angle)) * (var(--radius) - var(--indicator-offset)));
+        }
+    </style>
+</head>
+
+<body>
+    <div id="clock_container">
+        <div id="clock_frame">
+            <div class="hand" id="seconds-hand"></div>
+            <div class="hand" id="minutes-hand"></div>
+            <div class="hand" id="hours-hand"></div>
+
+            <div class="indicator big-indicator" style="--angle: 0deg;"></div>
+            <div class="indicator big-indicator" style="--angle: 90deg;"></div>
+            <div class="indicator big-indicator" style="--angle: 180deg;"></div>
+            <div class="indicator big-indicator" style="--angle: 270deg;"></div>
+            <div class="indicator big-indicator" style="--angle: 360deg;"></div>
+
+            <div class="indicator" style="--angle: 30deg;"></div>
+            <div class="indicator" style="--angle: 60deg;"></div>
+            <div class="indicator" style="--angle: 120deg;"></div>
+            <div class="indicator" style="--angle: 150deg;"></div>
+            <div class="indicator" style="--angle: 210deg;"></div>
+            <div class="indicator" style="--angle: 240deg;"></div>
+            <div class="indicator" style="--angle: 300deg;"></div>
+            <div class="indicator" style="--angle: 330deg;"></div>
+        </div>
+        <div id="resize_indicator"></div>
+    </div>
+    <script>
+        var color = "white";
+
+        var clock_x = 0;
+        var clock_y = 0;
+        var radius = 250;
+        var dragging = false;
+        var resizing = false;
+
+        var mouse_relat_x = -1;
+        var mouse_relat_y = -1;
+
+        const hands = document.getElementsByClassName("hand");
+        const root = document.querySelector(':root');
+
+        function set_hour() {
+            var dt = new Date();
+            var seconds = dt.getSeconds() + (60 * dt.getMinutes()) + (3600 * dt.getHours());
+
+            for (let i = 0; i < hands.length; i++) {
+                const element = hands[i];
+                element.style.animationDelay = -seconds + "s";
+            }
+        }
+
+        window.addEventListener("message", (event) => {
+            color = event["data"]["color"];
+            root.style.setProperty('--color', color);
+        }, false);
+
+        document.getElementById("clock_container").addEventListener('mousemove', (event) => {
+            let dist_center = Math.sqrt((event.pageX - clock_x - radius) ** 2 + (event.pageY - clock_y - radius) ** 2)
+            if (dist_center < radius - 40) {
+                document.getElementById("clock_container").style.cursor = "move";
+            } else if (event.pageX > clock_x + radius * 2 - 20 && event.pageY > clock_y + radius * 2 - 20) {
+                document.getElementById("clock_container").style.cursor = "nwse-resize";
+            } else {
+                document.getElementById("clock_container").style.cursor = "default";
+            }
+        });
+
+        document.getElementById("clock_container").addEventListener('mousedown', (event) => {
+            let dist_center = Math.sqrt((event.pageX - clock_x - radius) ** 2 + (event.pageY - clock_y - radius) ** 2)
+            if (!resizing && dist_center < radius - 40) {
+                mouse_relat_x = event.pageX - clock_x;
+                mouse_relat_y = event.pageY - clock_y;
+                dragging = true;
+            }
+            if (!dragging && event.pageX > clock_x + radius * 2 - 20 && event.pageY > clock_y + radius * 2 - 20) {
+                resizing = true;
+            }
+        });
+
+        window.addEventListener('mouseup', (event) => {
+            dragging = false;
+            resizing = false;
+        });
+
+        window.addEventListener('mousemove', (event) => {
+            if (dragging) {
+                clock_x = event.pageX - mouse_relat_x;
+                clock_y = event.pageY - mouse_relat_y;
+
+                const clock_container = document.getElementById("clock_container");
+
+                clock_container.style.transform = `translate(${clock_x}px, ${clock_y}px)`;
+            }
+
+            if (resizing) {
+                radius = Math.max(event.pageX - clock_x, event.pageY - clock_y, 100) / 2;
+
+                root.style.setProperty('--radius', radius + "px");
+
+                console.log(radius);
+            }
+        });
+
+
+        window.onload = set_hour;
+
+    </script>
+</body>
+
+</html>
