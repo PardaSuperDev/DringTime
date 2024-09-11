@@ -8,8 +8,9 @@
     <style>
         :root {
             --radius: 250px;
-            --indicator-offset: 12px;
+            --indicator-offset: 0.048;
             --color: transparent;
+            --bg-color: black;
         }
 
         body {
@@ -33,7 +34,7 @@
 
         #clock_frame {
             border-radius: 50%;
-            border: solid var(--color) 5px;
+            border: solid var(--color) calc(var(--radius)*0.04);
             width: calc(var(--radius)*2);
             height: calc(var(--radius)*2);
             background-color: transparent;
@@ -43,8 +44,8 @@
 
         .hand {
             background-color: var(--color);
-            height: 10px;
-            border-radius: 5px;
+            height: calc(var(--radius)*0.04);
+            border-radius: calc(var(--radius)*0.02);
             margin-left: var(--radius);
             /*On centre l'aiguille*/
             transform: rotate(0deg);
@@ -53,8 +54,8 @@
         }
 
         .big-indicator {
-            width: 25px !important;
-            --indicator-offset: 20px;
+            width: calc(var(--radius)*0.1) !important;
+            --indicator-offset: 0.09;
         }
 
         #seconds-hand {
@@ -91,6 +92,17 @@
             top: calc((var(--radius)*2) - 20px);
         }
 
+        #clock_center {
+            background-color: var(--color);
+            width: calc(var(--radius)*0.1);
+            height: calc(var(--radius)*0.1);
+            box-shadow: 0px 0px calc(var(--radius)*0.02) calc(var(--radius)*0.02) var(--bg-color);
+            border-radius: 50%;
+            position: absolute;
+            left: calc(var(--radius));
+            top: calc(var(--radius));
+        }
+
         @keyframes rotate {
             0% {
                 transform: rotate(-0.25turn);
@@ -103,9 +115,9 @@
 
         .indicator {
             background-color: var(--color);
-            width: 15px;
-            height: 10px;
-            border-radius: 5px;
+            width: calc(var(--radius)*0.06);
+            height: calc(var(--radius)*0.04);
+            border-radius: calc(var(--radius)*0.02);
             margin-left: var(--radius);
             transform-origin: left;
             position: absolute;
@@ -113,7 +125,7 @@
             transform: rotate(var(--angle));
 
             /*Place le trais au bon endroit sur le cadrant en fonction de sa rotation.*/
-            translate: calc(cos(var(--angle)) * (var(--radius) - var(--indicator-offset))) calc(sin(var(--angle)) * (var(--radius) - var(--indicator-offset)));
+            translate: calc(cos(var(--angle)) * (var(--radius) - calc(var(--radius)*var(--indicator-offset)))) calc(sin(var(--angle)) * (var(--radius) - calc(var(--radius)*var(--indicator-offset))));
         }
     </style>
 </head>
@@ -139,11 +151,14 @@
             <div class="indicator" style="--angle: 240deg;"></div>
             <div class="indicator" style="--angle: 300deg;"></div>
             <div class="indicator" style="--angle: 330deg;"></div>
+
+            <div id="clock_center"></div>
         </div>
         <div id="resize_indicator"></div>
     </div>
     <script>
         var color = "white";
+        var bg_color = "transparent";
 
         var clock_x = 0;
         var clock_y = 0;
@@ -170,6 +185,9 @@
         window.addEventListener("message", (event) => {
             color = event["data"]["color"];
             root.style.setProperty('--color', color);
+
+            bg_color = event["data"]["background-color"];
+            root.style.setProperty('--bg-color', bg_color);
         }, false);
 
         document.getElementById("clock_container").addEventListener('mousemove', (event) => {
@@ -214,8 +232,6 @@
                 radius = Math.max(event.pageX - clock_x, event.pageY - clock_y, 100) / 2;
 
                 root.style.setProperty('--radius', radius + "px");
-
-                console.log(radius);
             }
         });
 
