@@ -348,7 +348,7 @@ async function openActivitiesPage() {
     change_page('activities_page');
 
     if (activities_info == null) {
-        let response = await fetch("/activities/info.json");
+        let response = await fetch("activities/info.json");
         activities_info = await response.json();
 
         let activities = Object.keys(activities_info);
