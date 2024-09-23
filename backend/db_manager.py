@@ -85,6 +85,14 @@ def set_alarms(name, value, day=-1):
     
     print("Alarms updated.")
 
+def list_providers():
+    with open("data/data.json", "r") as f:
+        data = json.loads(f.read())
+    
+    print("List of providers:")
+    for i in data["providers"]:
+        print(f"    - {i}")
+
 def setup_new(force=False):
     if os.path.isdir("data"):
         print("A database already exists in the current folder.\nDo you want to override it?\n")
@@ -108,6 +116,9 @@ help_str = \
 
     db_manager.py help
         Show this help message
+    
+    db_manager.py list
+        List all the providers
     
     db_manager.py setup [-f]
         Setup a new database. Will ask for confirmation if the database already exist. Use `-f` to bypass asking for confirmation.
@@ -138,6 +149,11 @@ if __name__ == "__main__":
         print(help_str)
     elif sys.argv[1] == "help":
         print(help_str)
+    elif sys.argv[1] == "list":
+        if len(sys.argv) == 2:
+            list_providers()
+        else:
+            print("Too many argument. See `db_manager.py help` for more help.")
     elif sys.argv[1] == "add":
         if len(sys.argv) == 2:
             print("Missing argument <name>. See `db_manager.py help` for more help.")
