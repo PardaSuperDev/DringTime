@@ -1,3 +1,4 @@
 .vscode
 **/desktop.ini
 **/__pycache__
+*.log
