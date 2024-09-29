@@ -27,7 +27,7 @@ var sonneries = [
 window.toggled_view = false; // Utilisée pour connaitre l'état de la vue des timers
 window.settings_opened = false; // Utlisée pour connaitre l'état d'ouverture des paramètres
 window.alarmsProvider = "";
-window.remoteProviderList = [];
+window.remoteProviderList = {};
 window.localProviderList = [];
 window.page = "timers_page";
 window.textRenderingType = "ClearType";
@@ -499,9 +499,9 @@ async function updateProviders() {
         providersCombo.appendChild(option);
     });
 
-    remoteProviders.forEach(provider => {
+    Object.keys(remoteProviders).forEach(provider => {
         var option = document.createElement('option');
-        option.value = "r-" + provider;
+        option.value = "r-" + remoteProviders[provider];
         option.innerText = "R: " + provider;
 
         providersCombo.appendChild(option);
@@ -531,7 +531,7 @@ function toggle_settings_bar() {
     } else {
         settingsBar.style = "width: var(--max-settings-bar-lenght)";
         settingsIcon.style = "opacity: 1"
-        if (window.remoteProviderList.length === 0 && window.localProviderList.length === 0) updateProvidersCombo();
+        if (Object.keys(window.remoteProviderList).length === 0 && window.localProviderList.length === 0) updateProvidersCombo();
     }
 
     window.settings_opened = !window.settings_opened;

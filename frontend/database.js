@@ -1,30 +1,7 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, getDocs, getDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { createUserWithEmailAndPassword, getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
-
-const firebaseConfig = {
-    apiKey: "AIzaSyADkVmRSqXomcAa7UkazwPRR054seizJLo",
-    authDomain: "timer-sonneries.firebaseapp.com",
-    projectId: "timer-sonneries",
-    storageBucket: "timer-sonneries.appspot.com",
-    messagingSenderId: "201048811347",
-    appId: "1:201048811347:web:646f7f60249e2332d463a6"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-db.settings = { timestampsInSnapshots: true };
-
-const alarmsRef = collection(db, "horaires-sonneries");
 
 export async function getAlarmsProviders() {
-    const alarmsSnapshot = await getDocs(alarmsRef);
-    var providers = [];
-    alarmsSnapshot.forEach(doc => {
-        providers.push(doc.id);
-    });
+    var providers = await (await fetch("http://127.0.0.1:5000/provider_list")).json()
+    console.log(providers);
     return providers;
 }
 async function sendNewAlarms(name, data) {
@@ -33,9 +10,8 @@ async function sendNewAlarms(name, data) {
     });
 }
 
-async function getAlarmsList(name) {
-    const alarmsSnapshot = await getDoc(doc(db, "horaires-sonneries", name));
-    var alarmsData = alarmsSnapshot.data()["data"];
+async function getAlarmsList(id) {
+    var alarmsData = await (await fetch("http://127.0.0.1:5000/alarms/" + id)).text();
     console.log(alarmsData);
     var days = alarmsData.split("-");
     var alarms = [];
@@ -49,18 +25,7 @@ async function getAlarmsList(name) {
 }
 
 function createAccount(email, password) {
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed up 
-            const user = userCredential.user;
-            console.log(user);
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode, errorMessage);
-        });
+    console.log("Not implemented yet")
 }
 
 window.getAlarmsList = getAlarmsList
