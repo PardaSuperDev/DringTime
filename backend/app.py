@@ -1,6 +1,7 @@
 import json
 import os
 from flask import Flask
+from waitress import serve
 
 app = Flask(__name__)
 
@@ -26,4 +27,4 @@ def provider_list():
 
 if __name__ == "__main__":
     port = 5000
-    app.run(debug=True, host='0.0.0.0', port=port)
+    serve(app, host='0.0.0.0', port=port)
