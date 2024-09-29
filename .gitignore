@@ -1,2 +1,3 @@
 .vscode
 **/desktop.ini
+**/__pycache__
