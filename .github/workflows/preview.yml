@@ -18,7 +18,7 @@ jobs:
         username: dringth
         password: ${{ secrets.ftp_password }}
         local-dir: ./frontend/
-        server-dir: ./preview/
+        server-dir: ./www/preview/
         exclude: |
           **/.git*
           **/.git*/**
