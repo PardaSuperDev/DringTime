@@ -11,7 +11,7 @@ with open("data/data.json", "r") as file:
 
 @app.route("/")
 def index():
-    return "<p>Dring Time Website API. Hello! </p><a href='https://dring-time.fr'>Go to the website.</a>"
+    return "<p>Dring Time Website API. Hello! <a href='https://dring-time.fr'>Go to the website.</a></p><p>This API has no purpose of being a public API.</p>"
 
 
 @app.route("/alarms/<pid>")
