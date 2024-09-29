@@ -1,9 +1,23 @@
 import json
 import os
-from flask import Flask
+import sys
+from flask import Flask, request
 from waitress import serve
+import logging
 
 app = Flask(__name__)
+
+logger = logging.getLogger("DT API")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("logs/logs.log"),
+        logging.StreamHandler()
+    ]
+)
+
+
 
 with open("data/data.json", "r") as file:
     data = json.loads(file.read())
@@ -19,11 +33,28 @@ def alarm(pid: str):
     if pid in data["alarms"]:
         return data["alarms"][pid]
     
-    return {"error": "Not found"}
+    return "Not found"
 
 @app.route("/provider_list")
 def provider_list():
     return data["providers"]
+
+@app.route("/send_public_alarms", methods=["POST"])
+def send_public_alarms():
+    try:
+        data = request.data.decode("UTF-8")
+    except UnicodeDecodeError:
+        logging.warning(f"({request.remote_addr}) Invalid data from user")
+        return "Bad data"
+    
+    try:
+        parsed = json.loads(data)
+    except json.JSONDecodeError:
+        logging.warning(f"({request.remote_addr}) Invalid data from user")
+        return "Bad data"
+
+    logging.warning(f"({request.remote_addr}) New Public alarm")
+    return "ok"
 
 if __name__ == "__main__":
     port = 5000
