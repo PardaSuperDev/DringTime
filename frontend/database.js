@@ -5,9 +5,16 @@ export async function getAlarmsProviders() {
     return providers;
 }
 async function sendNewAlarms(name, data) {
-    await setDoc(doc(db, "horaires-sonneries", name), {
-        data: data,
-    });
+    await fetch("http://127.0.0.1:5000/send_public_alarms", {
+        method: "POST",
+        body: JSON.stringify({
+          "test": "a"
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      });
+      
 }
 
 async function getAlarmsList(id) {
@@ -25,7 +32,7 @@ async function getAlarmsList(id) {
 }
 
 function createAccount(email, password) {
-    console.log("Not implemented yet")
+    console.log("Not implemented yet");
 }
 
 window.getAlarmsList = getAlarmsList
