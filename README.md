@@ -2,7 +2,7 @@
 
 Dring time est **LE** site Internet qui vous indique dans combien de temps est ce que la sonnerie va retentir. Cela vous permet de tout le temps savoir quand est la prochaine sonnerie.
 
-Le site est accessible sur [dring-time.fr](https://dring-time.fr) ou sur les [pages github](https://pardasuperdev.github.io/DringTime/).
+Le site est accessible sur [dring-time.fr](https://dring-time.fr).
 
 # Illustrations
 
