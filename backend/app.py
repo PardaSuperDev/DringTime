@@ -53,7 +53,7 @@ def send_public_alarms():
         logging.warning(f"({request.remote_addr}) Invalid data from user")
         return "Bad data"
 
-    logging.warning(f"({request.remote_addr}) New Public alarm")
+    logging.info(f"({request.remote_addr}) New Public alarm")
     return "ok"
 
 if __name__ == "__main__":
