@@ -61,6 +61,27 @@ def send_public_alarms():
 
     return "ok"
 
+@app.route("/create_account", methods=["POST"])
+def create_account():
+    try:
+        data = request.data.decode("UTF-8")
+    except UnicodeDecodeError:
+        logging.warning(f"({request.remote_addr}) Invalid data from user")
+        return "Bad data"
+    
+    try:
+        parsed = json.loads(data)
+    except json.JSONDecodeError:
+        logging.warning(f"({request.remote_addr}) Invalid data from user")
+        return "Bad data"
+    
+    if not ("pseudo" in parsed and
+       "email"  in parsed and
+       "password" in parsed):
+        return "Bad data"
+    
+    
+
 if __name__ == "__main__":
     port = 5000
     serve(app, host='0.0.0.0', port=port)
