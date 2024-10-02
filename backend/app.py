@@ -7,13 +7,13 @@ import logging
 
 app = Flask(__name__)
 
-logger = logging.getLogger("DT API")
+logger = logging.getLogger("DT API") # Met en place le logger
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
-        logging.FileHandler("logs/logs.log"),
-        logging.StreamHandler()
+        logging.FileHandler("logs/logs.log"), # Sortie dans le fichier de log
+        logging.StreamHandler() # Sortie dans le stdout
     ]
 )
 
@@ -25,11 +25,14 @@ with open("data/data.json", "r") as file:
 
 @app.route("/")
 def index():
+    """Page principale du site de l'API."""
     return "<p>Dring Time Website API. Hello! <a href='https://dring-time.fr'>Go to the website.</a></p><p>This API has no purpose of being a public API.</p>"
 
 
 @app.route("/alarms/<pid>")
 def alarm(pid: str):
+    """Permet à l'utilisateur de télécharger les sonneries pour un fournisseur avec
+    le provider ID donné."""
     if pid in data["alarms"]:
         return data["alarms"][pid]
     
@@ -37,6 +40,7 @@ def alarm(pid: str):
 
 @app.route("/provider_list")
 def provider_list():
+    """Renvoie la liste des fournisseurs de sonneries liées à leur ID."""
     return data["providers"]
 
 @app.route("/send_public_alarms", methods=["POST"])
@@ -54,6 +58,7 @@ def send_public_alarms():
         return "Bad data"
 
     logging.info(f"({request.remote_addr}) New Public alarm")
+
     return "ok"
 
 if __name__ == "__main__":
