@@ -6,7 +6,7 @@ import json
 from uuid import uuid4
 from customcommand import command, handle_commands
 
-default_db = '{"providers" : {}, "alarms" : {}}'
+default_db = '{"accounts": {}, "providers" : {}, "alarms" : {}}'
 
 alarms_regex = re.compile(r'^((?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d);)*((?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d))?-(((?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d);)*((?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d))?-){5}(((?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d);)*((?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)))?')
 
