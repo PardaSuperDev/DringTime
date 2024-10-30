@@ -50,13 +50,13 @@ def send_public_alarms():
     try:
         data = request.data.decode("UTF-8")
     except UnicodeDecodeError:
-        logging.warning(f"({request.remote_addr}) Invalid data from user")
+        logging.warning(f"({request.remote_addr}) Invalid data from user UTF-8 decode failed when creating alarm.")
         return "Bad data"
     
     try:
         parsed = json.loads(data)
     except json.JSONDecodeError:
-        logging.warning(f"({request.remote_addr}) Invalid data from user")
+        logging.warning(f"({request.remote_addr}) Invalid data from user not a valid JSON when creating alarm.")
         return "Bad data"
 
     logging.info(f"({request.remote_addr}) New Public alarm")
@@ -68,17 +68,21 @@ def create_account():
     try:
         data = request.data.decode("UTF-8")
     except UnicodeDecodeError:
-        logging.warning(f"({request.remote_addr}) Invalid data from user")
-        return "Bad data"
+        logging.warning(f"({request.remote_addr}) Invalid data from user UTF-8 decode failed when creating account.")
+        return "Bad data. Should I give you more debug info by the fact that you are not supposed to use this private API? Oh, you'r lucky today! The data you sent don't seems to be UTF-8 encoded. (Don't say my boss that I helped you!)"
     
     try:
         parsed = json.loads(data)
     except json.JSONDecodeError:
-        logging.warning(f"({request.remote_addr}) Invalid data from user")
-        return "Bad data"
+        logging.warning(f"({request.remote_addr}) Invalid data from user not a valid JSON when creating account.")
+        return "Bad data. I don't want to give you more info about this error. (Or you can read the code at <a href=\"https://github.com/PardaSuperDev/DringTime\">https://github.com/PardaSuperDev/DringTime</a> to see the problem.)"
     
-    if check_iterable_integrity(parsed, ACCOUNT_CREATION_PACKET_SCHEMA):
-        return "Bad data"
+    if not check_iterable_integrity(parsed, ACCOUNT_CREATION_PACKET_SCHEMA):
+        return "Bad data. The given information seems to be wrong. Why are you trying to use our private API? SUS"
+    
+    logging.info(f"({request.remote_addr}) Creating new account. Username: {parsed['username']}")
+
+    return "OUI"
     
 
 if __name__ == "__main__":
