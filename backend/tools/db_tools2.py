@@ -4,7 +4,7 @@ import shutil
 import sys
 import json
 from uuid import uuid4
-from customcommand import command, handle_commands
+from tools.customcommand import command, handle_commands
 
 default_db = '{"accounts": {}, "providers" : {}, "alarms" : {}}'
 
