@@ -9,6 +9,9 @@ from data_schemas import *
 
 app = Flask(__name__)
 
+if not os.path.isdir("logs"):
+    os.mkdir("logs")
+
 logger = logging.getLogger("DT API") # Met en place le logger
 logging.basicConfig(
     level=logging.INFO,
