@@ -41,7 +41,8 @@ def check_iterable_integrity(it: list | dict, schema: dict | list):
             if not schema[i].match(it[i]):
                 return False
         elif isinstance(schema[i], re.Pattern):
-            schema[i].fullmatch(it[i])
+            if not schema[i].fullmatch(it[i]):
+                return False
         else:
             if not schema[i] == it[i]:
                 return False
