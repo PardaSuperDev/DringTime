@@ -4,6 +4,8 @@ import sys
 from flask import Flask, request
 from waitress import serve
 import logging
+from utils import check_iterable_integrity
+from data_schemas import *
 
 app = Flask(__name__)
 
@@ -75,11 +77,8 @@ def create_account():
         logging.warning(f"({request.remote_addr}) Invalid data from user")
         return "Bad data"
     
-    if not ("pseudo" in parsed and
-       "email"  in parsed and
-       "password" in parsed):
+    if check_iterable_integrity(parsed, ACCOUNT_CREATION_PACKET_SCHEMA):
         return "Bad data"
-    
     
 
 if __name__ == "__main__":
