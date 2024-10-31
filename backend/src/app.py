@@ -4,10 +4,13 @@ import sys
 from flask import Flask, request
 from waitress import serve
 import logging
+from db_manager import DbManager
 from utils import check_iterable_integrity
 from data_schemas import *
+import mailbox
 
 app = Flask(__name__)
+db_manager = DbManager()
 
 if not os.path.isdir("logs"):
     os.mkdir("logs")
@@ -23,11 +26,6 @@ logging.basicConfig(
 )
 
 
-
-with open("data/data.json", "r") as file:
-    data = json.loads(file.read())
-    
-
 @app.route("/")
 def index():
     """Page principale du site de l'API."""
@@ -38,15 +36,17 @@ def index():
 def alarm(pid: str):
     """Permet à l'utilisateur de télécharger les sonneries pour un fournisseur avec
     le provider ID donné."""
-    if pid in data["alarms"]:
-        return data["alarms"][pid]
+
+    result = db_manager.get_alarm(pid)
+    if result is not None:
+        return result
     
     return "Not found"
 
 @app.route("/provider_list")
 def provider_list():
     """Renvoie la liste des fournisseurs de sonneries liées à leur ID."""
-    return data["providers"]
+    return db_manager.get_providers()
 
 @app.route("/send_public_alarms", methods=["POST"])
 def send_public_alarms():
@@ -81,9 +81,17 @@ def create_account():
         return "Bad data. I don't want to give you more info about this error. (Or you can read the code at <a href=\"https://github.com/PardaSuperDev/DringTime\">https://github.com/PardaSuperDev/DringTime</a> to see the problem.)"
     
     if not check_iterable_integrity(parsed, ACCOUNT_CREATION_PACKET_SCHEMA):
+        logging.warning(f"({request.remote_addr}) Invalid data from user the JSON doesn't match the schema. Potential API reverse engineering.")
         return "Bad data. The given information seems to be wrong. Why are you trying to use our private API? SUS"
+
+
+    result = db_manager.create_account(parsed["username"], parsed["email"], parsed["password"])
+
+    if not result[0]:
+        logging.info(f"({request.remote_addr}) Tryed to create a new account but an account with the same username already exists. Username: {parsed['username']}")
+        return result[1]
     
-    logging.info(f"({request.remote_addr}) Creating new account. Username: {parsed['username']}")
+    logging.info(f"({request.remote_addr}) Created new account. Username: {parsed['username']}")
 
     return "OUI"
     
