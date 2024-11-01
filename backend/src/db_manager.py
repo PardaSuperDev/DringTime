@@ -1,10 +1,24 @@
 import json
 from hashlib import sha256
+import logging
+import time
+import getpass
 import uuid
 import os
-
+import smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from flask import request
+import yaml
+import secrets
 
 SALT_SIZE = 32
+EMAIL = "contact@dring-time.fr"
+SMTP_SERVER = "ssl0.ovh.net"
+EMAIL_PASSWORD = getpass.getpass() # TODO : get from env variables
+
+with open("email-presets.yaml", encoding="UTF-8") as file:
+    presets = yaml.safe_load(file.read())
 
 
 class DbManager:
@@ -28,16 +42,18 @@ class DbManager:
         hashed = sha256((salt+password).encode("UTF-8")).hexdigest()
         uuuid = str(uuid.uuid4())
 
-        self.data["accounts"][username] = {
+        self.data["accounts"][uuuid] = {
             "email" : email,
             "username": username,
             "password": hashed,
-            "id" : uuuid,
             "salt": salt,
             "email-validated": False
         }
 
         self.save()
+
+        self.verify_email(uuuid)
+
         return True, "ok"
 
     
@@ -45,19 +61,32 @@ class DbManager:
         data = json.dumps(self.data)
         with open("data/data.json", "w") as file:
             file.write(data)
+    
+    def verify_email(self, uuid):
+        port = 465  # For SSL
 
+        sender_email = EMAIL
+        receiver_email = self.data["accounts"][uuid]["email"]
+        # Create a secure SSL context
+        context = ssl.create_default_context()
 
-"""
-import smtplib
-# creates SMTP session
-s = smtplib.SMTP('mx1.mail.ovh.net', 587)
-# start TLS for security
-s.starttls()
-# Authentication
-s.login("sender_email_id", "sender_email_id_password")
-# message to be sent
-message = "Message_you_need_to_send"
-# sending the mail
-s.sendmail("sender_email_id", "receiver_email_id", message)
-# terminating the session
-s.quit()"""
+        message = MIMEMultipart("alternative")
+        message["Subject"] = presets["email_validation"]["subject"]
+        message["From"] = sender_email
+        message["To"] = receiver_email
+
+        # Create the plain-text and HTML version of your message
+        text = presets["email_validation"]["text"].format(validation_link="link", username=self.data["accounts"][uuid]["username"])
+
+        html = presets["email_validation"]["html"].format(validation_link="link", username=self.data["accounts"][uuid]["username"])
+
+        part1 = MIMEText(text, "plain")
+        part2 = MIMEText(html, "html")
+
+        message.attach(part1)
+        message.attach(part2)
+
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL(SMTP_SERVER, port, context=context) as server:
+            server.login(sender_email, EMAIL_PASSWORD)
+            print(server.sendmail(sender_email, receiver_email, message.as_string()))

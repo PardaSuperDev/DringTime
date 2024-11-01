@@ -1,0 +1,38 @@
+email_validation:
+  text: |
+    ==== Ce message a été généré automatiquement. Merci de ne pas y répondre ====
+
+    Une validation d'email a été faite pour votre email. Pour valider l'email, veuillez entrer ce lien dans votre barre d'adresse:
+    {validation_link}
+
+    Nom d'utilisateur renseigné : {username}
+
+    Si vous n'êtes pas à l'origine de cette demande, merci d'ignorer ce mail.
+
+    Pour toute question, merci de nous contacter à contact@dring-time.fr
+
+    Cordialement,
+    L'équipe Dring Time
+    dring-time.fr
+  html: |
+    <html>
+    </html>
+    <body>
+        <p>==== Ce message a été généré automatiquement. Merci de ne pas y répondre ====</P>
+        <p></p>
+        <p>Une validation d'email a été faite pour votre email. Pour valider l'email, veuillez cliquer sur ce lien:</p>
+        <p>{validation_link}</p>
+        <p></p>
+        <p>Nom d'utilisateur renseigné : {username}</p>
+        <p></p>
+        <p>Si vous n'êtes pas à l'origine de cette demande, merci d'ignorer ce mail.</p>
+        <p></p>
+        <p>Pour toute question, merci de nous contacter à <a href="mailto:contact@dring-time.fr">contact@dring-time.fr</a>.</p>
+        <p></p>
+        <p>Cordialement,</p>
+        <p>L'équipe Dring Time</p>
+        <a href="https://dring-time.fr">dring-time.fr</a>
+        </p>
+    </body>
+    </html>
+  subject : "Confirmation d'email pour le compte Dring Time"

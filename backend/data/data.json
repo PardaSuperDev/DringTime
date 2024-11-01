@@ -1,12 +1,5 @@
 {
     "accounts": {
-        "yannis": {
-            "email": "test@gmail.com",
-            "username": "test",
-            "password": "e523012a051a7c7885d2fc806120beac23708c226b2b3b903cda9f603e931e40",
-            "id": "e4c0373a-5e9f-4bde-84d5-acaee4cf5e4f",
-            "salt": "e7730ab630cd8fc8d20f806d62bea25a1177890fdcdff80e0bca8881c66bdef4"
-        }
     },
     "providers": {
         "Debug": "b34814ec-296b-4202-85ca-740bc0d3446b",
