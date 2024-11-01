@@ -54,17 +54,37 @@ def send_public_alarms():
         data = request.data.decode("UTF-8")
     except UnicodeDecodeError:
         logging.warning(f"({request.remote_addr}) Invalid data from user UTF-8 decode failed when creating alarm.")
-        return "Bad data"
+        return "Bad data. I'm french and the website is in majority used by french people but I like speaking english so that's why I'm doing so."
     
     try:
         parsed = json.loads(data)
     except json.JSONDecodeError:
         logging.warning(f"({request.remote_addr}) Invalid data from user not a valid JSON when creating alarm.")
-        return "Bad data"
+        return "Bad data. For your information, most of the packets are JSON."
 
     logging.info(f"({request.remote_addr}) New Public alarm")
 
     return "Ok"
+
+@app.route("/connect_account", methods=["POST"])
+def connect_account():
+    try:
+        data = request.data.decode("UTF-8")
+    except UnicodeDecodeError:
+        logging.warning(f"({request.remote_addr}) Invalid data from user UTF-8 decode failed when connecting to account.")
+        return "Bad data. Bro, are you trying to break our website?"
+    
+    try:
+        parsed = json.loads(data)
+    except json.JSONDecodeError:
+        logging.warning(f"({request.remote_addr}) Invalid data from user not a valid JSON when connecting to account.")
+        return "Bad data. You can't use this API like this! please stop"
+    
+    if not check_iterable_integrity(parsed, ACCOUNT_CONNEXION_PACKET_SCHEMA):
+        logging.warning(f"({request.remote_addr}) Invalid data from user the JSON doesn't match the schema. Potential API reverse engineering.")
+        return "Bad data. Why are you trying to do this? Please juste watch the dring-time.fr website..."
+    
+
 
 @app.route("/create_account", methods=["POST"])
 def create_account():
