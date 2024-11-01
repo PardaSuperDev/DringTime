@@ -28,7 +28,8 @@ class DbManager:
     def __init__(self):
         with open("data/data.json", "r") as file:
             self.data = json.loads(file.read())
-        self.waiting_tokens = {}
+        self.waiting_email_tokens = {}
+        self.connected_tokens = {}
     
     def get_alarm(self, pid):
         if pid in self.data["alarms"]:
@@ -41,9 +42,7 @@ class DbManager:
     def create_account(self, username, email, password):
         if username.lower() in self.data["used-usernames"]:
             return False, "existing_account"
-        
-        self.data["used-usernames"].append(username.lower())
-        
+                
         salt = os.urandom(32).hex()
         hashed = sha256((salt+password).encode("UTF-8")).hexdigest()
         uuuid = str(uuid.uuid4())
@@ -53,8 +52,11 @@ class DbManager:
             "username": username,
             "password": hashed,
             "salt": salt,
-            "email-validation": False
+            "email-validation": False,
+            "owned-alarms": []
         }
+
+        self.data["used-usernames"][username.lower()] = uuuid
 
         self.save()
 
@@ -77,7 +79,7 @@ class DbManager:
 
         # Génère le token de vérification
         token = secrets.token_urlsafe(50)
-        self.waiting_tokens[token] = {
+        self.waiting_email_tokens[token] = {
             "uuid": uuid,
             "expiration-date": time.time() + TOKEN_EXPIRATION_DELAY
         }
@@ -107,22 +109,64 @@ class DbManager:
             print(server.sendmail(sender_email, receiver_email, message.as_string()))
     
     def check_tokens_expiration(self):
-        for i in list(self.waiting_tokens.keys()):
-            if time.time() > self.waiting_tokens[i]["expiration-date"]:
-                self.waiting_tokens.pop(i)
+        for i in list(self.waiting_email_tokens.keys()):
+            if time.time() > self.waiting_email_tokens[i]["expiration-date"]:
+                self.waiting_email_tokens.pop(i)
     
     def validate_token_email(self, token):
         self.check_tokens_expiration()
-        if token not in self.waiting_tokens:
+        if token not in self.waiting_email_tokens:
             logging.warning(f"({request.remote_addr}) Tryed to validate an expired token.")
             return False, "expired_token"
         
-        if self.waiting_tokens[token]["uuid"] in self.data["accounts"]:
-            user = self.data["accounts"][self.waiting_tokens[token]["uuid"]]
+        if self.waiting_email_tokens[token]["uuid"] in self.data["accounts"]:
+            user = self.data["accounts"][self.waiting_email_tokens[token]["uuid"]]
             user["email-validation"] = True
             self.save()
-            logging.info(f"({request.remote_addr}) Validated email. Username: {self.data['accounts'][self.waiting_tokens[token]['uuid']]['username']}")
+            logging.info(f"({request.remote_addr}) Validated email. Username: {self.data['accounts'][self.waiting_email_tokens[token]['uuid']]['username']}")
             return True,
-        logging.warning(f"({request.remote_addr}) Tryed to validate an email on an unexisting account. Original uuid : {self.waiting_tokens[token]['uuid']}")
+        logging.warning(f"({request.remote_addr}) Tryed to validate an email on an unexisting account. Original uuid : {self.waiting_email_tokens[token]['uuid']}")
         return False, "unknown"
     
+    def connect_accout(self, username, password):
+        if username.lower() not in self.data["used-usernames"]:
+            logging.warning(f"({request.remote_addr}) Tryed to connect to an unexisting account. Gived username : {username}")
+            return False, {"error": "bad_credentials"}
+        
+        uuuid = self.data["used-usernames"][username.lower()]
+        
+        user = self.data["accounts"][uuuid]
+
+        salt = user["salt"]
+        hashed = sha256((salt+password).encode("UTF-8")).hexdigest()
+
+        if hashed != user["password"]:
+            logging.warning(f"({request.remote_addr}) Bad password. Username : {username}.")
+            return False, {"error": "bad_credentials"}
+        
+        token = secrets.token_urlsafe(256)
+
+        self.connected_tokens[token] = uuuid
+
+        return True, token
+
+    def add_alarms(self, token, name, data):
+        if token not in self.connected_tokens:
+            logging.warning(f"({request.remote_addr}) The user seems to be disconnected sending alarms.")
+            return False, "not_connected"
+        if name in self.data["providers"]:
+            logging.warning(f"({request.remote_addr}) Tryed to create alarms that already exist.")
+            return False, "name_already_used"
+        
+        alarm_uuid = str(uuid.uuid4())
+        
+        user = self.data["accounts"][self.connected_tokens[token]]
+
+        user["owned-alarms"].append(alarm_uuid)
+
+        self.data["providers"][name] = alarm_uuid
+
+        self.data["alarms"][alarm_uuid] = data
+
+        self.save()
+        return True,

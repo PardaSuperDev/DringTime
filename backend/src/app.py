@@ -1,7 +1,7 @@
 import json
 import os
 import sys
-from flask import Flask, request
+from flask import Flask, request, make_response
 from waitress import serve
 import logging
 from db_manager import DbManager
@@ -61,6 +61,20 @@ def send_public_alarms():
     except json.JSONDecodeError:
         logging.warning(f"({request.remote_addr}) Invalid data from user not a valid JSON when creating alarm.")
         return "Bad data. For your information, most of the packets are JSON."
+    
+    if not check_iterable_integrity(parsed, SEND_ALARMS_PACKET_SCHEMA):
+        logging.warning(f"({request.remote_addr}) Invalid data from user the JSON doesn't match the schema.")
+        return "Bad data. The only answer I can give to you is : <img src='https://media.tenor.com/yheo1GGu3FwAAAAM/rick-roll-rick-ashley.gif'>"
+    
+    token = request.cookies.get("SESSION-TOKEN")
+    if token is None:
+        logging.warning(f"({request.remote_addr}) The user seems to be disconnected sending alarms.")
+        return "not_connected"
+
+    result = db_manager.add_alarms(token, parsed["name"], parsed["data"])
+
+    if not result[0]:
+        return result[1]
 
     logging.info(f"({request.remote_addr}) New Public alarm")
 
@@ -84,8 +98,16 @@ def connect_account():
         logging.warning(f"({request.remote_addr}) Invalid data from user the JSON doesn't match the schema. Potential API reverse engineering.")
         return "Bad data. Why are you trying to do this? Please juste watch the dring-time.fr website..."
     
+    result = db_manager.connect_accout(parsed["username"], parsed["password"])
 
-
+    if result[0]:
+        logging.info(f"({request.remote_addr}) Connection successful. Username: {parsed['username']}")
+        res = make_response("Ok")
+        res.set_cookie("SESSION-TOKEN", result[1], secure=True, httponly=True)
+        return res
+    
+    return result[1]
+    
 @app.route("/create_account", methods=["POST"])
 def create_account():
     try:
