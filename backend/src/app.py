@@ -64,7 +64,7 @@ def send_public_alarms():
 
     logging.info(f"({request.remote_addr}) New Public alarm")
 
-    return "ok"
+    return "Ok"
 
 @app.route("/create_account", methods=["POST"])
 def create_account():
@@ -88,13 +88,20 @@ def create_account():
     result = db_manager.create_account(parsed["username"], parsed["email"], parsed["password"])
 
     if not result[0]:
-        logging.info(f"({request.remote_addr}) Tryed to create a new account but an account with the same username already exists. Username: {parsed['username']}")
+        logging.warning(f"({request.remote_addr}) Tryed to create a new account but an account with the same username already exists. Username: {parsed['username']}")
         return result[1]
     
     logging.info(f"({request.remote_addr}) Created new account. Username: {parsed['username']}")
 
-    return "OUI"
+    return "Ok"
     
+@app.route("/validate_email/<token>")
+def validate_token(token):
+    result = db_manager.validate_token_email(token)
+    if result[0]:
+        return "Votre email a été validé, vous pouvez fermer cette fenetre. <script>window.onload = window.close</script>"
+    else:
+        return result[1]
 
 if __name__ == "__main__":
     port = 5000

@@ -4,6 +4,7 @@ email_validation:
 
     Une validation d'email a été faite pour votre email. Pour valider l'email, veuillez entrer ce lien dans votre barre d'adresse:
     {validation_link}
+    La fenetre devrait se fermer toute seule après l'avoir ouverte.
 
     Nom d'utilisateur renseigné : {username}
 
@@ -21,7 +22,8 @@ email_validation:
         <p>==== Ce message a été généré automatiquement. Merci de ne pas y répondre ====</P>
         <p></p>
         <p>Une validation d'email a été faite pour votre email. Pour valider l'email, veuillez cliquer sur ce lien:</p>
-        <p>{validation_link}</p>
+        <p><a href="{validation_link}">{validation_link}</a></p>
+        <p>La fenetre devrait se fermer toute seule après l'avoir ouverte.</p>
         <p></p>
         <p>Nom d'utilisateur renseigné : {username}</p>
         <p></p>
