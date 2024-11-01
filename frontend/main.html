@@ -83,7 +83,8 @@
                         Activités
                     </button>
 
-                    <button class="stylized_button" style="margin-left: 5px;" onclick="change_page('credits_page');" title="Voir les crédits du site">
+                    <button class="stylized_button" style="margin-left: 5px;" onclick="change_page('credits_page');"
+                        title="Voir les crédits du site">
                         <img src="assets/credits-icon.svg" alt="credits_icon">
                         Crédits
                     </button>
@@ -300,7 +301,8 @@
             <p class="info_box" id="connection_info_label">Info</p>
 
             Pas de Compte ?
-            <button class="stylized_button" style="display: inline; color:rgb(0, 132, 255);" onclick="change_page('account_create_page')">Créer un compte</button>
+            <button class="stylized_button" style="display: inline; color:rgb(0, 132, 255);"
+                onclick="change_page('account_create_page')">Créer un compte</button>
 
 
             <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
@@ -312,12 +314,14 @@
                 <h2>Créer un compte</h2>
 
                 <div>
+                    <p>Pseudo : <input type="text" style="margin-left: 6.5ch; display: inline;"
+                            class="stylized_button outlined_button" id="account_create_username_input"></p>
                     <p>Email : <input type="text" style="margin-left: 7.5ch; display: inline;"
                             class="stylized_button outlined_button" id="account_create_email_input"></p>
                     <p>Mot de passe : <input type="password" class="stylized_button outlined_button"
                             style="display: inline;" id="account_create_password_input"></p>
                     <p>Confirmation : <input type="password" class="stylized_button outlined_button"
-                        style="display: inline;" id="account_confirm_password_input"></p>
+                            style="display: inline;" id="account_confirm_password_input"></p>
                 </div>
                 <button class="stylized_button outlined_button"
                     style="display: flex; margin-left: auto; margin-right: auto; margin-bottom: 30px;"
@@ -328,7 +332,8 @@
             <p class="info_box" id="account_creation_info_label">Info</p>
 
             Déjà un Compte ?
-            <button class="stylized_button" style="display: inline; color:rgb(0, 132, 255);" onclick="change_page('account_connection_page')">Se connecter</button>
+            <button class="stylized_button" style="display: inline; color:rgb(0, 132, 255);"
+                onclick="change_page('account_connection_page')">Se connecter</button>
 
 
             <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
@@ -337,16 +342,19 @@
 
         <div id="account_manage_page" class="page" style="display: none; opacity: 0;">
             <div style="justify-content: center;">
-            <h2>Vous êtes connecté au compte <span id="acount_manage_email_title">Pourquoi avez-vous cassé la page ?</span></h2>
-            
-            <h3>Attention : La fonctionalité des comptes est expérimentale et est toujours en développement. Si vous souhaitez supprimer des sonneries envoyées, contactez nous à <a href="mailto://contact@dring-time.fr"
-                class="hyperlink" target="_blank" rel="noopener noreferrer">contact@dring-time.fr</a>.</h3>
-            
-            <button class="stylized_button outlined_button" onclick="disconnectAccountClicked();"
-            style="margin-top: 15px; margin-left: auto; margin-right: auto;">Se déconnecter</button>
+                <h2>Vous êtes connecté au compte <span id="acount_manage_email_title">Pourquoi avez-vous cassé la page
+                        ?</span></h2>
 
-            <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
-                style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
+                <h3>Attention : La fonctionalité des comptes est expérimentale et est toujours en développement. Si vous
+                    souhaitez supprimer des sonneries envoyées, contactez nous à <a
+                        href="mailto://contact@dring-time.fr" class="hyperlink" target="_blank"
+                        rel="noopener noreferrer">contact@dring-time.fr</a>.</h3>
+
+                <button class="stylized_button outlined_button" onclick="disconnectAccountClicked();"
+                    style="margin-top: 15px; margin-left: auto; margin-right: auto;">Se déconnecter</button>
+
+                <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
+                    style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
             </div>
         </div>
 
