@@ -83,7 +83,7 @@ body {
     position: absolute;
     display: flex;
     z-index: 9;
-    height: 150px;
+    height: 170px;
 }
 
 #settings_bar {
@@ -112,6 +112,7 @@ body {
     min-width: max-content;
     margin-top: 5px;
     margin-bottom: 5px;
+    width: 100%;
 }
 
 .centered_text {
@@ -360,4 +361,23 @@ option {
     display: flex;
     margin: 0px;
     margin-top: 10px;
+}
+
+.info_box {
+    border-radius: 3px;
+    outline: solid 1px red;
+    background-color: rgb(87, 30, 30);
+    display: none;
+    justify-content: center;
+    color: white;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 320px;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#acount_manage_email_title {
+    color: lightgray;
 }

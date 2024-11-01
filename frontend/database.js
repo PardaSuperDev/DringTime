@@ -31,7 +31,7 @@ async function getAlarmsList(id) {
     return alarms;
 }
 
-function createAccount(email, password) {
+function createAccount(username, email, password) {
     console.log("Not implemented yet");
 }
 

@@ -43,6 +43,16 @@ var activities_info = null;
 
 var iconSVGBase = "";
 
+var user = null;
+
+const connectionResultsDict = {
+    "auth/invalid-email": "Email Invalide",
+    "auth/missing-password": "Mot de passe non renseigné",
+    "auth/invalid-credential": "Informations invalides",
+    "auth/weak-password": "Le mot de passe doit faire au moins 6 charactères",
+    "auth/email-already-in-use": "Email déjà utilisé",
+};
+
 function convertTimeToSeconds(time) {
     let hours = parseInt(time.substring(0, 2));
     let minutes = parseInt(time.substring(3, 5));
@@ -298,6 +308,83 @@ function save_new_timers() {
 
 }
 
+function manageAccountClicked() {
+    if (window.user != null) {
+        let mailTitle = document.getElementById("acount_manage_email_title");
+
+        mailTitle.innerText = window.user.email;
+        change_page("account_manage_page");
+    } else {
+        change_page("account_connection_page");
+    }
+}
+
+function disconnectAccountClicked() {
+    window.signOutAccount();
+    user = null;
+    change_page("timers_page");
+}
+
+async function createAccountClicked() {
+    var emailInput = document.getElementById("account_create_email_input");
+    var passwordInput = document.getElementById("account_create_password_input");
+    var passwordConfirmInput = document.getElementById("account_confirm_password_input");
+
+    var infoBox = document.getElementById("account_creation_info_label");
+
+    if (passwordInput.value !== passwordConfirmInput.value) {
+        infoBox.innerText = "Mots de passe non identiques";
+        infoBox.style = "display: flex;";
+        return;
+    }
+
+    infoBox.innerText = "Création du compte...";
+    infoBox.style = "display: flex; background-color: rgb(213, 159, 0); outline-color: rgb(168, 126, 0);";
+
+    const connectionResult = await window.createAccount(emailInput.value, passwordInput.value);
+
+    console.log(connectionResult);
+
+    if (connectionResult[0] == 1) {
+        infoBox.innerText = connectionResult[1] in connectionResultsDict ? connectionResultsDict[connectionResult[1]] : connectionResult[1];
+        infoBox.style = "display: flex;";
+    } else {
+        user = connectionResult[1];
+        infoBox.innerText = "Connecté !";
+        infoBox.style = "display: flex; background-color: rgb(0, 117, 25); outline-color: green;";
+    }
+}
+
+async function connectAccountClicked() {
+    var emailInput = document.getElementById("account_email_input");
+    var passwordInput = document.getElementById("account_password_input");
+
+    var infoBox = document.getElementById("connection_info_label");
+
+    infoBox.innerText = "Connection...";
+    infoBox.style = "display: flex; background-color: rgb(213, 159, 0); outline-color: rgb(168, 126, 0);";
+
+    if (emailInput.value.toLowerCase() === "never gonna" && passwordInput.value.toLowerCase() === "give you up") {
+        emailInput.value = "";
+        passwordInput.value = "";
+        window.location = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; 
+        return; 
+    }
+
+    const connectionResult = await window.connectAccount(emailInput.value, passwordInput.value);
+
+    console.log(connectionResult);
+
+    if (connectionResult[0] == 1) {
+        infoBox.innerText = connectionResult[1] in connectionResultsDict ? connectionResultsDict[connectionResult[1]] : connectionResult[1];
+        infoBox.style = "display: flex;";
+    } else {
+        user = connectionResult[1];
+        infoBox.innerText = "Connecté !";
+        infoBox.style = "display: flex; background-color: rgb(0, 117, 25); outline-color: green;";
+    }
+}
+
 async function publishAlarms() {
     var timerNameInput = document.getElementById("new_timers_name_input");
     var resultLabel = document.getElementById("new_timers_save_result_label");
@@ -311,15 +398,21 @@ async function publishAlarms() {
     }
 
     if (concatenatedData[0]) {
-        try {
-            await window.sendNewAlarms(timerNameInput.value, concatenatedData[1]);
-            resultLabel.innerText = "Les sonneries ont bien été envoyé !";
-            resultLabel.style = "color: green;";
-            window.onbeforeunload = null;
-        } catch (e) {
-            console.warn("Impossible de publier les sonneries : " + e.message);
-            resultLabel.innerText = "Ce nom de sonnerie semble déja utilisé.";
+        if (user === null) {
+            console.warn("Merci de vous connecter dans les paramètres avant d'envoyer des sonneries.");
+            resultLabel.innerText = "Merci de vous connecter dans les paramètres.";
             resultLabel.style = "color: red;";
+        } else {
+            try {
+                await window.sendNewAlarms(timerNameInput.value, concatenatedData[1]);
+                resultLabel.innerText = "Les sonneries ont bien été envoyées !";
+                resultLabel.style = "color: green;";
+                window.onbeforeunload = null;
+            } catch (e) {
+                console.warn("Impossible de publier les sonneries : " + e.message);
+                resultLabel.innerText = "Ce nom de sonnerie semble déja utilisé.";
+                resultLabel.style = "color: red;";
+            }
         }
     } else {
         resultLabel.innerText = "Des horaires sont invalides !";
