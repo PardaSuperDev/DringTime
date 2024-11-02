@@ -49,19 +49,9 @@ async function createAccount(username, email, password) {
 }
 
 async function checkVerifiedEmail(token) {
-    let response = await fetch(API_SERVER + "/create_account", {
-        method: "GET",
-        body: JSON.stringify({
-            "username": username,
-            "email": email,
-            "password": password
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
-        }
-      });
-      const message = await response.json();
-      return [!("error" in message) ? 0 : 1, message];
+    let response = await (await fetch(API_SERVER + "/is_email_validated/" + token)).text();
+    
+    return response;
 }
 
 async function connectAccount(username, password) {
@@ -79,8 +69,9 @@ async function connectAccount(username, password) {
       return [message === "Ok" ? 0 : 1, message];
 }
 
-window.getAlarmsList = getAlarmsList
-window.getAlarmsProviders = getAlarmsProviders
-window.sendNewAlarms = sendNewAlarms
-window.createAccount = createAccount
-window.connectAccount = connectAccount
+window.getAlarmsList = getAlarmsList;
+window.getAlarmsProviders = getAlarmsProviders;
+window.sendNewAlarms = sendNewAlarms;
+window.createAccount = createAccount;
+window.connectAccount = connectAccount;
+window.checkVerifiedEmail = checkVerifiedEmail;

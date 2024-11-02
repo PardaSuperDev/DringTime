@@ -63,11 +63,27 @@ class DbManager:
 
         token = asyncio.run(self.verify_email(uuuid))
 
-        email_validation_waiting_token = secrets.token_urlsafe(50)
+        email_validation_waiting_token = secrets.token_urlsafe(32)
 
-        self.email_validation_waiting_tokens[email_validation_waiting_token] = token
+        self.email_validation_waiting_tokens[email_validation_waiting_token] = (token, uuuid)
 
         return True, email_validation_waiting_token
+    
+    def is_email_validated(self, token):
+        if not token in self.email_validation_waiting_tokens:
+            return "unexisting_waiting_token"
+        
+        print(self.waiting_email_tokens)
+        
+        if self.email_validation_waiting_tokens[token][0] in self.waiting_email_tokens:
+                return "waiting"
+        else:
+            uuuid = self.email_validation_waiting_tokens[token][1]
+            if self.data["accounts"][uuuid]["email-validation"]:
+                return "validated"
+            else:
+                return "expired"
+
 
     
     def save(self):
@@ -131,6 +147,7 @@ class DbManager:
             user["email-validation"] = True
             self.save()
             logging.info(f"({request.remote_addr}) Validated email. Username: {self.data['accounts'][self.waiting_email_tokens[token]['uuid']]['username']}")
+            self.waiting_email_tokens.pop(token)
             return True,
         logging.warning(f"({request.remote_addr}) Tryed to validate an email on an unexisting account. Original uuid : {self.waiting_email_tokens[token]['uuid']}")
         return False, "unknown"

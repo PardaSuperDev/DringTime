@@ -360,11 +360,9 @@ async function createAccountClicked() {
         infoBox.innerText = "Le mot de passe doit faire au moins 6 charactères";
         infoBox.style = "display: flex;";
         return;
-    } 
+    }
 
     const connectionResult = await window.createAccount(usernameInput.value, emailInput.value, passwordInput.value);
-
-    console.log(connectionResult);
 
     if (connectionResult[0] == 1) {
         infoBox.innerText = connectionResult[1]["error"] in connectionResultsDict ? connectionResultsDict[connectionResult[1]["error"]] : connectionResult[1]["error"];
@@ -374,12 +372,24 @@ async function createAccountClicked() {
         infoBox.innerText = "Un email a été envoyé à l'email pour le confirmer. Vous avez 30 min pour le valider. Si il n'est pas validé dans ces temps, l'inscription sera annulée.";
         infoBox.style = "display: flex; background-color: rgb(0, 117, 25); outline-color: green;";
 
-        waitEmailValidation(token);
-    }
-}
+        async function checkValidation() {
+            const resp = await window.checkVerifiedEmail(waiting_token);
+            if (resp === "validated") {
+                infoBox.innerText = "L'email a été validé ! Vous pouvez retourner à la page connexion.";
+                infoBox.style = "display: flex; background-color: rgb(0, 117, 25); outline-color: green;";
+            } else if (resp === "expired") {
+                infoBox.innerText = "Le lien de validation a expiré. Merci de cliquer à nouveau sur \"valider\" pour recréer le compte.";
+                infoBox.style = "display: flex;";
+            } else if (resp === "unexisting_waiting_token") {
+                infoBox.innerText = "Une erreur inconnue est arrivée.";
+                infoBox.style = "display: flex;";
+            } else {
+                setTimeout(checkValidation, 2000);
+            }
+        }
 
-async function waitEmailValidation(token) {
-    
+        setTimeout(checkValidation, 2000);
+    }
 }
 
 async function connectAccountClicked() {
@@ -394,8 +404,8 @@ async function connectAccountClicked() {
     if (usernameInput.value.toLowerCase() === "never gonna" && passwordInput.value.toLowerCase() === "give you up") {
         usernameInput.value = "";
         passwordInput.value = "";
-        window.location = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; 
-        return; 
+        window.location = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+        return;
     }
 
     if (usernameInput.value.length < 2) {
@@ -413,7 +423,7 @@ async function connectAccountClicked() {
         infoBox.innerText = "Le mot de passe doit faire au moins 6 charactères";
         infoBox.style = "display: flex;";
         return;
-    } 
+    }
 
     const connectionResult = await window.connectAccount(usernameInput.value, passwordInput.value);
 

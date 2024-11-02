@@ -134,7 +134,7 @@ def create_account():
     
     logging.info(f"({request.remote_addr}) Created new account. Username: {parsed['username']}")
 
-    return {"waiting_token": result[3]}
+    return {"waiting_token": result[1]}
 
 @app.route("/is_email_validated/<token>")
 def is_email_validated(token):
