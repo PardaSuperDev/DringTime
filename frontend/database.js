@@ -1,11 +1,12 @@
+const API_SERVER = "http://localhost:5000"
 
 export async function getAlarmsProviders() {
-    var providers = await (await fetch("http://127.0.0.1:5000/provider_list")).json()
+    var providers = await (await fetch(API_SERVER + "/provider_list")).json()
     console.log(providers);
     return providers;
 }
 async function sendNewAlarms(name, data) {
-    await fetch("http://127.0.0.1:5000/send_public_alarms", {
+    await fetch(API_SERVER + "/send_public_alarms", {
         method: "POST",
         body: JSON.stringify({
           "test": "a"
@@ -18,7 +19,7 @@ async function sendNewAlarms(name, data) {
 }
 
 async function getAlarmsList(id) {
-    var alarmsData = await (await fetch("http://127.0.0.1:5000/alarms/" + id)).text();
+    var alarmsData = await (await fetch(API_SERVER + "/alarms/" + id)).text();
     console.log(alarmsData);
     var days = alarmsData.split("-");
     var alarms = [];
@@ -31,11 +32,55 @@ async function getAlarmsList(id) {
     return alarms;
 }
 
-function createAccount(username, email, password) {
-    console.log("Not implemented yet");
+async function createAccount(username, email, password) {
+    let response = await fetch(API_SERVER + "/create_account", {
+        method: "POST",
+        body: JSON.stringify({
+            "username": username,
+            "email": email,
+            "password": password
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      });
+      const message = await response.json();
+      return [!("error" in message) ? 0 : 1, message];
+}
+
+async function checkVerifiedEmail(token) {
+    let response = await fetch(API_SERVER + "/create_account", {
+        method: "GET",
+        body: JSON.stringify({
+            "username": username,
+            "email": email,
+            "password": password
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      });
+      const message = await response.json();
+      return [!("error" in message) ? 0 : 1, message];
+}
+
+async function connectAccount(username, password) {
+    let response = await fetch(API_SERVER + "/connect_account", {
+        method: "POST",
+        body: JSON.stringify({
+            "username": username,
+            "password": password
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      });
+      const message = await response.text();
+      return [message === "Ok" ? 0 : 1, message];
 }
 
 window.getAlarmsList = getAlarmsList
 window.getAlarmsProviders = getAlarmsProviders
 window.sendNewAlarms = sendNewAlarms
 window.createAccount = createAccount
+window.connectAccount = connectAccount

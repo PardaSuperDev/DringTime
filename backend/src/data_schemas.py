@@ -2,14 +2,14 @@ import re
 
 
 ACCOUNT_CREATION_PACKET_SCHEMA = {
-    "username": re.compile(r"[a-z0-9A-Z_\-@\.]{2,}"),
+    "username": re.compile(r"[a-z0-9A-Z_\-@\.]{2,25}"),
     "email": re.compile(r"^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$"),
-    "password": re.compile(r".{6,}")
+    "password": re.compile(r".{6,64}")
     }
 
 ACCOUNT_CONNEXION_PACKET_SCHEMA = {
-    "username": re.compile(r"[a-z0-9A-Z_\-@\.]{2,}"),
-    "password": re.compile(r".{6,}")
+    "username": re.compile(r"[a-z0-9A-Z_\-@\.]{2,25}"),
+    "password": re.compile(r".{6,64}")
 }
 
 SEND_ALARMS_PACKET_SCHEMA = {

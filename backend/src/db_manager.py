@@ -30,6 +30,7 @@ class DbManager:
             self.data = json.loads(file.read())
         self.waiting_email_tokens = {}
         self.connected_tokens = {}
+        self.email_validation_waiting_tokens = {}
     
     def get_alarm(self, pid):
         if pid in self.data["alarms"]:
@@ -60,9 +61,13 @@ class DbManager:
 
         self.save()
 
-        asyncio.run(self.verify_email(uuuid))
+        token = asyncio.run(self.verify_email(uuuid))
 
-        return True, "ok"
+        email_validation_waiting_token = secrets.token_urlsafe(50)
+
+        self.email_validation_waiting_tokens[email_validation_waiting_token] = token
+
+        return True, email_validation_waiting_token
 
     
     def save(self):
@@ -107,6 +112,8 @@ class DbManager:
         with smtplib.SMTP_SSL(SMTP_SERVER, port, context=context) as server:
             server.login(sender_email, EMAIL_PASSWORD)
             print(server.sendmail(sender_email, receiver_email, message.as_string()))
+        
+        return token
     
     def check_tokens_expiration(self):
         for i in list(self.waiting_email_tokens.keys()):
@@ -131,7 +138,7 @@ class DbManager:
     def connect_accout(self, username, password):
         if username.lower() not in self.data["used-usernames"]:
             logging.warning(f"({request.remote_addr}) Tryed to connect to an unexisting account. Gived username : {username}")
-            return False, {"error": "bad_credentials"}
+            return False, "bad_credentials"
         
         uuuid = self.data["used-usernames"][username.lower()]
         
@@ -142,7 +149,7 @@ class DbManager:
 
         if hashed != user["password"]:
             logging.warning(f"({request.remote_addr}) Bad password. Username : {username}.")
-            return False, {"error": "bad_credentials"}
+            return False, "bad_credentials"
         
         token = secrets.token_urlsafe(256)
 

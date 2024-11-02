@@ -126,16 +126,19 @@ def create_account():
         logging.warning(f"({request.remote_addr}) Invalid data from user the JSON doesn't match the schema. Potential API reverse engineering.")
         return "Bad data. The given information seems to be wrong. Why are you trying to use our private API? SUS"
 
-
     result = db_manager.create_account(parsed["username"], parsed["email"], parsed["password"])
 
     if not result[0]:
         logging.warning(f"({request.remote_addr}) Tryed to create a new account but an account with the same username already exists. Username: {parsed['username']}")
-        return result[1]
+        return {"error": result[1]}
     
     logging.info(f"({request.remote_addr}) Created new account. Username: {parsed['username']}")
 
-    return "Ok"
+    return {"waiting_token": result[3]}
+
+@app.route("/is_email_validated/<token>")
+def is_email_validated(token):
+    return db_manager.is_email_validated(token)
     
 @app.route("/validate_email/<token>")
 def validate_token(token):

@@ -46,11 +46,8 @@ var iconSVGBase = "";
 var user = null;
 
 const connectionResultsDict = {
-    "auth/invalid-email": "Email Invalide",
-    "auth/missing-password": "Mot de passe non renseigné",
-    "auth/invalid-credential": "Informations invalides",
-    "auth/weak-password": "Le mot de passe doit faire au moins 6 charactères",
-    "auth/email-already-in-use": "Email déjà utilisé",
+    "bad_credentials": "Indentifiants invalides",
+    "existing_account": "Pseudo déjà utilisé",
 };
 
 function convertTimeToSeconds(time) {
@@ -326,6 +323,7 @@ function disconnectAccountClicked() {
 }
 
 async function createAccountClicked() {
+    var usernameInput = document.getElementById("account_create_username_input");
     var emailInput = document.getElementById("account_create_email_input");
     var passwordInput = document.getElementById("account_create_password_input");
     var passwordConfirmInput = document.getElementById("account_confirm_password_input");
@@ -341,22 +339,51 @@ async function createAccountClicked() {
     infoBox.innerText = "Création du compte...";
     infoBox.style = "display: flex; background-color: rgb(213, 159, 0); outline-color: rgb(168, 126, 0);";
 
-    const connectionResult = await window.createAccount(emailInput.value, passwordInput.value);
+    if (usernameInput.value.length < 2) {
+        infoBox.innerText = "Le pseudo doit faire au moins 2 caractères";
+        infoBox.style = "display: flex;";
+        return;
+    }
+    const username_re = /[a-z0-9A-Z_\-@\.]{2,25}/;
+    if (!username_re.test(usernameInput.value)) {
+        infoBox.innerText = "Le pseudo ne peut contenir que les caractères: a-z 0-9 A-Z _ @ . -";
+        infoBox.style = "display: flex;";
+        return;
+    }
+    const email_re = /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
+    if (!email_re.test(emailInput.value)) {
+        infoBox.innerText = "L'email n'est pas valide";
+        infoBox.style = "display: flex;";
+        return;
+    }
+    if (passwordInput.value.length < 6) {
+        infoBox.innerText = "Le mot de passe doit faire au moins 6 charactères";
+        infoBox.style = "display: flex;";
+        return;
+    } 
+
+    const connectionResult = await window.createAccount(usernameInput.value, emailInput.value, passwordInput.value);
 
     console.log(connectionResult);
 
     if (connectionResult[0] == 1) {
-        infoBox.innerText = connectionResult[1] in connectionResultsDict ? connectionResultsDict[connectionResult[1]] : connectionResult[1];
+        infoBox.innerText = connectionResult[1]["error"] in connectionResultsDict ? connectionResultsDict[connectionResult[1]["error"]] : connectionResult[1]["error"];
         infoBox.style = "display: flex;";
     } else {
-        user = connectionResult[1];
-        infoBox.innerText = "Connecté !";
+        const waiting_token = connectionResult[1]["waiting_token"];
+        infoBox.innerText = "Un email a été envoyé à l'email pour le confirmer. Vous avez 30 min pour le valider. Si il n'est pas validé dans ces temps, l'inscription sera annulée.";
         infoBox.style = "display: flex; background-color: rgb(0, 117, 25); outline-color: green;";
+
+        waitEmailValidation(token);
     }
 }
 
+async function waitEmailValidation(token) {
+    
+}
+
 async function connectAccountClicked() {
-    var emailInput = document.getElementById("account_email_input");
+    var usernameInput = document.getElementById("account_username_input");
     var passwordInput = document.getElementById("account_password_input");
 
     var infoBox = document.getElementById("connection_info_label");
@@ -364,14 +391,31 @@ async function connectAccountClicked() {
     infoBox.innerText = "Connection...";
     infoBox.style = "display: flex; background-color: rgb(213, 159, 0); outline-color: rgb(168, 126, 0);";
 
-    if (emailInput.value.toLowerCase() === "never gonna" && passwordInput.value.toLowerCase() === "give you up") {
-        emailInput.value = "";
+    if (usernameInput.value.toLowerCase() === "never gonna" && passwordInput.value.toLowerCase() === "give you up") {
+        usernameInput.value = "";
         passwordInput.value = "";
         window.location = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; 
         return; 
     }
 
-    const connectionResult = await window.connectAccount(emailInput.value, passwordInput.value);
+    if (usernameInput.value.length < 2) {
+        infoBox.innerText = "Le pseudo doit faire au moins 2 caractères";
+        infoBox.style = "display: flex;";
+        return;
+    }
+    const username_re = /[a-z0-9A-Z_\-@\.]{2,25}/;
+    if (!username_re.test(usernameInput.value)) {
+        infoBox.innerText = "Le pseudo ne peut contenir que les caractères: a-z 0-9 A-Z _ @ . -";
+        infoBox.style = "display: flex;";
+        return;
+    }
+    if (passwordInput.value.length < 6) {
+        infoBox.innerText = "Le mot de passe doit faire au moins 6 charactères";
+        infoBox.style = "display: flex;";
+        return;
+    } 
+
+    const connectionResult = await window.connectAccount(usernameInput.value, passwordInput.value);
 
     console.log(connectionResult);
 
