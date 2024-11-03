@@ -9,13 +9,13 @@ async function sendNewAlarms(name, data) {
     await fetch(API_SERVER + "/send_public_alarms", {
         method: "POST",
         body: JSON.stringify({
-          "test": "a"
+            "test": "a"
         }),
         headers: {
-          "Content-type": "application/json; charset=UTF-8"
+            "Content-type": "application/json; charset=UTF-8"
         }
-      });
-      
+    });
+
 }
 
 async function getAlarmsList(id) {
@@ -41,16 +41,16 @@ async function createAccount(username, email, password) {
             "password": password
         }),
         headers: {
-          "Content-type": "application/json; charset=UTF-8"
+            "Content-type": "application/json; charset=UTF-8"
         }
-      });
-      const message = await response.json();
-      return [!("error" in message) ? 0 : 1, message];
+    });
+    const message = await response.json();
+    return [!("error" in message) ? 0 : 1, message];
 }
 
 async function checkVerifiedEmail(token) {
     let response = await (await fetch(API_SERVER + "/is_email_validated/" + token)).text();
-    
+
     return response;
 }
 
@@ -62,11 +62,19 @@ async function connectAccount(username, password) {
             "password": password
         }),
         headers: {
-          "Content-type": "application/json; charset=UTF-8"
+            "Content-type": "application/json; charset=UTF-8"
         }
-      });
-      const message = await response.text();
-      return [message === "Ok" ? 0 : 1, message];
+    });
+    const user = await response.json();
+    return [!("error" in user) ? 0 : 1, user];
+}
+
+async function signOutAccount() {
+    await fetch(API_SERVER + "/disconnect");
+}
+
+async function sendStillConnected() {
+    return await (await fetch(API_SERVER + "/still_connected_ping")).text();
 }
 
 window.getAlarmsList = getAlarmsList;
@@ -75,3 +83,5 @@ window.sendNewAlarms = sendNewAlarms;
 window.createAccount = createAccount;
 window.connectAccount = connectAccount;
 window.checkVerifiedEmail = checkVerifiedEmail;
+window.signOutAccount = signOutAccount;
+window.sendStillConnected = sendStillConnected;

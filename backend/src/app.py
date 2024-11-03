@@ -80,6 +80,15 @@ def send_public_alarms():
 
     return "Ok"
 
+@app.route("/still_connected_ping")
+def still_connected_ping():
+    return db_manager.update_account_expiration_date(request.cookies.get("SESSION-TOKEN"))
+
+@app.route("/disconnect")
+def disconnect():
+    db_manager.disconnect_account(request.cookies.get("SESSION-TOKEN"))
+    return "Ok"
+
 @app.route("/connect_account", methods=["POST"])
 def connect_account():
     try:
@@ -102,7 +111,7 @@ def connect_account():
 
     if result[0]:
         logging.info(f"({request.remote_addr}) Connection successful. Username: {parsed['username']}")
-        res = make_response("Ok")
+        res = make_response(result[2])
         res.set_cookie("SESSION-TOKEN", result[1], secure=True, httponly=True)
         return res
     

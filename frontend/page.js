@@ -307,9 +307,9 @@ function save_new_timers() {
 
 function manageAccountClicked() {
     if (window.user != null) {
-        let mailTitle = document.getElementById("acount_manage_email_title");
+        let mailTitle = document.getElementById("acount_manage_username_title");
 
-        mailTitle.innerText = window.user.email;
+        mailTitle.innerText = window.user.username;
         change_page("account_manage_page");
     } else {
         change_page("account_connection_page");
@@ -363,6 +363,7 @@ async function createAccountClicked() {
     }
 
     const connectionResult = await window.createAccount(usernameInput.value, emailInput.value, passwordInput.value);
+    console.log(connectionResult[1]["error"]);
 
     if (connectionResult[0] == 1) {
         infoBox.innerText = connectionResult[1]["error"] in connectionResultsDict ? connectionResultsDict[connectionResult[1]["error"]] : connectionResult[1]["error"];
@@ -430,12 +431,26 @@ async function connectAccountClicked() {
     console.log(connectionResult);
 
     if (connectionResult[0] == 1) {
-        infoBox.innerText = connectionResult[1] in connectionResultsDict ? connectionResultsDict[connectionResult[1]] : connectionResult[1];
+        infoBox.innerText = connectionResult[1]["error"] in connectionResultsDict ? connectionResultsDict[connectionResult[1]["error"]] : connectionResult[1]["error"];
         infoBox.style = "display: flex;";
     } else {
         user = connectionResult[1];
         infoBox.innerText = "Connecté !";
         infoBox.style = "display: flex; background-color: rgb(0, 117, 25); outline-color: green;";
+
+        // TODO : send still_connected_ping TO THE SERVER!!
+        async function checkStillConnected() {
+            let resp = window.sendStillConnected();
+
+            if (resp == "expired_session") {
+                user = null;
+                console.log("Account disconnected");
+            } else {
+                setTimeout(checkStillConnected, 1000000); // ~16,6 min
+            }
+        }
+
+        setTimeout(checkStillConnected, 1000000);
     }
 }
 

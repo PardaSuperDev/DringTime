@@ -17,7 +17,8 @@ SALT_SIZE = 32
 EMAIL = "contact@dring-time.fr"
 SMTP_SERVER = "ssl0.ovh.net"
 EMAIL_PASSWORD = getpass.getpass() # TODO : get from env variables
-TOKEN_EXPIRATION_DELAY = 30*60 # 30 minutes
+VALIDATION_TOKEN_EXPIRATION_DELAY = 30 * 60 # 30 minutes
+ACCOUNT_TOKEN_EXPIRATION_DELAY = 30 * 60
 WEB_SERVER = "http://localhost:5000"
 
 with open("email-presets.yaml", encoding="UTF-8") as file:
@@ -84,8 +85,6 @@ class DbManager:
             else:
                 return "expired"
 
-
-    
     def save(self):
         data = json.dumps(self.data)
         with open("data/data.json", "w") as file:
@@ -102,7 +101,7 @@ class DbManager:
         token = secrets.token_urlsafe(50)
         self.waiting_email_tokens[token] = {
             "uuid": uuid,
-            "expiration-date": time.time() + TOKEN_EXPIRATION_DELAY
+            "expiration-date": time.time() + VALIDATION_TOKEN_EXPIRATION_DELAY
         }
 
         link = f"{WEB_SERVER}/validate_email/{token}"
@@ -135,6 +134,9 @@ class DbManager:
         for i in list(self.waiting_email_tokens.keys()):
             if time.time() > self.waiting_email_tokens[i]["expiration-date"]:
                 self.waiting_email_tokens.pop(i)
+                uuuid = self.waiting_email_tokens[i]["uuid"]
+                if not self.data["accounts"][uuuid]["email-validation"]:
+                    self.data["accounts"].pop(uuuid)
     
     def validate_token_email(self, token):
         self.check_tokens_expiration()
@@ -153,9 +155,10 @@ class DbManager:
         return False, "unknown"
     
     def connect_accout(self, username, password):
+        self.check_expired_sessions()
         if username.lower() not in self.data["used-usernames"]:
             logging.warning(f"({request.remote_addr}) Tryed to connect to an unexisting account. Gived username : {username}")
-            return False, "bad_credentials"
+            return False, {"error": "bad_credentials"}
         
         uuuid = self.data["used-usernames"][username.lower()]
         
@@ -166,13 +169,34 @@ class DbManager:
 
         if hashed != user["password"]:
             logging.warning(f"({request.remote_addr}) Bad password. Username : {username}.")
-            return False, "bad_credentials"
+            return False, {"error": "bad_credentials"}
         
         token = secrets.token_urlsafe(256)
 
-        self.connected_tokens[token] = uuuid
+        self.connected_tokens[token] = {
+            "uuid": uuuid,
+            "expiration-date": time.time() + ACCOUNT_TOKEN_EXPIRATION_DELAY
+        }
 
-        return True, token
+        return True, token, {"username" : user["username"], "email": user["email"]}
+    
+    def check_expired_sessions(self):
+        for i in list(self.connected_tokens.keys()):
+            if time.time() > self.connected_tokens[i]["expiration-date"]:
+                self.connected_tokens.pop(i)
+    
+    def disconnect_account(self, token):
+        if token in self.connected_tokens:
+            self.connected_tokens.pop(token)
+
+    def update_account_expiration_date(self, token):
+        if token not in self.connected_tokens:
+            return "expired_session"
+        if time.time() > self.connected_tokens[token]["expiration-date"]:
+            self.connected_tokens.pop(token)
+            return "expired_session"
+        self.connected_tokens[token]["expiration-date"] = time.time() + ACCOUNT_TOKEN_EXPIRATION_DELAY
+        return "Ok"
 
     def add_alarms(self, token, name, data):
         if token not in self.connected_tokens:
@@ -184,7 +208,7 @@ class DbManager:
         
         alarm_uuid = str(uuid.uuid4())
         
-        user = self.data["accounts"][self.connected_tokens[token]]
+        user = self.data["accounts"][self.connected_tokens[token]["uuid"]]
 
         user["owned-alarms"].append(alarm_uuid)
 
