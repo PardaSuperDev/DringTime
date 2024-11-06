@@ -1,13 +1,11 @@
 import json
 import os
-import sys
 from flask import Flask, request, make_response
 from waitress import serve
 import logging
 from db_manager import DbManager
 from utils import check_iterable_integrity
 from data_schemas import *
-import mailbox
 
 app = Flask(__name__)
 db_manager = DbManager()
