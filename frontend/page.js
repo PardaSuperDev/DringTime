@@ -516,12 +516,14 @@ async function updateProviders() {
     });
 
     remoteProviders.forEach(provider => { // Pour remote
-        var option = document.createElement('option');
-        option.value = "r-" + provider;
-        option.innerText = "R: " + provider;
+        if (provider !== "Debug" || debug_mode) {
+            var option = document.createElement('option');
+            option.value = "r-" + provider;
+            option.innerText = "R: " + provider;
 
-        providersCombo.appendChild(option);
-        centralProvidersCombo.appendChild(option.cloneNode(true));
+            providersCombo.appendChild(option);
+            centralProvidersCombo.appendChild(option.cloneNode(true));
+        }
     });
 }
 
@@ -938,18 +940,18 @@ function validateCookies() {
 function checkCookiesAccepted() {
     const cookies = document.cookie.split("; ");
 
-        var data = "";
+    var data = "";
 
-        for (var i = 0; i < cookies.length; i++) {
-            if (cookies[i].substring(0, 16) === "cookiesAccepted=") {
-                data = cookies[i].substring(16);
-            }
+    for (var i = 0; i < cookies.length; i++) {
+        if (cookies[i].substring(0, 16) === "cookiesAccepted=") {
+            data = cookies[i].substring(16);
         }
+    }
 
-        if (data !== "true") {
-            let cookiesPopup = document.getElementById("cookies-info-popup");
-            cookiesPopup.style.display = "block";
-        }
+    if (data !== "true") {
+        let cookiesPopup = document.getElementById("cookies-info-popup");
+        cookiesPopup.style.display = "block";
+    }
 }
 
 window.addEventListener("click", () => {
