@@ -80,6 +80,7 @@ function setup() {
     updateTimeFromServer();
     setupCursorMoveDetection();
     setupDynamicIcon();
+    checkCookiesAccepted();
     updateProvidersCombo();
 }
 
@@ -921,6 +922,28 @@ async function loadSettings() {
     }
 }
 
+function validateCookies() {
+    document.cookie = "cookiesAccepted=true";
+    let cookiesPopup = document.getElementById("cookies-info-popup");
+    cookiesPopup.classList.add("hiddenPopup");
+}
+
+function checkCookiesAccepted() {
+    const cookies = document.cookie.split("; ");
+
+        var data = "";
+
+        for (var i = 0; i < cookies.length; i++) {
+            if (cookies[i].substring(0, 16) === "cookiesAccepted=") {
+                data = cookies[i].substring(16);
+            }
+        }
+
+        if (data !== "true") {
+            let cookiesPopup = document.getElementById("cookies-info-popup");
+            cookiesPopup.style.display = "block";
+        }
+}
 
 window.addEventListener("click", () => {
     if (!settings_opened && activity_started) setTimeout(() => {
