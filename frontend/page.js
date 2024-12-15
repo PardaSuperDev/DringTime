@@ -82,6 +82,7 @@ function setup() {
     updateTimeFromServer();
     setupCursorMoveDetection();
     setupDynamicIcon();
+    updateProvidersCombo();
 }
 
 async function setupDynamicIcon() {
@@ -460,24 +461,28 @@ function getLocalAlarmsList(providerName) {
 }
 
 function getLocalProviders() {
+    /**
+     * Donne les fournisseurs locaux, c'est à die stockés dans les cookies.
+     */
     let providers = [];
     const cookies = document.cookie.split("; ");
 
     var data = "";
 
+    // Cherche le bon cookie
     for (var i = 0; i < cookies.length; i++) {
         if (cookies[i].substring(0, 7) === "alarms=") {
             data = cookies[i].substring(7);
         }
     }
 
+    // Décode et lit les sonneries
     if (data) {
         var decodedAlarmsData = atob(data);
         var alarms = decodedAlarmsData.split(",");
         for (var i = 0; i < alarms.length; i++) {
             var alarmData = alarms[i].split(">");
             providers.push(alarmData[0]);
-
         }
     }
 
@@ -485,6 +490,11 @@ function getLocalProviders() {
 }
 
 async function updateProviders() {
+    /**
+     * Met à jour les 2 liste déroulantes permettant de sélectionner le fournieur de sonneries.
+     */
+
+    // Récupère les sonneries locales et distantes.
     let remoteProviders = await window.getAlarmsProviders();
     let localProviders = getLocalProviders();
 
@@ -492,31 +502,34 @@ async function updateProviders() {
     window.localProviderList = localProviders;
 
     let providersCombo = document.getElementById("alarm_providers_combo");
+    let centralProvidersCombo = document.getElementById("alarm_providers_combo_central");
 
-    localProviders.forEach(provider => {
+    // Itère parmit les sonneries et les ajoute dans les listes déroulantes.
+    localProviders.forEach(provider => { // Pour local
         var option = document.createElement('option');
         option.value = "l-" + provider;
         option.innerText = "L: " + provider;
 
         providersCombo.appendChild(option);
+        centralProvidersCombo.appendChild(option.cloneNode(true)); // La duplication est nécéssaire sinon le centralCombo "vole" l'option au combo des paramètre. Ne me demandez pas pourquoi ça fait ça, je ne sais pas...
     });
 
-    remoteProviders.forEach(provider => {
-        console.log(provider);
-        if (provider !== "Debug" || debug_mode) {
-            var option = document.createElement('option');
-            option.value = "r-" + provider;
-            option.innerText = "R: " + provider;
+    remoteProviders.forEach(provider => { // Pour remote
+        var option = document.createElement('option');
+        option.value = "r-" + provider;
+        option.innerText = "R: " + provider;
 
-            providersCombo.appendChild(option);
-        }
+        providersCombo.appendChild(option);
+        centralProvidersCombo.appendChild(option.cloneNode(true));
     });
 }
 
 async function updateProvidersCombo() {
     let alarmProvidersCombo = document.getElementById("alarm_providers_combo");
+    let centralProvidersCombo = document.getElementById("alarm_providers_combo_central");
     await updateProviders();
     alarmProvidersCombo.value = window.alarmsProvider;
+    centralProvidersCombo.value = window.alarmsProvider;
 }
 
 function toggle_settings_bar() {
@@ -536,7 +549,6 @@ function toggle_settings_bar() {
     } else {
         settingsBar.style = "width: var(--max-settings-bar-lenght)";
         settingsIcon.style = "opacity: 1"
-        if (window.remoteProviderList.length === 0 && window.localProviderList.length === 0) updateProvidersCombo();
     }
 
     window.settings_opened = !window.settings_opened;
