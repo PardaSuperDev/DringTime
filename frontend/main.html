@@ -139,9 +139,9 @@
                 <input type="text" list="browsers" class="stylized_button outlined_button" id="new_timers_name_input"
                     value="Mes-Sonneries" maxlength=24 minlength=5>
                 <button class="stylized_button outlined_button" onclick="save_new_timers();"
-                    title="Enregistrer les sonneries">Enr. local</button>
+                    title="Enregistrer les sonneries dans les cookies">Enr. local</button>
                 <button class="stylized_button outlined_button" onclick="publishAlarms();"
-                    title="Publier les sonneries sur le cloud (accessible à tout le monde)">Publier</button>
+                    title="[WIP] Publier les sonneries sur le cloud (accessible à tout le monde)" disabled>Publier</button>
                 <span id="new_timers_save_result_label"></span>
             </div>
             <div class="timers_table_container">
@@ -290,6 +290,17 @@
         </div>
 
     </div>
+
+    </div>
+
+    <div id="cookies-info-popup" style="display: none;">
+        <h2>Dring Time utilise des Cookies</h2>
+        <p style="font-size: 17px;">Ces cookies sont purements techniques. Aucune de vos données personnelles ne sont utilisées à des fins
+            publicitaires ou de tracking. Dring Time est entierement gratuit, open Source et à but non lucratif. Nos
+            seuls financements proviennent de dons ou d'apports personnels.</p>
+        <button class="stylized_button" onclick="validateCookies()">Ca marche !</button>
+    </div>
+
 </body>
 
 </html>

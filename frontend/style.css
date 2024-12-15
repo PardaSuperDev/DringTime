@@ -134,8 +134,11 @@ body {
     margin-left: 5px;
     margin-right: 5px;
 }
+.stylized_button:disabled {
+    color: grey;
+}
 
-.stylized_button:hover {
+.stylized_button:enabled:hover {
     background-color: #424242;
 }
 
@@ -361,4 +364,29 @@ option {
     display: flex;
     margin: 0px;
     margin-top: 10px;
+}
+
+.hiddenPopup {
+    animation: hidePopupOpacity 0.5s ease forwards;
+}
+
+@keyframes hidePopupOpacity {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
+
+#cookies-info-popup {
+    position: absolute;
+    bottom: 0px;
+    margin: 30px;
+    border: solid var(--text-color) 3px;
+    background-color: var(--background-color);
+    padding: 20px;
+    border-radius: 10px;
 }
