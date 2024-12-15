@@ -270,6 +270,7 @@ body {
 .timer_line {
     margin: 0px;
     padding: 0px;
+    font-size: 100px;
 }
 
 #remaining_time_alarm {

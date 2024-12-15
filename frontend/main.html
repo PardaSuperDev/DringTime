@@ -93,29 +93,29 @@
         onload="this.focus(); updatePageColor();" id="activity_iframe"
         sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
     <div class="centered_container">
-        <div id="timers_page" class="page">
+        <div id="timers_page" class="page" style="user-select: none;">
             <div class="centered_content" id="timers_elements_container" style="display: none">
                 <div id="next_alarm" class="time_container">
                     <a onclick="toggle_view('next_alarm');">
                         <h2 class="time_label">Prochaine Sonnerie</h2>
-                        <h1 class="time_counter" id="next_alarm_timer">00:00</h1>
+                        <p class="time_counter" id="next_alarm_timer">00:00</p>
                     </a>
                 </div>
                 <div id="remaining_time" class="time_container">
                     <a onclick="toggle_view('remaining_time');">
                         <h2 class="time_label">Temps restant</h2>
-                        <h1 class="time_counter" id="remaining_time_alarm">
-                            <p class="timer_line" id="default_timer_digits">
+                        <p class="time_counter" id="remaining_time_alarm">
+                            <span class="timer_line" id="default_timer_digits" style="display: block;">
                                 <span
                                     class="hours_minutes_timer_part timer_digits"><span>0</span><span>0</span><span>:</span><span>0</span><span>0</span></span><span
                                     class="seconds_timer_part timer_digits"><span>:</span><span>0</span><span>0</span></span>
-                            </p>
-                            <p class="timer_line" id="visual_scroller_digits">
+                            </span>
+                            <span class="timer_line" id="visual_scroller_digits" style="display: block;">
                                 <span
                                     class="hours_minutes_timer_part timer_digits"><span>0</span><span>0</span><span>:</span><span>0</span><span>0</span></span><span
                                     class="seconds_timer_part timer_digits"><span>:</span><span>0</span><span>0</span></span>
-                            </p>
-                        </h1>
+                            </span>
+                        </p>
                     </a>
                 </div>
             </div>
@@ -134,7 +134,7 @@
         </div>
 
         <div id="submit_new_page" style="display: none; opacity: 0;" class="page">
-            <h1 class="title_line">Soumettre de nouvelles sonneries</h1>
+            <h2 class="title_line">Soumettre de nouvelles sonneries</h2>
             <div class="new_timers_settings_container">
                 <input type="text" list="browsers" class="stylized_button outlined_button" id="new_timers_name_input"
                     value="Mes-Sonneries" maxlength=24 minlength=5>
@@ -244,7 +244,7 @@
         </div>
 
         <div id="credits_page" class="page" style="display: none; opacity: 0;">
-            <h1>Crédits</h1>
+            <h2>Crédits</h2>
             <ul>
                 <li>Idée originale: Autiinpu</li>
                 <li>Développeur principal: Yannis300307</li>
@@ -282,7 +282,7 @@
         </div>
 
         <div id="activities_page" class="page" style="display: none; opacity: 0;">
-            <h1>Activités</h1>
+            <h2>Activités</h2>
             <p id="loading-activities-text">Chargement des activités ...</p>
             <div id="activities-list"></div>
             <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
