@@ -566,8 +566,20 @@ function askSave() {
 }
 
 function changeProvider(element) {
+    /**
+     * Appelé par des calls dans le html lorsque l'utilisateur sélectionne un autre provider.
+     */
+    let providersCombo = document.getElementById("alarm_providers_combo");
+    let centralProvidersCombo = document.getElementById("alarm_providers_combo_central");
+
     let itemindex = element.selectedIndex
     let providerValue = element.options[itemindex].value;
+    if (element == providersCombo) {
+        centralProvidersCombo.selectedIndex = itemindex;
+    }
+    if (element == centralProvidersCombo) {
+        providersCombo.selectedIndex = itemindex;
+    }
     if (providerValue.toLowerCase() === "rick") { window.location = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; return; }
     window.alarmsProvider = providerValue;
     updateAlarms();
