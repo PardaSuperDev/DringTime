@@ -37,7 +37,7 @@ Le site est accessible sur [dring-time.fr](https://dring-time.fr).
 ## Aide au financement :
 - Yannis300307 : [yannis300307.fr](https://yannis300307.fr/)
 - Autiinpu : @autiinpu_v4
-- Bijunoka : @bijunoka@bijunoka
+- Bijunoka : @bijunoka
 - Racloody : [racloody.fr](https://racloody.fr/)
 - Tipragot : [rust-lang.org](https://www.rust-lang.org/fr)
 
