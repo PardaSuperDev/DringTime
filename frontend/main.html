@@ -44,7 +44,7 @@
                     </select>
                     <button class="stylized_button" style="margin-left: 5px; width: 40px; font-size: 25px;"
                         onclick="change_page('submit_new_page');" title="Créer des sonneries"><b>+</b></button>
-                    <button class="stylized_button" style="margin-left: 30px;" onclick="saveSettings();"
+                    <button class="stylized_button" style="margin-left: 115px;" onclick="saveSettings();"
                         title="Enregistrer les paramètres">
                         <img src="assets/save.svg" alt="save" id="save_icon" hidden>
                         <img src="assets/saved.svg" alt="saved" id="saved_icon">
@@ -81,6 +81,11 @@
                         title="Voir les crédits du site">
                         <img src="assets/credits-icon.svg" alt="credits_icon">
                         Crédits
+                    </button>
+                    <button class="stylized_button" style="margin-left: 5px;" onclick="openNewsPage();"
+                        title="Quoi de neuf?">
+                        <img src="assets/announcement-fill-svgrepo-com.svg" alt="announcement_icon">
+                        News
                     </button>
                 </div>
 
@@ -236,7 +241,7 @@
                                 alt="add line"></a>
                         <a class="remove_line_button" onclick="remove_timers_row(6, this);"><img src="assets/remove.svg"
                                 alt="add line"></a>
-                    </div>
+                    </div>d
                 </div>
             </div>
             <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
@@ -281,6 +286,13 @@
                 style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
         </div>
 
+        <div id="news_page" class="page" style="display: none; opacity: 0;">
+            <h2>News</h2>
+            <p>lien vers les dernieres issues <a href="https://github.com/PardaSuperDev/DringTime/issues?q=is%3Aissue+is%3Aclosed+sort%3Aupdated-desc" class="hyperlink" target="_blank" rel="noopener noreferrer">github</a></p>
+            <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
+                style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
+        </div>
+
         <div id="activities_page" class="page" style="display: none; opacity: 0;">
             <h2>Activités</h2>
             <p id="loading-activities-text">Chargement des activités ...</p>
@@ -288,8 +300,6 @@
             <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
                 style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
         </div>
-
-    </div>
 
     </div>
 

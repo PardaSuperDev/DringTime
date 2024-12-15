@@ -8,7 +8,7 @@
     --text-color: #FFFFFF;
     --background-color: #000000;
 
-    --max-settings-bar-lenght: 650px;
+    --max-settings-bar-lenght: 730px;
 
     color: var(--text-color);
     font-family: consolas2;
@@ -264,6 +264,12 @@ body {
     transition: opacity 500ms ease;
     pointer-events: all;
     z-index: 2;
+}
+
+.page h2 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 .not_custom_text_color {

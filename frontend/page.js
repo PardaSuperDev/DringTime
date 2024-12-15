@@ -962,6 +962,11 @@ window.addEventListener("click", () => {
     }, 10);
 })
 
+
+async function openNewsPage() {
+    change_page('news_page');   
+    }
+
 // Paramètre les éléments Coloris
 Coloris({
     themeMode: 'dark',
@@ -975,6 +980,7 @@ Coloris({
         askSave();
     }
 });
+
 
 // Lance l'execution régulière de `update()`. 
 // Le timeout est de 200 ms pour éviter la désincronisation et avoir une grande précision des secondes.
