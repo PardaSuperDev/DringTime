@@ -28,17 +28,18 @@ Le site est accessible sur [dring-time.fr](https://dring-time.fr).
 
 # Crédits
 
-- **Idée originale**: Autiinpu
-- **Développeur principal**: Yannis300307
-- **Gestionnaire nom de domaine et base de donnée**: Yannis300307
-- **Aide au debugging et proposition de features**: Bijunoka
+- **Idée originale** : Autiinpu
+- **Développeur principal** : Yannis300307
+- **Gestionnaire nom de domaine et base de donnée** : Yannis300307
+- **Aide au debugging et proposition de features** : Bijunoka
+- **Graphiste** : Racloody
 
 ## Aide au financement :
-- Yannis300307
-- Autiinpu
-- Bijunoka
-- Racloody
-- Tipragot
+- Yannis300307 : [yannis300307.fr](https://yannis300307.fr/)
+- Autiinpu : @autiinpu_v4
+- Bijunoka : @bijunoka@bijunoka
+- Racloody : [racloody.fr](https://racloody.fr/)
+- Tipragot : [rust-lang.org](https://www.rust-lang.org/fr)
 
 <!-- Ajouter lien vers page des crédits -->
 
