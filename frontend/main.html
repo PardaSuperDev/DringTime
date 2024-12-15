@@ -124,7 +124,12 @@
             </div>
             <div id="no_alarm_provider" style="display: none">
                 <h2>Aucun fournisseur de sonneries séléctionné.</h2>
-                <h3>Merci d'en séléctionner un dans les paramètres.</h3>
+                <span style="font-size: 20px;">Merci d'en séléctionner un: </span>
+                <select name="AlarmsProvider" onChange="changeProvider(this);" class="stylized_button"
+                    id="alarm_providers_combo_central" style="max-width: 10em; min-width: 10em; display: inline-block;"
+                    title="Nom du canal des sonneries">
+                    <option value="">Non selectionné</option>
+                </select>
             </div>
         </div>
 
@@ -254,7 +259,7 @@
                     onclick="window.location='https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygUKcmljayBhc2xleQ%3D%3D'">Financement</a>
             </h2>
             <ul>
-                <li title="30%">Yannis300307 <a href="https://yannis300307.fr" class="hyperlink" target="_blank" 
+                <li title="30%">Yannis300307 <a href="https://yannis300307.fr" class="hyperlink" target="_blank"
                         rel="noopener noreferrer">yannis300307.fr</a></li>
                 <li title="27%">Autiinpu Discord : @autiinpu_v4</li>
                 <li title="26%">Bijunoka Discord : @bijunoka</li>
