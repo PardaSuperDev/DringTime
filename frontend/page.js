@@ -932,7 +932,7 @@ async function loadSettings() {
 }
 
 function validateCookies() {
-    document.cookie = "cookiesAccepted=true";
+    document.cookie = "cookiesAccepted=true; path=/; max-age=126144000; SameSite=None; secure=false";
     let cookiesPopup = document.getElementById("cookies-info-popup");
     cookiesPopup.classList.add("hiddenPopup");
 }
