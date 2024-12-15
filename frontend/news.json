@@ -1,0 +1,53 @@
+{
+    "issues": [
+        {
+            "number": 57,
+            "title": "Avertir de l'utilisation des cookies",
+            "description": "Mettre un bandeau pour avertir de l'utilisation des cookies.",
+            "assignees": ["yannis300307"],
+            "link": "https://github.com/PardaSuperDev/DringTime/issues/57"
+        },
+        {
+            "number": 41,
+            "title": "Ajout d'une horloge",
+            "description": "Ajoute d'une nouvelle activité nommée horloge.",
+            "assignees": ["yannis300307"],
+            "link": "https://github.com/PardaSuperDev/DringTime/issues/41'"
+        },
+        {
+            "number": 4,
+            "title": "Ajout des Activités",
+            "description": "Ajoute des activités.",
+            "assignees": ["yannis300307"],
+            "link": "https://github.com/PardaSuperDev/DringTime/issues/41'"
+        },
+        {
+            "number": 4,
+            "title": "Ajout des crédits",
+            "description": "Ajout d'une page des remerciements et de crédits.",
+            "assignees": ["yannis300307"],
+            "link": "https://github.com/PardaSuperDev/DringTime/issues/21'"
+        },
+        {
+            "number": 22,
+            "title": "Partage de paramètres via un url",
+            "description": "Ajouter le moyen de partager des paramètres grâce à l'url .",
+            "assignees": ["yannis300307"],
+            "link": "https://github.com/PardaSuperDev/DringTime/issues/22'"
+        },
+        {
+            "number": 5,
+            "title": "Animation des chiffres",
+            "description": "Ajouter un scrolling des chiffres.",
+            "assignees": ["yannis300307"],
+            "link": "https://github.com/PardaSuperDev/DringTime/issues/22'"
+        },
+        {
+            "number": 8,
+            "title": "Afficher les secondes",
+            "description": "Ajouter une option pour afficher les secondes.",
+            "assignees": ["yannis300307"],
+            "link": "https://github.com/PardaSuperDev/DringTime/issues/8'"
+        }
+    ]
+}

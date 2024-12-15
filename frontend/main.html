@@ -88,9 +88,7 @@
                         News
                     </button>
                 </div>
-
             </div>
-
         </div>
     </div>
     <!--allow-scripts et allow-same-origin ne devrais pas être utilisés ensembles mais on les garde pour des raisons de compatibilté pour l'instant-->
@@ -286,12 +284,18 @@
                 style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
         </div>
 
-        <div id="news_page" class="page" style="display: none; opacity: 0;">
+        <div id="news_page" class="page news" style="display: none; opacity: 0;">
             <h2>News</h2>
-            <p>lien vers les dernieres issues <a href="https://github.com/PardaSuperDev/DringTime/issues?q=is%3Aissue+is%3Aclosed+sort%3Aupdated-desc" class="hyperlink" target="_blank" rel="noopener noreferrer">github</a></p>
-            <button class="stylized_button outlined_button" onclick="change_page('timers_page');"
-                style="margin-top: 15px; margin-left: auto; margin-right: auto;">Retour</button>
-        </div>
+            <div id="issues-container">
+                <h2>Liste des Issues</h2>
+                <ul class="issue-list" id="issue-list">
+                </ul>
+                <p>lien vers les dernières issues <a href="https://github.com/PardaSuperDev/DringTime/issues?q=is%3Aissue+is%3Aclosed+sort%3Aupdated-desc" class="hyperlink" target="_blank" rel="noopener noreferrer">github</a></p>
+            </div>
+            <button class="stylized_button outlined_button news_button" onclick="change_page('timers_page');" style="margin-top: 15px; margin-left: auto; margin-right: auto;">
+                Retour
+            </button>
+        
 
         <div id="activities_page" class="page" style="display: none; opacity: 0;">
             <h2>Activités</h2>

@@ -967,6 +967,27 @@ async function openNewsPage() {
     change_page('news_page');   
     }
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('news.json')
+        .then(response => response.json())
+        .then(data => {
+            const issueList = document.getElementById('issue-list');
+            data.issues.forEach(issue => {
+                const issueItem = document.createElement('li');
+                issueItem.className = 'issue-item';
+                issueItem.innerHTML = `
+                    <h3>${issue.title}</h3>
+                    <p>${issue.description}</p>
+                    <p><strong>Fait par :</strong> ${issue.assignees.join(', ')}</p>
+                    <p><a href="${issue.link}" class="hyperlink" target="_blank" rel="noopener noreferrer">Lien vers l'issue github</a></p>
+                `;
+                issueList.appendChild(issueItem);
+            });
+        })
+        .catch(error => console.error('Erreur de chargement des issues :', error));
+});
+
 // Paramètre les éléments Coloris
 Coloris({
     themeMode: 'dark',
