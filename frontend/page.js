@@ -34,6 +34,8 @@ window.textRenderingType = "ClearType";
 window.currentTime = new Date();
 window.lastTimeUpdate = 0;
 
+var debug_mode = false;
+
 var cursorLastMoveDelay = 0;
 var lastTimeUpdateEpoch = (new Date()).getTime();
 
@@ -113,7 +115,7 @@ function updatePageColor(fg_color = true) {
 
 function adjustCss() {
     // Si la plateforme n'est pas Windows, alors le système de rendu n'est pas ClearType et est donc en FreeType
-    // On ajuste alors la font en coséquence
+    // On ajuste alors la font en conséquence
     if (!navigator.userAgent.toLowerCase().includes("win")) {
         var timerElem = document.getElementById("remaining_time_alarm");
         timerElem.style = "line-height: 0.85;";
@@ -862,6 +864,11 @@ function load_settings_from_url() {
                         secondsEnableInputToggled(sliderShowSeconds);
                         needSave = true;
                     } else console.warn("Valeur invalide pour la paramètre \"" + settingsName + "\": " + settingsValue + ".");
+                    break;
+                case ("debug"):
+                    if (settingsValue == "true" || settingsValue == "false") {
+                        debug_mode = settingsValue == "true";
+                    }
                     break;
                 default:
                     console.warn("Paramètre inconnu : \"" + settingsName + "\".");
