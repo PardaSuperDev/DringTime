@@ -24,7 +24,7 @@
                 <img src="assets/settings.svg" alt="settings">
             </a>
         </div>
-        <div id="settings_bar">
+        <div id="settings_bar" style="padding-right:0px; padding-left: 0px;">
             <div id="settings_bar_container_lines">
                 <div class="settings_bar_content">
                     <button class="stylized_button" onclick="setColor('labels')" title="Changer la couleur du texte">
@@ -36,27 +36,11 @@
                             value="#000000">
                         <span class="color_label">fond</span>
                     </button>
-                    <p style="margin-left: 5px; color: white;">Lieu: </p>
-                    <select name="AlarmsProvider" onChange="changeProvider(this);" class="stylized_button"
-                        id="alarm_providers_combo" style="max-width: 8em; min-width: 8em"
-                        title="Nom du canal des sonneries">
-                        <option value="">Non select.</option>
-                    </select>
-                    <button class="stylized_button" style="margin-left: 5px; width: 40px; font-size: 25px;"
-                        onclick="change_page('submit_new_page');" title="Créer des sonneries"><b>+</b></button>
-                    <button class="stylized_button" style="margin-left: 30px;" onclick="saveSettings();"
-                        title="Enregistrer les paramètres">
-                        <img src="assets/save.svg" alt="save" id="save_icon" hidden>
-                        <img src="assets/saved.svg" alt="saved" id="saved_icon">
-                    </button>
-                    <button class="stylized_button" style="margin-left: 2px;" onclick="saveSettingsToClipboard();"
-                        title="Copier les paramètres en URL">
-                        <img src="assets/clipboard-add.svg" alt="save" id="clipboard_save_icon" hidden>
-                        <img src="assets/clipboard-saved.svg" alt="saved" id="clipboard_saved_icon">
-                    </button>
+                    
                 </div>
+                
                 <div class="settings_bar_content">
-                    <span class="centered_text not_custom_text_color">Plein ecran</span>
+                    <span class="centered_text not_custom_text_color">Plein ecran auto</span>
                     <label class="slider-container" for="slider-fullscreen"
                         title="Plein écran lorsque l'on clique sur un timer">
                         <input type="checkbox" class="slider-input" name="slider-fullscreen" id="slider-fullscreen"
@@ -65,12 +49,40 @@
                     </label>
                     <span class="centered_text not_custom_text_color">Secondes</span>
                     <label class="slider-container" for="slider-seconds"
-                        title="Afficher les heures lorsque le temps - 1h">
+                        title="Afficher les secondes lorsqu'il reste plus d'une heure">
                         <input type="checkbox" class="slider-input" name="slider-seconds" id="slider-seconds"
                             onchange="secondsEnableInputToggled(this);">
                         <div class="slider"></div>
                     </label>
+                </div>
 
+                <div class="settings_bar_content" style="margin-bottom: 20px;">
+                    <p style="margin-left: 5px; color: white;">Etablissement : </p>
+                    <select name="AlarmsProvider" onChange="changeProvider(this);" class="stylized_button"
+                        id="alarm_providers_combo" style="max-width: 12em; min-width: 12em"
+                        title="Nom du canal des sonneries">
+                        <option value="">Non selectionné</option>
+                        <button class="stylized_button" style="margin-left: 5px; width: 40px; font-size: 25px;"
+                        onclick="change_page('submit_new_page');" title="Créer des sonneries"><b>+</b></button>
+                    </select>
+                </div>
+
+                <div class="settings_bar_content" style="margin-bottom: 20px;">
+                    <button class="stylized_button" onclick="saveSettings();"
+                        title="Enregistrer les paramètres">
+                        Enregistrer
+                        <img src="assets/save.svg" alt="save" id="save_icon" hidden>
+                        <img src="assets/saved.svg" alt="saved" id="saved_icon">
+                    </button>
+                    <button class="stylized_button" onclick="saveSettingsToClipboard();"
+                        title="Copier les paramètres en URL">
+                        Copier
+                        <img src="assets/clipboard-add.svg" alt="save" id="clipboard_save_icon" hidden>
+                        <img src="assets/clipboard-saved.svg" alt="saved" id="clipboard_saved_icon">
+                    </button>
+                </div>
+
+                <div class="settings_bar_content">
                     <!--Réorganisation dans la branche `account`-->
                     <button class="stylized_button" style="margin-left: 5px;" onclick="openActivitiesPage();"
                         title="Activer des activités">
@@ -83,7 +95,6 @@
                         Crédits
                     </button>
                 </div>
-
             </div>
 
         </div>

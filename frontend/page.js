@@ -542,7 +542,7 @@ function toggle_settings_bar() {
     let activityIframe = document.getElementById("activity_iframe");
 
     if (window.settings_opened) {
-        settingsBar.style = "width: 0px";
+        settingsBar.style = "width: 0px; padding-right:0px; padding-left: 0px;";
         if (window.toggled_view) {
             settingsIcon.style = "opacity: 0"
         } else {

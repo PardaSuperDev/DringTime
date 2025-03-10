@@ -8,7 +8,7 @@
     --text-color: #FFFFFF;
     --background-color: #000000;
 
-    --max-settings-bar-lenght: 650px;
+    --max-settings-bar-lenght: 430px;
 
     color: var(--text-color);
     font-family: consolas2;
@@ -83,7 +83,7 @@ body {
     position: absolute;
     display: flex;
     z-index: 9;
-    height: 150px;
+    height: max-content;
 }
 
 #settings_bar {
@@ -94,15 +94,16 @@ body {
     justify-content: left;
     align-items: center;
     position: absolute;
-    height: 100%;
+    height: max-content;
     width: 0px;
     overflow-x: hidden;
-    transition: width 1s ease 0s;
+    transition: width 1s ease 0s, padding-left 1s ease, padding-right 1s ease;
     z-index: 8;
+    padding: 20px;
 }
 
 .settings_bar_content {
-    padding-left: 80px;
+    padding-left: 60px;
     padding-right: 30px;
     display: flex;
     height: 100%;
