@@ -79,7 +79,7 @@ function setup() {
     secondsEnableInputToggled(document.getElementById("slider-seconds"));
     fullScreenEnableInputToggled(document.getElementById("slider-fullscreen"));
     load_settings_from_url();
-    updateTimeFromServer();
+    updateTimeFromServer(1);
     setupCursorMoveDetection();
     setupDynamicIcon();
     checkCookiesAccepted();
@@ -165,11 +165,22 @@ function setupCursorMoveDetection() {
     }, 200)
 }
 
-async function updateTimeFromServer() {
-    var requestData = await fetch('https://timeapi.io/api/time/current/zone?timeZone=Europe%2FParis', { cache: "no-store", mode: 'cors', method: 'GET', headers: { 'Content-Type': 'text/plain' } })
-    var dataJson = await requestData.json();
+async function updateTimeFromServer(tries) {
+    if (tries > 10) {
+        console.error("Exceeded max retry count for time sync, use local time in last resort.");
+        return;
+    }
 
-    window.currentTime = new Date(dataJson["dateTime"]);
+    var requestData = await fetch('https://timeapi.io/api/time/current/zone?timeZone=Europe%2FParis', { cache: "no-store", mode: 'cors', method: 'GET', headers: { 'Content-Type': 'text/plain' } })
+        .catch(() => {
+            console.warn("Failed to update Time, retrying...");
+            updateTimeFromServer(tries + 1);
+        })
+
+    if (requestData !== undefined && requestData.status === 200) {
+        var dataJson = await requestData.json();
+        window.currentTime = new Date(dataJson["dateTime"]);
+    }
 }
 
 function add_timers_row(day) {
@@ -617,7 +628,7 @@ async function update() {
     window.lastTimeUpdate += deltaTime;
 
     if (window.lastTimeUpdate > 3600) {
-        updateTimeFromServer();
+        updateTimeFromServer(1);
         window.lastTimeUpdate = 0;
     }
 
