@@ -628,7 +628,7 @@ async function update() {
     window.lastTimeUpdate += deltaTime;
 
     if (window.lastTimeUpdate > 3600) {
-        updateTimeFromServer();
+        updateTimeFromServer(1);
         window.lastTimeUpdate = 0;
     }
 
