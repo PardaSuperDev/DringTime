@@ -35,7 +35,7 @@ Le site est accessible sur [dring-time.fr](https://dring-time.fr).
 - **Graphiste** : Racloody
 
 ## Aide au financement :
-- Yannis300307 : [yannis300307.fr](https://yannis300307.fr/)
+- Yannis300307 : [ynis.fr](https://ynis.fr/)
 - Autiinpu : @autiinpu_v4
 - Bijunoka : @bijunoka
 - Racloody : [racloody.fr](https://racloody.fr/)
